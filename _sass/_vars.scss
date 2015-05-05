@@ -1,0 +1,32 @@
+$accent: #ff0000;
+$gray: #999999;
+
+$heading: 'Garamond', sans-serif;
+$body: 'Arial', serif;
+
+$phones: "only screen and (max-width : 767px)";
+$tablets: "only screen and (min-width : 768px)";
+$standard: "only screen and (min-width : 992px)";
+$high: "only screen and (min-width : 1200px)";
+$quad: "only screen and (min-width : 2000px)";
+
+$rphones: "only screen and (max-width : 767px)";
+$rtablets: "only screen and (max-width : 991px)";
+$rstandard: "only screen and (max-width : 1199px)";
+$rhigh: "only screen and (max-width : 1999px)";
+$rquad: "only screen and (min-width : 2000px)";
+
+@mixin box-sizing($what)
+{
+	@if $what != 'content-box' {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+	} @else {
+		-webkit-box-sizing: $what;
+		-moz-box-sizing: $what;
+		-o-box-sizing: $what;
+		box-sizing: $what;
+	}
+}
