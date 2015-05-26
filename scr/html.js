@@ -1,6 +1,107 @@
 (function() {
 	var mod = angular.module("htmlcustom", ["configurator"]);
 
+	mod.factory('clipboard', ['$rootScope', function($rootScope){
+		return {
+			set: function(what, value) {
+				if(typeof $rootScope['clipboard'] == 'undefined')
+				{
+					$rootScope['clipboard'] = {};
+				}
+
+				$rootScope['clipboard'][what] = value;
+			},
+			get: function(what) {
+				if(typeof $rootScope['clipboard'][what] == 'undefined')
+				{
+					return false;
+				}
+				return $rootScope['clipboard'][what];
+			}
+		}
+	}]);
+
+	mod.factory('lightbox', [function(){
+		return {
+			show: function(html){
+				$('body').append('<div class="shader"><div class="lightbox"><a href="#" class="close"><i class="icon-cancel"></i></a>'+html+'</div></div>');
+
+				$('.shader').css('width', '100%');
+				$('.shader').css('height', '100%');
+
+				$('.shader').animate({
+					'opacity' : 1
+				}, 800);
+
+				setTimeout(function(){
+					var w = $('.shader .lightbox').width();
+					var h = $('.shader .lightbox').height();
+
+					$('.shader .lightbox').css('width', 0);
+					$('.shader .lightbox').css('height', 0);
+
+					$('.shader .lightbox').animate({
+						'opacity' : 1,
+						'width' : w,
+						'height' : h
+					}, 400, function(){
+						$('.shader .lightbox').css('width', '');
+						$('.shader .lightbox').css('height', '');
+						$('.shader').css('overflow', 'auto');
+
+						//close animation
+						$('.lightbox').on('click', function(e){
+							e.stopPropagation();
+						});
+						$('.shader, .shader .lightbox .close').on('click', function(e){
+							e.preventDefault();
+							$('.shader, .shader .lightbox .close').off('click');
+							$('.shader .lightbox').animate({
+								'opacity' : 0,
+								'width' : 0,
+								'height' : 0
+							}, 400);
+
+							setTimeout(function(){
+								$('.shader').animate({
+									'opacity' : 0
+								}, 400, function(){
+									$('.shader').remove();
+								})
+							}, 200);
+						});
+					});
+				}, 200);
+			}
+		}
+	}]);
+
+	mod.factory('preload', ['$q', function($q) {
+	  return function(url) {
+	    var deffered = $q.defer(),
+	    image = new Image();
+
+	    image.src = url;
+
+	    if (image.complete) {
+	  
+	      deffered.resolve();
+	  
+	    } else {
+	  
+	      image.addEventListener('load', function() {
+	        deffered.resolve();
+	      });
+	  
+	      image.addEventListener('error', function() {
+	        deffered.reject();
+	      });
+	    }
+
+	    return deffered.promise;
+	  }
+	}]);
+	
 	mod.factory('scrollbar', [function(){
 		return {
 			getWidth: function(){
@@ -110,8 +211,15 @@
 				h = h * detectDPI.dpiscale();
 				return constants.canonical+'php/image/processor.php?w='+w+'&h='+h+'&q=100&src='+s;
 			},
-			imageResize: function(w, q, s, f){
-				w = w * detectDPI.dpiscale();
+			imageResize: function(w, q, s, scale, f){
+				if(typeof scale !== "undefined")
+				{
+					if(scale)
+					{
+						w = w * detectDPI.dpiscale();
+					}
+				}
+
 				if(typeof f !== "undefined")
 				{
 					return constants.canonical+'php/image/processor.php?w='+w+'&h=&q='+q+'&src='+s+'&f='+f;
@@ -132,9 +240,16 @@
 					return constants.canonical+'php/image/processor.php?w=&h='+h+'&q='+q+'&src='+s;
 				}
 			},
-			imageCrop: function(w, h, q, s, f){
-				w = w * detectDPI.dpiscale();
-				h = h * detectDPI.dpiscale();
+			imageCrop: function(w, h, q, s, scale, f){
+				if(typeof scale !== "undefined")
+				{
+					if(scale)
+					{
+						w = w * detectDPI.dpiscale();
+						h = h * detectDPI.dpiscale();
+					}
+				}
+
 				if(typeof f !== "undefined")
 				{
 					return constants.canonical+'php/image/processor.php?w='+w+'&h='+h+'&q='+q+'&src='+s+'&f='+f;
@@ -145,6 +260,24 @@
 				}
 			}
 		};
+	}]);
+
+	mod.directive('vector', [function(){
+		return {
+			restrict: 'E',
+			templateUrl: 'shadow/modified-elements/svg.html',
+			scope: {
+				svg: '@',
+				src: '@',
+				imgsrc: '@'
+			},
+			replace: true,
+			link: function postLink(scope, element, attrs) {
+				element.bind('error', function(){
+					attrs.$set('src', attrs.img);		
+				});
+			}
+		}
 	}]);
 
 	mod.directive('smartScale', ['windowsize', 'imgscaler', function(windowsize, imgscaler){
@@ -218,8 +351,6 @@
 			},
 			replace: true,
 			link: function(scope, element, attrs){
-				
-				//assign defaults + fallbacks
 				scope.imgsrc = attrs.src !== undefined ? attrs.src : '';
 				scope.srcLG = attrs.lg !== undefined ? attrs.lg : scope.imgsrc;
 				scope.srcMD = attrs.md !== undefined ? attrs.md : scope.srcLG;

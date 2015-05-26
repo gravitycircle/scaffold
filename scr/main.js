@@ -1,28 +1,28 @@
 (function(){
 	var app = angular.module("main", ['ngRoute', 'htmlcustom', 'configurator', 'siteviews']);
 
-	app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
-		$locationProvider.html5Mode({
-			enabled: true,
-    		requireBase: false
-		});
+	// app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
+	// 	$locationProvider.html5Mode({
+	// 		enabled: true,
+ //    		requireBase: false
+	// 	});
 
-		$routeProvider.when('/', {
-			templateUrl: 'shadow/pages/home.html',
-			controller: 'homeCtrl'
-		}).when('/about', {
-			templateUrl: 'shadow/pages/about.html',
-			controller: 'aboutCtrl'
-		}).when('/how-it-works', {
-			templateUrl: 'shadow/pages/faq.html'
-		}).when('/login', {
-			templateUrl: 'shadow/pages/sign-in.html'
-		}).when('/search', {
-			templateUrl: 'shadow/pages/search.html'
-		}).otherwise({
-			templateUrl: 'shadow/pages/404.html'
-		});
-	}]);
+	// 	$routeProvider.when('/', {
+	// 		templateUrl: 'shadow/pages/home.html',
+	// 		controller: 'homeCtrl'
+	// 	}).when('/about', {
+	// 		templateUrl: 'shadow/pages/about.html',
+	// 		controller: 'aboutCtrl'
+	// 	}).when('/how-it-works', {
+	// 		templateUrl: 'shadow/pages/faq.html'
+	// 	}).when('/login', {
+	// 		templateUrl: 'shadow/pages/sign-in.html'
+	// 	}).when('/search', {
+	// 		templateUrl: 'shadow/pages/search.html'
+	// 	}).otherwise({
+	// 		templateUrl: 'shadow/pages/404.html'
+	// 	});
+	// }]);
 
 	app.factory('activepage', ['$location', 'constants', function($location, constants){
 		return{

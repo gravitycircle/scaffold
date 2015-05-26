@@ -2,7 +2,7 @@
 include_once('config.php');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="main">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
