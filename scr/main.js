@@ -50,7 +50,7 @@
 				});
 			},
 			controller: function($scope, $element, $attrs){
-				features.run();
+				//features.run();
 			}
 		};
 	}]);

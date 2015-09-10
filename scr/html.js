@@ -1,6 +1,14 @@
 (function() {
 	var mod = angular.module("htmlcustom", ["configurator"]);
 
+	mod.factory('modal', [function(){
+		return{
+			open: function(html) {
+
+			}
+		};
+	}]);
+
 	mod.factory('clipboard', ['$rootScope', function($rootScope){
 		return {
 			set: function(what, value) {
@@ -18,7 +26,7 @@
 				}
 				return $rootScope['clipboard'][what];
 			}
-		}
+		};
 	}]);
 
 	mod.factory('lightbox', [function(){
@@ -67,39 +75,39 @@
 									'opacity' : 0
 								}, 400, function(){
 									$('.shader').remove();
-								})
+								});
 							}, 200);
 						});
 					});
 				}, 200);
 			}
-		}
+		};
 	}]);
 
 	mod.factory('preload', ['$q', function($q) {
-	  return function(url) {
-	    var deffered = $q.defer(),
-	    image = new Image();
+		return function(url) {
+			var deffered = $q.defer(),
+			image = new Image();
 
-	    image.src = url;
+			image.src = url;
 
-	    if (image.complete) {
-	  
-	      deffered.resolve();
-	  
-	    } else {
-	  
-	      image.addEventListener('load', function() {
-	        deffered.resolve();
-	      });
-	  
-	      image.addEventListener('error', function() {
-	        deffered.reject();
-	      });
-	    }
+			if (image.complete)
+			{
+				deffered.resolve();
+			}
+			else
+			{
+				image.addEventListener('load', function() {
+					deffered.resolve();
+				});
 
-	    return deffered.promise;
-	  }
+				image.addEventListener('error', function() {
+					deffered.reject();
+				});
+			}
+
+			return deffered.promise;
+		};
 	}]);
 	
 	mod.factory('scrollbar', [function(){
@@ -129,7 +137,7 @@
 
 				return (w1 - w2);
 			}
-		}
+		};
 	}]);
 
 	mod.factory('detectDPI', ['$window', function($window){
@@ -274,10 +282,10 @@
 			replace: true,
 			link: function postLink(scope, element, attrs) {
 				element.bind('error', function(){
-					attrs.$set('src', attrs.img);		
+					attrs.$set('src', attrs.img);
 				});
 			}
-		}
+		};
 	}]);
 
 	mod.directive('smartScale', ['windowsize', 'imgscaler', function(windowsize, imgscaler){
@@ -306,7 +314,7 @@
 					scope.$apply();
 				});
 			}
-		}
+		};
 	}]);
 
 	mod.directive('cssCrop', ['imgscaler', 'windowsize', function(imgscaler, windowsize){
@@ -391,6 +399,6 @@
 					scope.$apply();
 				});
 			}
-		}
+		};
 	}]);
 })();
