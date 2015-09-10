@@ -1,20 +1,26 @@
-$accent: #ff0000;
-$gray: #999999;
+$black: #3e4643;
+$background: #f8f1e9;
 
 $heading: 'Garamond', sans-serif;
 $body: 'Arial', serif;
 
 $phones: "only screen and (max-width : 767px)";
 $tablets: "only screen and (min-width : 768px)";
-$standard: "only screen and (min-width : 992px)";
+$standard: "only screen and (min-width : 1025px)";
 $high: "only screen and (min-width : 1200px)";
 $quad: "only screen and (min-width : 2000px)";
 
 $rphones: "only screen and (max-width : 767px)";
-$rtablets: "only screen and (max-width : 991px)";
+$rtablets: "only screen and (max-width : 1024px)";
 $rstandard: "only screen and (max-width : 1199px)";
 $rhigh: "only screen and (max-width : 1999px)";
 $rquad: "only screen and (min-width : 2000px)";
+
+$trajan: 'Trajan', 'trajan-pro-3', serif;
+$sans: 'DIN', 'DIN-Regular', 'gesta', sans-serif;
+$jenson: 'Adobe Jenson', 'adobe-jenson-pro', serif;
+
+$submitcolor: #b44c2d;
 
 @mixin box-sizing($what)
 {
@@ -28,5 +34,33 @@ $rquad: "only screen and (min-width : 2000px)";
 		-moz-box-sizing: $what;
 		-o-box-sizing: $what;
 		box-sizing: $what;
+	}
+}
+
+/*--MOBILE Zoom Factors*/
+
+@media (min-width: 1px) {
+	html{
+		font-size: 62.5%;
+	}
+}
+
+/*--DESKTOP Zoom Factors*/
+
+@media (min-width: 1025px) {
+	html{
+		font-size: 50%;
+	}
+}
+
+@media (min-width: 1900px) {
+	html{
+		font-size: 50%;
+	}
+}
+
+@media (min-width: 2400px) {
+	html{
+		font-size: 70%;
 	}
 }

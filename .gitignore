@@ -1,0 +1,10 @@
+.DS_Store
+.DS_Store? 
+.Spotlight-V100 
+.Trashes
+*.touch
+*.txt
+.sass-cache/
+ehthumbs.db 
+Thumbs.db
+sftp-config.json

@@ -1,4 +1,4 @@
 <?php
-define('CANONICAL', 'http://localhost/scaffold/');
-define('BASE', 'http://localhost/scaffold/');
+define('CANONICAL', 'http://localhost/scaffolding/');
+define('BASE', 'http://localhost/scaffolding/');
 ?>

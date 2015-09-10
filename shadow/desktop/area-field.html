@@ -1,0 +1,11 @@
+<div class="form-set">
+	<div class="form-sizer">
+		<div class="label-sizer area">
+			<label for="{{id}}">{{label}}{{required}}</label>
+		</div>
+		<div class="input-sizer" ng-click="invoke();">
+			<div class="rule-container"><div class="h-rule" ng-repeat="x in rules"></div></div>
+			<textarea id="{{id}}" class="{{classnames}}" name="{{id}}" style="height: {{height}}rem" data-filter="none"></textarea>
+		</div>
+	</div>
+</div>
