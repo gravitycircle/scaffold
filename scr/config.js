@@ -372,6 +372,62 @@ cfg.factory('email', ['fetch', 'constants', function(fetch, constants){
 	};
 }]);
 
+cfg.factory('lasso', ['$sce', 'constants', function($sce, constants){
+	return {
+		submission : $sce.trustAsResourceUrl('http://www.mylasso.com/registrant_signup.php'),
+		object : {},
+		guid : '',
+		track : function(url){
+			var LassoCRM = LassoCRM || {};
+			this.object = LassoCRM;
+			(function(ns){
+				ns.tracker = new LassoAnalytics('LAS-921473-16');
+			})(LassoCRM);
+			
+			try{
+				LassoCRM.tracker.setTrackingDomain(constants.protocol+'www.mylasso.com');
+				LassoCRM.tracker.pageTitle = 'Henry';
+				
+				if(typeof url == 'undefined')
+				{
+					LassoCRM.tracker.pageUrl = $location.url();
+				}
+				else
+				{
+					LassoCRM.tracker.pageUrl = url;
+				}
+
+				LassoCRM.tracker.imgSrc = LassoCRM.tracker.trackingDomain + '/' + LassoCRM.tracker.namespace + '.gif';
+
+				if($('#'+LassoCRM.tracker.divId).length)
+				{
+					$('#'+LassoCRM.tracker.divId).remove();
+				}
+
+				$('body').append('<div id="' + LassoCRM.tracker.divId + '" style="display:none;"></div>');
+				LassoCRM.tracker.track();
+				
+				//return true;
+			}
+			catch(error){
+				//return false;
+			}
+
+		},
+		setGuid : function(fetch){
+			if(this.guid === '')
+			{
+				this.guid = this.object.tracker.readCookie("ut");
+			}
+
+			if(typeof fetch != 'undefined')
+			{
+				return this.guid;
+			}
+		}
+	};
+}]);
+
 cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', function($sce, fetch, preloader, constants){
 	return{
 		loading: 0,

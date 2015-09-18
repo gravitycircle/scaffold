@@ -1,10 +1,30 @@
 (function() {
 	var mod = angular.module("htmlcustom", ["configurator"]);
 
-	mod.factory('modal', [function(){
-		return{
-			open: function(html) {
+	mod.service('browser', ['$window', function($window) {
+		return {
+			detect: function(){
+				var userAgent = $window.navigator.userAgent;
 
+				var browsers = {chrome: /chrome/i, safari: /safari/i, firefox: /firefox/i, ie: /trident/i, ie2: /msie/i};
+
+				for(var key in browsers) {
+					if (browsers[key].test(userAgent)) {
+						if(key == 'ie' || key == 'ie2')
+						{
+							return 'internet explorer';
+						}
+						else
+						{
+							return key;
+						}
+					}
+				}
+
+				return userAgent;
+			},
+			breakpoint : function(width) {
+				
 			}
 		};
 	}]);
@@ -270,20 +290,32 @@
 		};
 	}]);
 
-	mod.directive('vector', [function(){
+	mod.directive('vector', ['browser', 'features', function(browser, features){
 		return {
 			restrict: 'E',
 			templateUrl: 'shadow/modified-elements/svg.html',
 			scope: {
 				svg: '@',
-				src: '@',
+				output: '@',
 				imgsrc: '@'
 			},
 			replace: true,
-			link: function postLink(scope, element, attrs) {
-				element.bind('error', function(){
-					attrs.$set('src', attrs.img);
-				});
+			controller: function($scope, $element, $attrs){
+				if(browser.detect() == 'internet explorer')
+				{
+					$scope.output = $attrs.ie;
+				}
+				else
+				{
+					if(features.detect('svg'))
+					{
+						$scope.output = $attrs.svg;
+					}
+					else
+					{
+						$scope.output = $attrs.img;
+					}
+				}
 			}
 		};
 	}]);
