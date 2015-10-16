@@ -1,39 +1,170 @@
-$black: #3e4643;
-$background: #f8f1e9;
-
-$heading: 'Garamond', sans-serif;
-$body: 'Arial', serif;
-
-$phones: "only screen and (max-width : 767px)";
+$xs "only screen and (max-width : 399px)";
+$phones: "only screen and (min-width : 400px)";
 $tablets: "only screen and (min-width : 768px)";
 $standard: "only screen and (min-width : 1025px)";
 $high: "only screen and (min-width : 1200px)";
 $quad: "only screen and (min-width : 2000px)";
 
+$rxs "only screen and (max-width : 399px)";
 $rphones: "only screen and (max-width : 767px)";
 $rtablets: "only screen and (max-width : 1024px)";
 $rstandard: "only screen and (max-width : 1199px)";
 $rhigh: "only screen and (max-width : 1999px)";
 $rquad: "only screen and (min-width : 2000px)";
 
-$trajan: 'Trajan', 'trajan-pro-3', serif;
-$sans: 'DIN', 'DIN-Regular', 'gesta', sans-serif;
-$jenson: 'Adobe Jenson', 'adobe-jenson-pro', serif;
 
-$submitcolor: #b44c2d;
-
-@mixin box-sizing($what)
+@mixin prefix($property, $value)
 {
-	@if $what != 'content-box' {
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		-o-box-sizing: border-box;
-		box-sizing: border-box;
-	} @else {
-		-webkit-box-sizing: $what;
-		-moz-box-sizing: $what;
-		-o-box-sizing: $what;
-		box-sizing: $what;
+	-webkit-#{$property}: $value;
+	-moz-#{$property}: $value;
+	-o-#{$property}: $value;
+	-ms-#{$property}: $value;
+	#{$property}: $value;
+}
+
+@mixin responsive($property, $small: false, $sphones: false, $stablets: false, $sstandard: false, $shigh: false, $squad: false, $prefix: false){
+	@if $small != false {
+		@media #{$xs} {
+			@if $prefix {
+				-webkit-#{$property}: $small;
+				-moz-#{$property}: $small;
+				-o-#{$property}: $small;
+				-ms-#{$property}: $small;
+			}
+			#{$property}: $small;
+		}
+	}
+
+	@if $sphones != false {
+		@media only screen and (min-width : 400px) and (max-width: 767px) {
+			@if $prefix {
+				-webkit-#{$property}: $sphones;
+				-moz-#{$property}: $sphones;
+				-o-#{$property}: $sphones;
+				-ms-#{$property}: $sphones;
+			}
+			#{$property}: $sphones;
+		}
+	}
+
+	@if $stablets != false{
+		@media only screen and (min-width : 768px) and (max-width: 1024px) {
+			@if $prefix {
+				-webkit-#{$property}: $stablets;
+				-moz-#{$property}: $stablets;
+				-o-#{$property}: $stablets;
+				-ms-#{$property}: $stablets;
+			}
+			#{$property}: $stablets;
+		}
+	}
+
+	@if $sstandard != false{
+		@media only screen and (min-width : 1025px) and (max-width: 1199px) {
+			@if $prefix {
+				-webkit-#{$property}: $sstandard;
+				-moz-#{$property}: $sstandard;
+				-o-#{$property}: $sstandard;
+				-ms-#{$property}: $sstandard;
+			}
+			#{$property}: $sstandard;
+		}
+	}
+
+	@if $shigh != false{
+		@media only screen and (min-width : 1200px) and (max-width: 1999px) {
+			@if $prefix {
+				-webkit-#{$property}: $shigh;
+				-moz-#{$property}: $shigh;
+				-o-#{$property}: $shigh;
+				-ms-#{$property}: $shigh;
+			}
+			#{$property}: $shigh;
+		}
+	}
+
+	@if $squad != false{
+		@media only screen and (min-width: 2000px) {
+			@if $prefix {
+				-webkit-#{$property}: $squad;
+				-moz-#{$property}: $squad;
+				-o-#{$property}: $squad;
+				-ms-#{$property}: $squad;
+			}
+			#{$property}: $squad;
+		}
+	}
+}
+
+@mixin responsive($property, $small: false, $sphones: false, $stablets: false, $sstandard: false, $shigh: false, $squad: false, $prefix: false){
+	@if $small != false {
+		@if $prefix {
+			-webkit-#{$property}: $small;
+			-moz-#{$property}: $small;
+			-o-#{$property}: $small;
+			-ms-#{$property}: $small;
+		}
+		#{$property}: $small;
+	}
+
+	@if $sphones != false && $small != false{
+		@media #{$phones} {
+			@if $prefix {
+				-webkit-#{$property}: $sphones;
+				-moz-#{$property}: $sphones;
+				-o-#{$property}: $sphones;
+				-ms-#{$property}: $sphones;
+			}
+			#{$property}: $sphones;
+		}
+	}
+	
+	@if $stablets != false && $small != false{
+		@media #{$tablets} {
+			@if $prefix {
+				-webkit-#{$property}: $stablets;
+				-moz-#{$property}: $stablets;
+				-o-#{$property}: $stablets;
+				-ms-#{$property}: $stablets;
+			}
+			#{$property}: $stablets;
+		}
+	}
+
+	@if $sstandard != false && $small != false{
+		@media #{$standard} {
+			@if $prefix {
+				-webkit-#{$property}: $sstandard;
+				-moz-#{$property}: $sstandard;
+				-o-#{$property}: $sstandard;
+				-ms-#{$property}: $sstandard;
+			}
+			#{$property}: $sstandard;
+		}
+	}
+
+	@if $shigh != false && $small != false{
+		@media #{$high} {
+			@if $prefix {
+				-webkit-#{$property}: $shigh;
+				-o-#{$property}: $shigh;
+				-moz-#{$property}: $shigh;
+				-ms-#{$property}: $shigh;
+			}
+			#{$property}: $shigh;
+		}
+	}
+
+	@if $squad != false && $small != false{
+		@media #{$high} {
+			@if $prefix {
+				-webkit-#{$property}: $squad;
+				-o-#{$property}: $squad;
+				-moz-#{$property}: $squad;
+				-ms-#{$property}: $squad;
+			}
+			#{$property}: $squad;
+		}
 	}
 }
 
