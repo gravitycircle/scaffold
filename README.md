@@ -1,4 +1,6 @@
-# ![---](https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png) Angular: Site Scaffolding & Bootstrap v0.2
+# ![---](https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png)
+
+Angular: Site Scaffolding & Bootstrap v0.2
 
 This is the starting point of every new site you'll create using a combination of the following frameworks:
 
