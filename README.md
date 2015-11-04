@@ -1,4 +1,4 @@
-<div style="text-align:center"><img src="https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png" alt="Angular Scaffold" /></div>
+<center><img src="https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png" alt="Angular Scaffold" /></center>
 #Angular: Site Scaffolding & Bootstrap v0.2
 
 This is the starting point of every new site you'll create using a combination of the following frameworks:
