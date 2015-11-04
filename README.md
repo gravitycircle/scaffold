@@ -1,4 +1,4 @@
-![---](https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png)
+<img src="https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png" style="display: block; margin: auto;"/>
 
 #Angular: Site Scaffolding & Bootstrap v0.2
 
