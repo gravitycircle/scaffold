@@ -1,5 +1,4 @@
--> ![---](https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png) <-
-
+<div style="text-align:center"><img src="https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png" alt="Angular Scaffold" /></div>
 #Angular: Site Scaffolding & Bootstrap v0.2
 
 This is the starting point of every new site you'll create using a combination of the following frameworks:
@@ -25,3 +24,7 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
 This is only the introduction page. The installation file for this scaffolding setup has not yet been configured since the framework stack is still in active development. To start working with the stack anyway, please rename this file into something different and rename the _index.php file to index.php.
 
 #### ~ Happy Coding!
+
+img{
+	text-align: center;
+}
