@@ -1,35 +1,12 @@
 (function(){
-	var app = angular.module("main", ['htmlcustom', 'configurator', 'siteviews']);
+	var app = angular.module("main", ['htmlcustom', 'configurator', 'siteviews', 'modes']);
 
 	app.config(['$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode(true);
 	}]);
 
-	app.factory('activepage', ['$location', 'constants', function($location, constants){
-		return{
-			url: function(){
-				return $location.path();
-			},
-			isactive: function(location, currentclasses, activeclass){
-				if(typeof location !== undefined)
-				{
-					if(location == constants.canonical)
-					{
-						location = '';
-					}
-
-					if('/'+location == $location.path())
-					{
-						return currentclasses+' '+activeclass;
-					}
-					return currentclasses;
-				}
-				else
-				{
-					return false;
-				}
-			}
-		};
+	app.factory('navigator', ['$location', function($location){
+		
 	}]);
 
 	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'email', 'modal', function($compile, $window, $timeout, $location, features, sources, constants, email, modal){

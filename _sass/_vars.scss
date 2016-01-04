@@ -1,11 +1,11 @@
-$xs "only screen and (max-width : 399px)";
+$xs: "only screen and (max-width : 399px)";
 $phones: "only screen and (min-width : 400px)";
 $tablets: "only screen and (min-width : 768px)";
 $standard: "only screen and (min-width : 1025px)";
 $high: "only screen and (min-width : 1200px)";
 $quad: "only screen and (min-width : 2000px)";
 
-$rxs "only screen and (max-width : 399px)";
+$rxs: "only screen and (max-width : 399px)";
 $rphones: "only screen and (max-width : 767px)";
 $rtablets: "only screen and (max-width : 1024px)";
 $rstandard: "only screen and (max-width : 1199px)";
@@ -22,10 +22,11 @@ $rquad: "only screen and (min-width : 2000px)";
 	#{$property}: $value;
 }
 
-@mixin responsive($property, $small: false, $sphones: false, $stablets: false, $sstandard: false, $shigh: false, $squad: false, $prefix: false){
+@mixin upScale($property, $small: false, $sphones: false, $stablets: false, $sstandard: false, $shigh: false, $squad: false, $prefix: false){
+	//going up
 	@if $small != false {
 		@media #{$xs} {
-			@if $prefix {
+			@if $prefix != false{
 				-webkit-#{$property}: $small;
 				-moz-#{$property}: $small;
 				-o-#{$property}: $small;
@@ -36,80 +37,8 @@ $rquad: "only screen and (min-width : 2000px)";
 	}
 
 	@if $sphones != false {
-		@media only screen and (min-width : 400px) and (max-width: 767px) {
-			@if $prefix {
-				-webkit-#{$property}: $sphones;
-				-moz-#{$property}: $sphones;
-				-o-#{$property}: $sphones;
-				-ms-#{$property}: $sphones;
-			}
-			#{$property}: $sphones;
-		}
-	}
-
-	@if $stablets != false{
-		@media only screen and (min-width : 768px) and (max-width: 1024px) {
-			@if $prefix {
-				-webkit-#{$property}: $stablets;
-				-moz-#{$property}: $stablets;
-				-o-#{$property}: $stablets;
-				-ms-#{$property}: $stablets;
-			}
-			#{$property}: $stablets;
-		}
-	}
-
-	@if $sstandard != false{
-		@media only screen and (min-width : 1025px) and (max-width: 1199px) {
-			@if $prefix {
-				-webkit-#{$property}: $sstandard;
-				-moz-#{$property}: $sstandard;
-				-o-#{$property}: $sstandard;
-				-ms-#{$property}: $sstandard;
-			}
-			#{$property}: $sstandard;
-		}
-	}
-
-	@if $shigh != false{
-		@media only screen and (min-width : 1200px) and (max-width: 1999px) {
-			@if $prefix {
-				-webkit-#{$property}: $shigh;
-				-moz-#{$property}: $shigh;
-				-o-#{$property}: $shigh;
-				-ms-#{$property}: $shigh;
-			}
-			#{$property}: $shigh;
-		}
-	}
-
-	@if $squad != false{
-		@media only screen and (min-width: 2000px) {
-			@if $prefix {
-				-webkit-#{$property}: $squad;
-				-moz-#{$property}: $squad;
-				-o-#{$property}: $squad;
-				-ms-#{$property}: $squad;
-			}
-			#{$property}: $squad;
-		}
-	}
-}
-
-@mixin responsive($property, $small: false, $sphones: false, $stablets: false, $sstandard: false, $shigh: false, $squad: false, $prefix: false){
-	@if $small != false {
-		@if $prefix {
-			-webkit-#{$property}: $small;
-			-moz-#{$property}: $small;
-			-o-#{$property}: $small;
-			-ms-#{$property}: $small;
-		}
-		#{$property}: $small;
-	}
-
-	@if $sphones != false && $small != false{
 		@media #{$phones} {
-			@if $prefix {
+			@if $prefix != false{
 				-webkit-#{$property}: $sphones;
 				-moz-#{$property}: $sphones;
 				-o-#{$property}: $sphones;
@@ -118,10 +47,10 @@ $rquad: "only screen and (min-width : 2000px)";
 			#{$property}: $sphones;
 		}
 	}
-	
-	@if $stablets != false && $small != false{
+
+	@if $stablets != false {
 		@media #{$tablets} {
-			@if $prefix {
+			@if $prefix != false{
 				-webkit-#{$property}: $stablets;
 				-moz-#{$property}: $stablets;
 				-o-#{$property}: $stablets;
@@ -131,9 +60,9 @@ $rquad: "only screen and (min-width : 2000px)";
 		}
 	}
 
-	@if $sstandard != false && $small != false{
+	@if $sstandard != false {
 		@media #{$standard} {
-			@if $prefix {
+			@if $prefix != false{
 				-webkit-#{$property}: $sstandard;
 				-moz-#{$property}: $sstandard;
 				-o-#{$property}: $sstandard;
@@ -143,24 +72,24 @@ $rquad: "only screen and (min-width : 2000px)";
 		}
 	}
 
-	@if $shigh != false && $small != false{
+	@if $shigh != false {
 		@media #{$high} {
-			@if $prefix {
+			@if $prefix != false{
 				-webkit-#{$property}: $shigh;
-				-o-#{$property}: $shigh;
 				-moz-#{$property}: $shigh;
+				-o-#{$property}: $shigh;
 				-ms-#{$property}: $shigh;
 			}
 			#{$property}: $shigh;
 		}
 	}
 
-	@if $squad != false && $small != false{
-		@media #{$high} {
-			@if $prefix {
+	@if $squad != false {
+		@media #{$quad} {
+			@if $prefix != false{
 				-webkit-#{$property}: $squad;
-				-o-#{$property}: $squad;
 				-moz-#{$property}: $squad;
+				-o-#{$property}: $squad;
 				-ms-#{$property}: $squad;
 			}
 			#{$property}: $squad;
@@ -168,30 +97,82 @@ $rquad: "only screen and (min-width : 2000px)";
 	}
 }
 
-/*--MOBILE Zoom Factors*/
+@mixin downScale($property, $squad: false, $shigh: false, $sstandard: false, $stablets: false, $sphones: false, $small: false, $prefix: false){
+	//going down
+	@if $squad != false {
+		@media #{$rquad} {
+			@if $prefix != false{
+				-webkit-#{$property}: $squad;
+				-moz-#{$property}: $squad;
+				-o-#{$property}: $squad;
+				-ms-#{$property}: $squad;
+			}
+			#{$property}: $squad;
+		}
+	}
 
-@media (min-width: 1px) {
-	html{
-		font-size: 62.5%;
+
+	@if $shigh != false {
+		@media #{$rhigh} {
+			@if $prefix != false{
+				-webkit-#{$property}: $shigh;
+				-moz-#{$property}: $shigh;
+				-o-#{$property}: $shigh;
+				-ms-#{$property}: $shigh;
+			}
+			#{$property}: $shigh;
+		}
+	}
+
+	@if $sstandard != false {
+		@media #{$rstandard} {
+			@if $prefix != false{
+				-webkit-#{$property}: $sstandard;
+				-moz-#{$property}: $sstandard;
+				-o-#{$property}: $sstandard;
+				-ms-#{$property}: $sstandard;
+			}
+			#{$property}: $sstandard;
+		}
+	}
+
+	@if $stablets != false {
+		@media #{$rtablets} {
+			@if $prefix != false{
+				-webkit-#{$property}: $stablets;
+				-moz-#{$property}: $stablets;
+				-o-#{$property}: $stablets;
+				-ms-#{$property}: $stablets;
+			}
+			#{$property}: $stablets;
+		}
+	}
+
+	@if $sphones != false {
+		@media #{$rphones} {
+			@if $prefix != false{
+				-webkit-#{$property}: $sphones;
+				-moz-#{$property}: $sphones;
+				-o-#{$property}: $sphones;
+				-ms-#{$property}: $sphones;
+			}
+			#{$property}: $sphones;
+		}
+	}
+
+	@if $small != false {
+		@media #{$rxs} {
+			@if $prefix != false{
+				-webkit-#{$property}: $small;
+				-moz-#{$property}: $small;
+				-o-#{$property}: $small;
+				-ms-#{$property}: $small;
+			}
+			#{$property}: $small;
+		}
 	}
 }
 
-/*--DESKTOP Zoom Factors*/
-
-@media (min-width: 1025px) {
-	html{
-		font-size: 50%;
-	}
-}
-
-@media (min-width: 1900px) {
-	html{
-		font-size: 50%;
-	}
-}
-
-@media (min-width: 2400px) {
-	html{
-		font-size: 70%;
-	}
+html{
+	@include upScale(font-size, 62.5%, 62.5%, 62.5%, 50%, 62.5%, 70%);
 }

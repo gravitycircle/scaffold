@@ -1,5 +1,4 @@
-<div style="text-align: center;"><img src="https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png" alt="Angular Scaffold" /></div>
-#Angular: Site Scaffolding & Bootstrap v0.2
+# ![---](https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png) Angular: Site Scaffolding & Bootstrap v0.2
 
 This is the starting point of every new site you'll create using a combination of the following frameworks:
 
@@ -16,10 +15,12 @@ This is the starting point of every new site you'll create using a combination o
 
 Please make sure your config.php is set up to the right Base address by changing the BASE and CANONICAL constants. You'll know that you've set it correctly if you see a red logo on the top of this page after a refresh. Currently the constants are set to:
 
-*   **BASE:** http://localhost/scaffold/
-*   **CANONICAL:** http://localhost/scaffold/
+*   **BASE:**
+*   **CANONICAL:**
 
 Also note that BASE refers to the base URL of the site itself. CANONICAL refers to the base URL of any API endpoint you will be using that runs alongside this application.
+
+SEO has been set up. Under the __seo_ folder, the _index.php_ file has an _seo function. Utilize that for your SEO needs. _$page_ would be the last part of the url to track. There is no deep linking available yet.
 
 This is only the introduction page. The installation file for this scaffolding setup has not yet been configured since the framework stack is still in active development. To start working with the stack anyway, please rename this file into something different and rename the _index.php file to index.php.
 
