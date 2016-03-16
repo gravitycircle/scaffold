@@ -17,7 +17,7 @@ include_once('config.php');
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12">
-					<h1 style="border-bottom: 1px solid #ccc; padding-bottom: 20px"><img src="img/favico.png" alt="---"> Angular: Site Scaffolding & Bootstrap v0.3</h1>
+					<h1 style="border-bottom: 1px solid #ccc; padding-bottom: 20px"><img src="img/favico.png" alt="---"> Angular: Site Scaffolding & Bootstrap v0.4</h1>
 					<p>This is the starting point of every new site you'll create using a combination of the following frameworks:</p>
 					<ul>
 						<li>
