@@ -1,0 +1,38 @@
+.container{
+	@include breakpoint(only, 1) {
+		width: 100%;
+	}
+
+	@include breakpoint(only, 2) {
+		width: 100%;
+	}
+
+	@include breakpoint(only, 3) {
+		width: 750px;
+	}
+
+	@include breakpoint(only, 4) {
+		width: 993px;
+	}
+
+	@include breakpoint(only, 5) {
+		width: 1164px;
+	}
+
+	@include breakpoint(min, 6) {
+		width: 1552px;
+	}
+}
+
+#preload{
+	overflow: hidden;
+	opacity: 0;
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
+	height: 10px;
+	@include upScale(width, 10px, 20px, 30px, 40px, 50px, 60px, 70px);
+	@include orientation(portrait) {
+		height: 20px;
+	}
+}

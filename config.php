@@ -16,5 +16,5 @@ define('BROWSER', $browser);
 define('SSL', (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https://' : 'http://'));
 define('CANONICAL', SSL.str_replace($docroot, $servername, dirname(__FILE__)).'/');
 define('BASE', SSL.str_replace($docroot, $servername, dirname(__FILE__)).'/');
-define('DOMAIN', str_replace('http://', '', BASE));
+define('DOMAIN', str_replace(SSL, '', BASE));
 ?>

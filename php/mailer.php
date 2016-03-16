@@ -1,35 +1,22 @@
 <?php
 if(isset($_GET['verify']) && $_GET['verify'] != '')
 {
-	$emails = explode('|', $_GET['verify']);
+	$data = json_decode(file_get_contents("php://input"), true);
 
-	if(sizeof($emails) > 1)
-	{
-		$verify = array();
-		foreach($emails as $email)
-		{
-			if((!filter_var($email, FILTER_VALIDATE_EMAIL) === false))
-			{
-				$verify['verified'][sizeof($verify['verified'])] = $email;
-			}
-			else
-			{
-				$verify['rejected'][sizeof($verify['rejected'])] = $email;
-			}
+	$verify = array(
+		'pass' => array(),
+		'fail' => array()
+	);
+
+	foreach($data as $d){
+		if(filter_var($d['value'], FILTER_VALIDATE_EMAIL)){
+			array_push($verify['pass'], $d['name']);
+		}
+		else{
+			array_push($verify['fail'], $d['name']);
 		}
 	}
-	else
-	{
-		$verify = array();
-		if((!filter_var($_GET['verify'], FILTER_VALIDATE_EMAIL) === false))
-		{
-			$verify['verified'] = 1;
-		}
-		else
-		{
-			$verify['verified'] = 0;
-		}
-	}
+
 	header('Cache-Control: no-cache, must-revalidate');
 	header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
 	header('Content-type: application/json');
@@ -47,13 +34,16 @@ if(isset($_GET['mail']) && isset($_POST))
 	    header('Cache-Control: no-cache, must-revalidate');
 		header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
 		header('Content-type: application/json');
-		echo json_encode(array('sent'));
+		echo json_encode(array(
+		  	'status' => 'Successful',
+		  	'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates about The Capstan.'
+		  ));
 	}
 	else
 	{
-		$configurator['username'] = 'no.reply@thestanton.ca';
-		$configurator['password'] = 'vCWr{RB?@0EI';
-		$configurator['host'] = 'mail.thestanton.ca';
+		$configurator['username'] = 'no.reply@capstanliving.com';
+		$configurator['password'] = '1qaz2wsx';
+		$configurator['host'] = 'mail.capstanliving.com';
 		$configurator['port'] = 587;
 
 
@@ -89,19 +79,28 @@ if(isset($_GET['mail']) && isset($_POST))
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
 			header('Content-type: application/json');
-		  echo json_encode(array('sent'));
+		  echo json_encode(array(
+		  	'status' => 'Successful',
+		  	'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates about The Capstan.'
+		  ));
 		} catch (phpmailerException $e) {
 		  //echo $e->errorMessage(); //Pretty error messages from PHPMailer
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
 			header('Content-type: application/json');
-		  echo json_encode(array('error'));
+		  echo json_encode(array(
+		  	'status' => 'Failed',
+		  	'message' => 'There was a technical issue in the registration process and we cannot continue with your registration. We are at work right now on fixing this issue. Please check back at a later time. Thank you for your interest.'
+		  ));
 		} catch (Exception $e) {
 		  //echo $e->getMessage(); //Boring error messages from anything else!
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
 			header('Content-type: application/json');
-		  echo json_encode(array('error'));
+		  echo json_encode(array(
+		  	'status' => 'Failed',
+		  	'message' => 'There was a technical issue in the registration process and we cannot continue with your registration. We are at work right now on fixing this issue. Please check back at a later time. Thank you for your interest.'
+		  ));
 		}
 	}
 }

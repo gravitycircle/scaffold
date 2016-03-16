@@ -7,7 +7,8 @@ var cfg = angular.module("configurator", []);
 
 cfg.factory('constants', function(){
 	return {
-		canonical: '<?=CANONICAL?>'
+		canonical: '<?=CANONICAL?>',
+		base: '<?=BASE?>'
 	};
 });
 

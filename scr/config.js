@@ -1,3 +1,4 @@
+/*jslint plusplus: true */
 cfg.factory('fetch', ['$http','$sce',function($http, $sce){
 	return {
 		url: function(urlresource)
@@ -15,40 +16,62 @@ cfg.factory('fetch', ['$http','$sce',function($http, $sce){
 	};
 }]);
 
-cfg.factory('preloader', ['$http', '$sce', function($http, $sce){
+cfg.factory('preloader', ['$http', '$sce', 'constants', function($http, $sce, constants){
 	return {
-		run: function(imgarray, act){
+		run: function(imgarray, act, whilest){
 			var count = 0;
 			var done = 0;
 			var limit = imgarray.length;
-
-			var lsuccess = function(data) {
+			var i;
+			var lsuccess = function() {
 				count++;
 				done++;
 			};
 
-			var lerror = function(data) {
+			var lerror = function() {
 				done++;
 			};
 
+			var imgs = '';
 			for(i = 0; i<limit; i++)
 			{
-				$http.get($sce.trustAsResourceUrl(imgarray[i])).success(lsuccess).error(lerror);
+				if(['bmp', 'png', 'tiff', 'jpg', 'jpeg', 'gif', 'svg'],indexOf(imgarray[i].split('.').pop()) >= 0){
+					imgs = imgs+'<img src="'+path+'" alt="preloading-'+i+'" />';
+				}
+				else{
+					$http.get($sce.trustAsResourceUrl(imgarray[i])).success(lsuccess).error(lerror);
+				}
 			}
+
+			$('#preloader').append(imgs);
+
+			$('#preloader img').on('load', function(){
+				lsuccess();
+			});
+
+			$('#preloader img').on('error', function(){
+				//if any gets through
+				lerror();
+			});
 
 			var success = false;
 
 			var x = setInterval(function(){
+				if(typeof whilest == 'function'){
+					whilest([count, limit]);
+				}
+				
 				if(done == limit)
 				{
 					clearInterval(x);
 					if(count == done)
 					{
 						success = true;
+						$('#preloader').empty();
 					}
 					act(success);
 				}
-			}, 300);
+			}, 50);
 		}
 	};
 }]);
@@ -58,20 +81,21 @@ cfg.factory('features', [function(){
 		run : function(){
 			this.feature['2D Transform'] = Modernizr.csstransforms;
 			this.feature['3D Transform'] = Modernizr.csstransforms3d;
-			this.feature['svg'] = Modernizr.svg;
-			this.feature['touch'] = Modernizr.touch;
+			this.feature.svg = Modernizr.svg;
+			this.feature.touch = Modernizr.touchevents;
+			this.feature.video = Modernizr.video;
 
-			if(Modernizr.mq('only all and (max-width: 1024px)') && Modernizr.touch)
+			if(Modernizr.mq('only all and (max-width: 1024px)') && Modernizr.touchevents)
 			{
-				this.feature['mobile'] = true;
+				this.feature.mobile = true;
 			}
 			else
 			{
-				this.feature['mobile'] = false;
+				this.feature.mobile = false;
 			}
 		},
 		detect : function(feature) {
-			var detection = ['2D Transform', '3D Transform', 'svg', 'touch', 'mobile'];
+			var detection = ['2D Transform', '3D Transform', 'svg', 'touch', 'mobile', 'video'];
 
 			if(detection.indexOf(feature) >= 0)
 			{
@@ -83,291 +107,6 @@ cfg.factory('features', [function(){
 			}
 		},
 		feature : {
-		}
-	};
-}]);
-
-cfg.factory('email', ['fetch', 'constants', function(fetch, constants){
-	return{
-		sendmail: function(object, yes, no) {
-			fetch.post(constants.canonical+'php/mailer.php?mail', object).then(function(response){
-				if(typeof yes == 'function')
-				{
-					yes(response.data);
-				}
-			}, function(response){
-				if(typeof no == 'function')
-				{
-					no(response);
-				}
-			});
-			
-		},
-		verify: function(object, structure, requiredkey, success, failure) {
-			//verify submission structure
-			if(structure.constructor !== Array)
-			{
-				return false;
-			}
-
-			var indices = [];
-
-			for(var key in object[0]){
-				indices.push(key);
-			}
-
-			if(indices.length != structure.length)
-			{
-				return false;
-			}
-
-			for(var i = 0; i < indices.length; i++)
-			{
-				if(structure.indexOf(indices[i]) < 0)
-				{
-					return false;
-				}
-			}
-
-			if(structure.indexOf(requiredkey) < 0)
-			{
-				return false;
-			}
-
-			//structure verified
-
-			//entry verification
-
-			var pass = [];
-			var fail = [];
-			var email = [];
-			for(i = 0; i<object.length; i++)
-			{
-				if(typeof object[i][requiredkey] != 'undefined' && !(!object[i][requiredkey]) && object[i][requiredkey] == 'yes')
-				{
-					if(object[i]['value'] !== '')
-					{
-						if(object[i]['filter'] == 'none')
-						{
-							pass[pass.length] = object[i]['key'];
-						}
-						else if(object[i]['filter'] == 'email')
-						{
-							email[email.length] = object[i];
-						}
-					}
-					else
-					{
-						fail[fail.length] = object[i]['key'];
-					}
-				}
-				else
-				{
-					pass[pass.length] = object[i]['key'];
-				}
-			}
-
-			//structure verification done. some pass some fail. starting email verification.
-
-			if(email.length < 1)
-			{
-				if(fail.length && typeof failure == 'function')
-				{
-					failure({
-						'empty' : fail,
-						'invalid' : []
-					});
-				}
-				else
-				{
-					if(typeof success == 'function')
-					{
-						success();
-					}
-				}
-				return true;
-			}
-
-			var batch = [];
-			var emailpass = [];
-			var emailfail = [];
-			for(i = 0; i<email.length; i++)
-			{
-				batch[batch.length] = email[i]['value'];
-			}
-
-			var passed = false;
-
-			fetch.secured(constants.canonical+'php/mailer.php?verify='+batch.join('|')).then(function(response){
-				if(response.data.verified == 1)
-				{
-					emailpass = batch;
-
-					if(fail.length === 0 && emailfail.length === 0)
-					{
-						passed = true;
-					}
-				}
-				else if (response.data.verified === 0)
-				{
-					for(i=0; i<object.length; i++)
-					{
-						if(object[i]['value'] == batch[0])
-						{
-							emailfail[emailfail.length] = object[i].key;
-						}
-					}
-					passed = false;
-				}
-				else
-				{
-					for(i = 0; i<batch.length; i++)
-					{
-						if(response.data.verified.indexOf(batch[i]) >= 0)
-						{
-							emailpass[emailpass.length] = batch[i];
-						}
-						else
-						{
-							for(g=0; g<object.length; g++)
-							{
-								if(object[g]['value'] == batch[i])
-								{
-									emailfail[emailfail.length] = object[g].key;
-								}
-							}
-						}
-					}
-
-					if(fail.length === 0 && emailfail.length === 0)
-					{
-						passed = true;
-					}
-				}
-
-				if(passed) {
-					if(typeof success == 'function'){
-						success();
-					}
-				}
-				else
-				{
-					if(typeof failure == 'function'){
-						failure({
-							'empty' : fail,
-							'invalid' : emailfail
-						});
-					}
-				}
-
-			}, function(response){
-				emailfail = batch;
-
-				//endpoint fail
-				if(typeof failed == 'function'){
-					failure({
-						'empty' : fail,
-						'invalid' : emailfail
-					});
-				}
-			});
-
-			return true;
-		},
-		compose: function(from, replyto, to, subject, body, cc, bcc) {
-			//parse
-			if(cc.constructor === Array)
-			{
-				cc = cc.join(',');
-			}
-
-			if(bcc.constructor === Array)
-			{
-				bcc = bcc.join(',');
-			}
-
-			var emaildetails = {
-				'from' : encodeURIComponent(from),
-				'replyTo' : encodeURIComponent(replyto),
-				'To' : encodeURIComponent(to),
-				'subject': encodeURIComponent(subject),
-				'body' : encodeURIComponent(body),
-				'cc': encodeURIComponent(cc),
-				'bcc': encodeURIComponent(bcc)
-			};
-
-			return emaildetails;
-		},
-		tabulate: function(object, keys, alias, prototype) {
-			//parse
-			if(keys.constructor === Array) {
-				var indices = [];
-
-				if(typeof prototype != 'object') {
-					prototype = object[0];
-				}
-
-				for(var key in prototype){
-					indices.push(key);
-				}
-
-				//verify structure (again)
-				var pass = true;
-				for(var i = 0; i<keys.length; i++)
-				{
-					if(indices.indexOf(keys[i]) < 0)
-					{
-						pass = false;
-					}
-				}
-
-				if(!pass){
-					return false;
-				}
-
-				var body = '';
-				var headfoot = '';
-				var k;
-				if(!(alias.constructor === Array && alias.length == keys.length))
-				{
-					alias = [];
-					for(k = 0; k < keys.length; k++)
-					{
-						alias[k] = keys[k];
-					}
-				}
-
-				for(i=0; i<alias.length; i++)
-				{
-					headfoot = headfoot + '<th style="font-weight: bold; text-align: left; padding: 5px; border: 1px solid #000; text-transform: uppercase;">'+alias[i]+'</th>';
-				}
-
-				var info;
-				for(i=0; i<object.length; i++)
-				{
-					info = '<tr>';
-					for(k = 0; k < keys.length; k++)
-					{
-						var sanitized = object[i][keys[k]];
-
-						if(sanitized === '')
-						{
-							sanitized = '<i>Not specified</i>';
-						}
-
-						info = info + '<td style="border: 1px solid #000; padding: 5px; text-align: left;">'+sanitized+'</td>';
-					}
-					info = info+'</tr>';
-
-					body = body + info;
-				}
-
-				return '<table style="border-collapse: collapse; width: 100%;"><thead>'+headfoot+'</thead><tbody>'+body+'</tbody></table>';
-			}
-			else
-			{
-				return false;
-			}
 		}
 	};
 }]);
@@ -428,24 +167,144 @@ cfg.factory('lasso', ['$sce', 'constants', function($sce, constants){
 	};
 }]);
 
-cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', function($sce, fetch, preloader, constants){
+cfg.factory('email', ['fetch', 'constants', function(fetch, constants){
+	return{
+		functionlock : false,
+		sendmail: function(object, yes, no) {
+			fetch.post(constants.canonical+'php/mailer.php?mail', object).then(function(response){
+				if(typeof yes == 'function')
+				{
+					yes(response.data);
+				}
+			}, function(response){
+				if(typeof no == 'function')
+				{
+					no(response);
+				}
+			});
+			
+		},
+		servercheck : function(object, respond, error){
+			fetch.post(constants.canonical+'php/mailer.php?verify=1', object).then(function(response){
+				respond(response);
+			}, function(response){
+				error('There was an error in the PHP API endpoint.');
+			});
+		},
+		verify: function(answers, email_fields, pass, fail, error) {
+			var o = this;
+			if(!o.functionlock){
+				o.functionlock = true;
+				var passed = [];
+				var failed = [];
+				var email_verify = [];
+
+				for(var index in answers) {
+					if(answers[index] === false){
+						failed.push(index);
+					}
+					else{
+						passed.push(index);
+					}
+				}
+
+				if(failed.length > 0){
+					fail(failed);
+					return false;
+				}
+
+
+				if(typeof answers != 'object'){
+					error('Invalid answers object type.');
+				}
+				else{
+					if($.isArray(email_fields) && email_fields.length > 0){
+						for(var i in email_fields){
+							if(typeof answers[email_fields[i]] == 'undefined'){
+								error('Email fields does not match answer structure.');
+								return false;
+							}
+							else{
+								email_verify.push({
+									'name' : email_fields[i],
+									'value' : answers[email_fields[i]]
+								});
+							}
+						}
+
+						o.servercheck(email_verify, function(response){
+							if(response.data.fail.length > 0){
+								fail(response.data.fail);
+							}
+							else{
+								pass();
+							}
+						}, function(err){
+							error(err);
+						});
+					}
+					else{
+						pass();
+					}
+				}
+
+			}
+		},
+		compose: function(from, replyto, to, subject, body) {
+			//parse
+
+			var emaildetails = {
+				'from' : encodeURIComponent(from.join('|')),
+				'replyTo' : encodeURIComponent(replyto.join('|')),
+				'To' : encodeURIComponent(to.join('|')),
+				'subject': encodeURIComponent(subject),
+				'body' : encodeURIComponent(body)
+			};
+
+			return emaildetails;
+		},
+		tabulate: function(object, defaultvalue) {
+			//parse
+			var out = '<table border="0" width="600" style="margin: auto;"><tbody>';
+			var h = '';
+			for(var o in object){
+				h = o.split('-').join(' ');
+				out = out + '<tr><td style="font-weight: bold;">'+h.charAt(0).toUpperCase()+h.slice(1)+': </td><td>'+decodeURIComponent(object[o])+'</td></tr>';
+			}
+
+			out = out+'</tbody></table>';
+
+			return out;
+		}
+	};
+}]);
+
+cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'features', function($sce, fetch, preloader, constants, browser, features){
 	return{
 		loading: 0,
 		contents: {},
 		img: [],
-		get: function(action, before){
+		get: function(action, before, whilest){
 			var o = this;
+			var svg = false;
 			if(o.loading === 0)
 			{
-				fetch.secured(constants.canonical+'_data/main.php').then(function(response){
+				
+				if(features.detect('svg')){
+					svg = 'true';
+				}
+				else{
+					svg = 'false';
+				}
+				fetch.secured(constants.canonical+'_data/main.php?browser='+browser.detect()+'&svg='+svg).then(function(response){
 					o.contents = response.data.contents;
 					//record images
 					var pr = response.data.preload;
 					var imgar = [];
 					for(var i=0; i<pr.length; i++)
 					{
-						imgar[i] = pr[i].url;
-						o.indexer(pr[i].name, pr[i].url);
+						imgar[i] = pr[i];
+						o.indexer(pr[i]);
 					}
 
 					if(typeof before == 'function')
@@ -456,6 +315,10 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', function($sce
 					preloader.run(imgar, function(){
 						action(response.data.contents);
 						o.loading = 1;
+					}, function(progress){
+						if(typeof whilest == 'function'){
+							whilest(progress);
+						}
 					});
 				}, function(response){
 					o.contents = false;
@@ -472,11 +335,8 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', function($sce
 				action(o.contents);
 			}
 		},
-		indexer: function(name, url) {
-			this.img[this.img.length] = {
-				'name' : name,
-				'url' : url
-			};
+		indexer: function(url) {
+			this.img[this.img.length] = url;
 		},
 		image: function(name) {
 			var o = this;
