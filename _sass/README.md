@@ -75,7 +75,7 @@ To use breakpoints more efficiently, you can use the following mixin:
 ```
 Replace ```$minmaxonly``` with either ```min```, ```max``` or ```only``` and a matching breakpoint ID.
 ```scss
-@include breakpoint(max,4){
+@include breakpoint(max,4) {
 	.element{
 		width: 100%;
 	}
@@ -83,7 +83,7 @@ Replace ```$minmaxonly``` with either ```min```, ```max``` or ```only``` and a m
 
 /*or*/
 .element{
-	@include breakpoint(max,4){
+	@include breakpoint(max,4) {
 		width: 100%;
 	};
 }
@@ -91,14 +91,14 @@ Replace ```$minmaxonly``` with either ```min```, ```max``` or ```only``` and a m
 *Applies* ```width: 100%;``` *to* ```.element``` *in any screen size with a maximum width of 1199px*
 ```scss
 .element{
-	@include breakpoint(min, 3){
+	@include breakpoint(min, 3) {
 		width: 100%;
 	};
 }
 ```
 *Applies* ```width: 100%;``` *to* ```.element``` *in any screen size with a minimum width of 768px*
 ```scss
-@include breakpoint(only, 2){
+@include breakpoint(only, 2) {
 	.element{
 		width: 100%;
 	}
@@ -210,7 +210,9 @@ Applies values according to the breakpoint ID and fills in any missing values.
 .element{
 	@include prefix(box-sizing, border-box);
 }
+```
 
+```css
 /* yields */
 .element{
 	-webkit-box-sizing: border-box;
@@ -228,7 +230,8 @@ Applies values according to the breakpoint ID and fills in any missing values.
 .element{
 	@include hide(4,5,6);
 }
-
+```
+```css
 /* yields */
 @media only screen and (min-width: 1025px) and (max-width: 1199px) {
 	.element{
@@ -256,7 +259,8 @@ Applies values according to the breakpoint ID and fills in any missing values.
 .element{
 	clearFix();
 }
-
+```
+```css
 /* yields */
 .element::after{
 	content: '';
@@ -276,7 +280,8 @@ Applies values according to the breakpoint ID and fills in any missing values.
 .element{
 	@include vertCenter(-50%, -50%);
 }
-
+```
+```css
 /* yields */
 .element{
 	position: absolute;
@@ -299,7 +304,9 @@ Applies values according to the breakpoint ID and fills in any missing values.
 .element{
 	@include calc-vw(width, 50);
 }
+```
 
+```css
 /* yields */
 .element{
 	width : 50vw;
