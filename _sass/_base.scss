@@ -3,6 +3,17 @@ $bpmax : 399px, 767px, 1024px, 1199px, 1599px, 1999px, false;
 $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 /* --- */
 
+@mixin dimensions($width, $height: false){
+	@if $height == false{
+		width: $width;
+		height: $width;
+	}
+	@else{
+		width: $width;
+		height: $height;
+	}
+}
+
 @mixin print{
 	@media print { 
 		@content;
@@ -307,7 +318,7 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 
 @mixin verticalCenter($x: -50%, $y: -50%){
 	position: absolute;
-	@inclue prefix(transform, translate($x, $y));
+	@include prefix(transform, translate($x, $y));
 	top: 50%;
 	left: 50%;
 }

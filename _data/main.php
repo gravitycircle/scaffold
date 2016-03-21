@@ -1,18 +1,31 @@
 <?php
 include_once('../config.php');
-$arr = scandir ('../img/');
+$output = array();
 $filearr = array();
-$iter = 0;
+
+if(isset($_GET['svg']) && $_GET['svg'] == 'true'){
+	$folder = 'img/svg';
+}
+else{
+	$folder = 'img/png';
+}
+
+$arr = scandir (DOCROOT.'/'.$folder.'/');
 foreach($arr as $file)
 {
 	if(substr($file, 0, 1) !== '.' && substr($file, 0, 6) !== 'favico')
 	{
-		$filearr[sizeof($filearr)] = array(
-			'name' => $file.'-'.$iter,
-			'url' => 'img/'.$file
-		);
+		array_push($filearr, BASE.$folder.'/'.$file);
+	}
+}
 
-		$iter++;
+$folder = 'img/all';
+$arr = scandir (DOCROOT.'/'.$folder.'/');
+foreach($arr as $file)
+{
+	if(substr($file, 0, 1) !== '.' && substr($file, 0, 6) !== 'favico')
+	{
+		array_push($filearr, BASE.$folder.'/'.$file);
 	}
 }
 $output['preload'] = $filearr;
