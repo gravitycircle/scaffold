@@ -187,7 +187,7 @@ Applies values according to the breakpoint ID and fills in any missing values.
 @mixin upScale($property, $bp1, $bp2, ..., $bp7, $prefix);
 @mixin downScale($property, $bp7, $bp6, ..., $bp1, $prefix);
 ```
-```$property``` is the css property you want to use. ```$bp#``` are the affected breakpoints. In the case of ```@mixin upScale```, any missing breakpoints will be filled in by the last argument. To use this along with broser prefixing, enter all the 7 breakpoints with the intended values and set the ```$prefix``` argument to ```true```.
+```$property``` is the css property you want to use. ```$bp#``` are the affected breakpoints. Any missing breakpoints will be filled in by the last argument. To use this along with browser prefixing, enter all the 7 breakpoints with the intended values and set the ```$prefix``` argument to ```true```.
 ```scss
 .element{
 	@include upScale(width, 10px, 20px, 30px);
