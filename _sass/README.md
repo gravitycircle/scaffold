@@ -257,7 +257,7 @@ Applies values according to the breakpoint ID and fills in any missing values.
 
 /* usage */
 .element{
-	clearFix();
+	@include clearFix();
 }
 ```
 ```css
