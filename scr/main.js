@@ -27,7 +27,7 @@
 				});
 			},
 			controller: function($scope, $element, $attrs){
-				//features.run();
+				$scope.intro = constants.base+'introduction.php';
 			}
 		};
 	}]);
