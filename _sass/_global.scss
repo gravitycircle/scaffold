@@ -1,0 +1,33 @@
+html{
+	body{
+		@include dimensions(100%);
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+
+		#wrapper{
+			@include dimensions(100%);
+			position: absolute;
+			top: 0;
+			left: 0;
+			overflow: hidden;
+		}
+
+		#preloader{
+			@include upScale(width, 10px, 20px, 30px, 40px, 50px, 60px, 70px);
+			@include orientation(landscape) {
+				height: 10px;
+			}
+
+			@include orientation(portrait) {
+				height: 20px;
+			}
+			position: absolute;
+			top: 100%;
+			left: 100%;
+		}
+	}
+}
