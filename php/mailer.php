@@ -1,4 +1,5 @@
 <?php
+include_once('../../config.php');
 if(isset($_GET['verify']) && $_GET['verify'] != '')
 {
 	$data = json_decode(file_get_contents("php://input"), true);
@@ -36,15 +37,15 @@ if(isset($_GET['mail']) && isset($_POST))
 		header('Content-type: application/json');
 		echo json_encode(array(
 		  	'status' => 'Successful',
-		  	'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates about The Capstan.'
+		  	'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates.'
 		  ));
 	}
 	else
 	{
-		$configurator['username'] = 'no.reply@capstanliving.com';
-		$configurator['password'] = '1qaz2wsx';
-		$configurator['host'] = 'mail.capstanliving.com';
-		$configurator['port'] = 587;
+		$configurator['username'] = SMTPUSER;
+		$configurator['password'] = SMTPPW;
+		$configurator['host'] = SMTPHOST;
+		$configurator['port'] = SMTPPORT;
 
 
 		require_once('phpmailer/class.phpmailer.php');
@@ -81,7 +82,7 @@ if(isset($_GET['mail']) && isset($_POST))
 			header('Content-type: application/json');
 		  echo json_encode(array(
 		  	'status' => 'Successful',
-		  	'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates about The Capstan.'
+		  	'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates.'
 		  ));
 		} catch (phpmailerException $e) {
 		  //echo $e->errorMessage(); //Pretty error messages from PHPMailer

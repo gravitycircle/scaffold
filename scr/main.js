@@ -1,5 +1,5 @@
 (function(){
-	var app = angular.module("main", ['htmlcustom', 'configurator', 'siteviews', 'modes']);
+	var app = angular.module("main", ['htmlcustom', 'configurator', 'siteviews', 'modes', 'ngMap']);
 
 	app.config(['$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode(true);
