@@ -51,6 +51,7 @@ include_once('config.php');
 					<p>Also note that BASE refers to the base URL of the site itself. CANONICAL refers to the base URL of any API endpoint you will be using that runs alongside this application.</p>
 					<p>SEO has been set up. Under the <em>_seo</em> folder, the <i>index.php</i> file has an _seo function. Utilize that for your SEO needs. <i>$page</i> would be the last part of the url to track. There is no deep linking available yet.</p>
 					<p>This is only the introduction page. The installation file for this scaffolding setup has not yet been configured since the framework stack is still in active development. To start working with the stack anyway, please rename this file into something different and rename the _index.php file to index.php. </p>
+					<p><strong>This is a fork from Master that has form directives coded in.</strong></p>
 					<h4 style="border-top: 1px solid #ccc; padding-top: 20px;">~ Happy Coding!</h4>
 				</div>
 			</div>
