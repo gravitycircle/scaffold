@@ -296,7 +296,7 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 				else{
 					svg = 'false';
 				}
-				fetch.secured(constants.canonical+'_data/main.php?browser='+browser.detect()+'&svg='+svg).then(function(response){
+				fetch.secured(constants.canonical+'_data/main.php?request=1&svg='+svg).then(function(response){
 					o.contents = response.data.contents;
 					//record images
 					var pr = response.data.preload;
