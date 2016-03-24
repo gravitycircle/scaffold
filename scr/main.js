@@ -17,7 +17,6 @@
 				logo : '@'
 			},
 			link: function(scope, element, attrs){
-				var rotator;
 				sources.get(function(){
 					//post-load
 					
