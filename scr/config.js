@@ -35,8 +35,8 @@ cfg.factory('preloader', ['$http', '$sce', 'constants', function($http, $sce, co
 			var imgs = '';
 			for(i = 0; i<limit; i++)
 			{
-				if(['bmp', 'png', 'tiff', 'jpg', 'jpeg', 'gif', 'svg'],indexOf(imgarray[i].split('.').pop()) >= 0){
-					imgs = imgs+'<img src="'+path+'" alt="preloading-'+i+'" />';
+				if(['bmp', 'png', 'tiff', 'jpg', 'jpeg', 'gif', 'svg'].indexOf(imgarray[i].split('.').pop()) >= 0){
+					imgs = imgs+'<img src="'+imgarray[i]+'" alt="preloading-'+i+'" />';
 				}
 				else{
 					$http.get($sce.trustAsResourceUrl(imgarray[i])).success(lsuccess).error(lerror);
