@@ -92,20 +92,34 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 	}
 }
 
-@mixin orientation($orient: false)
+@mixin orientation($orient: false, $style: normal)
 {
 	@if $orient == false{
 		@content;
 	}
 	@else if $orient == 'portrait' {
-		@include breakpoint(max, 3){
+		@if $style == normal {
+			@include breakpoint(max, 3){
+				@media only screen and (orientation: portrait) {
+					@content;
+				}
+			}
+		}
+		@else {
 			@media only screen and (orientation: portrait) {
 				@content;
 			}
 		}
 	}
 	@else if $orient == 'landscape' {
-		@include breakpoint(max, 3){
+		@if $style == normal {
+			@include breakpoint(max, 3){
+				@media only screen and (orientation: landscape) {
+					@content;
+				}
+			}
+		}
+		@else {
 			@media only screen and (orientation: landscape) {
 				@content;
 			}
