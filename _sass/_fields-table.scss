@@ -1,0 +1,558 @@
+@mixin submitFont() {
+	// buttonType();
+}
+
+@mixin downArrow(){
+	// content: '\62';
+	// font-family: 'form-icons-light';
+}
+
+@mixin checkMark(){
+	// content: '\66';
+}
+
+@mixin iconFont() {
+	// font-family: 'form-icons-light';
+}
+
+@mixin formType() {
+	//font includes?
+}
+$border_colors: $black;
+$highlight_color: $accent;
+
+$dsktp_gen_label_height: 4rem;
+$dsktp_checkbox_label_height: $dsktp_gen_label_height;
+
+$checkbox_color: $black;
+$checkbox_background_checked: $black;
+$checkbox_background_unchecked: transparent;
+$checkbox_border_color: $border_colors;
+
+$dsktp_checkbox_left_spacing: 3rem;
+$dsktp_checkbox_size: 1.8rem;
+$dsktp_checkbox_border: 2px solid $checkbox_border_color;
+$dsktp_checkbox_border_rads: 5px;
+
+$dsktp_checkbox_size: 1rem;
+$dsktp_checkbox_position: 0.4rem;
+html{
+	body{
+		.field-container{
+			@include breakpoint(max, 3) {
+				@include zoom(margin-bottom, 4rem);	
+
+				&.submit-handle{
+					display: block;
+
+					.field-submit{
+						display: block;
+						text-align: center;
+						@include zoom(padding-top, 6rem);
+
+						a{
+							display: inline-block;
+							color: $black;
+							border: 3px solid $black;
+							@include submitFont();
+							font-family: 'Avenir W01', sans-serif;
+							@include zoom(padding-left, 3.5rem);
+							@include zoom(padding-right, 3.5rem);
+							line-height: 2;
+							cursor: pointer;
+							@include transition(all);
+							@include duration(0.6s);
+							@include timing(snap);
+
+							&:hover, &:active, &:focus{
+								background: $accent;
+								border: 3px solid $accent;
+								color: $alt;
+								text-decoration: none;
+							}
+						}
+					}
+				}
+
+				.field-handler{
+					display: block;
+
+					label{
+						display: block;
+						&.dsk{
+							display: none;
+						}
+						@include zoom(line-height, 4rem);
+						@include zoom(min-height, 4rem);
+						@include zoom(font-size, 2rem);
+
+
+						&.checklabel{
+							position: relative;
+							cursor: pointer;
+							white-space: normal;
+							font-size: 1.8rem;
+							line-height: 1.2;
+							text-align: left;
+
+							@include breakpoint(max, 2) {
+								padding-left: 4rem;
+								height: auto;
+							}
+
+							&::before{
+								content: '';
+								@include iconFont();
+								@include zoom(width, 1.8rem);
+								@include zoom(height, 1.8rem);
+								display: inline-block;
+								vertical-align: middle;
+								border: 2px solid $black;
+								background: transparent;
+								border-radius: 2px;
+								margin-top: -5px;
+								@include transition(background);
+								@include timing(snap);
+								@include duration(0.6s);
+								margin-right: 5px;
+								line-height: 1;
+								color: $alt;
+
+								@include breakpoint(max, 2) {
+									position: absolute;
+									left: 1.5rem;
+									top: 50%;
+
+									@include prefix(transform, translateY(-25%));
+								}
+							}
+
+							&.check{
+								&::before{
+									@include checkMark();
+									background: $black;
+									font-size: 1rem;
+								}
+							}
+						}
+					}
+
+					.paragraph-sizer{
+						position: relative;
+						@include formType();
+						width: 22em;
+						max-width: 100%;
+						margin: auto;
+						textarea{
+							position: absolute;
+							top: 0;
+							left: 0;
+							width: 100%;
+							height: 100%;
+							resize: none;
+							overflow: hidden;
+							@include formType();
+							border: none;
+							background: transparent;
+							padding: 0 10px;
+							@include zoom(line-height, 5.4rem);
+							font-weight: 400;
+							@include zoom(font-size, 2rem);
+
+							&:focus{
+								outline: none;
+							}
+						}
+
+						span{
+							width: 100%;
+							@include formType();
+							border: none;
+							border-bottom: 1px solid $black;
+							background: transparent;
+							padding: 0 10px;
+							@include zoom(line-height, 5.4rem);
+							@include zoom(height, 5.4rem);
+							@include zoom(font-size, 2rem);
+							display: block;
+						}
+
+						&.focus{
+							span{
+								border-bottom: 1px solid $accent;
+							}
+						}
+					}
+
+					.cell{
+						display: block;
+						width: 22em;
+						max-width: 100%;
+						@include zoom(line-height, 4rem);
+						@include zoom(height, 4rem);	
+						margin: 0 auto;
+
+
+						input{
+							width: 100%;
+							@include formType();
+							border: none;
+							border-bottom: 1px solid $black;
+							background: transparent;
+							padding: 0 10px;
+							@include zoom(line-height, 4rem);
+							@include zoom(height, 4rem);
+							font-weight: 400;
+							@include zoom(font-size, 2rem);
+
+							&:focus{
+								outline: none;
+								border-color: $accent;
+							}
+						}
+
+						.dropdown-box{
+							@include formType();
+							@include zoom(line-height, 4rem);
+							@include zoom(height, 4rem);
+							vertical-align: middle;
+							cursor: pointer;
+							position: relative;
+
+							&::after{
+								display: block;
+								position: absolute;
+								top: 50%;
+								right: 0;
+								@include prefix(transform, translateY(-50%));
+								pointer-events: none;
+							}
+							
+
+							.selected{
+								text-align: left;
+								@include zoom(line-height, 4rem);
+								@include zoom(height, 4rem);
+								border-bottom: 1px solid $black;
+								padding: 0 10px;
+								font-weight: 400;
+								@include zoom(font-size, 2rem);
+							}
+
+							.options-container{
+								text-align: left;
+								position: absolute;
+								background: $alt;
+								width: 100%;
+								height: 0;
+								overflow-y: auto;
+								overflow-x: hidden;
+								left: 0;
+								top: 100%;
+								border: 1px solid transparent;
+								@include transition(all);
+								@include timing(snap);
+								@include duration(0.6s);
+								font-weight: 400;
+								@include zoom(font-size, 2rem);
+
+								.options{
+									padding: 0 10px;
+									@include transition(all);
+									@include timing(snap);
+									@include duration(0.6s);
+									
+									&:hover, &:active, &:focus{
+										color: $alt;
+										background: $black;
+									}
+								}
+							}
+						}
+
+						&.opened{
+							.dropdown-box{
+								.selected{
+									border-bottom: 1px solid transparent;
+								}
+								.options-container{
+									border: 1px solid $black;
+									z-index: 5;
+								}
+							}
+						}
+					}
+
+					&.red{
+						label{
+							color: #a11c26 !important;
+						}
+					}
+				}
+			}
+
+			@include breakpoint(min, 4) {
+				display: table;
+				&.paragraph-handle{
+					display: block;
+				}
+
+				.field-handler{
+					display: table-row;
+
+					label{
+						display: table-cell;
+						white-space: nowrap;
+						@include formType();
+						@include zoom(line-height, $dsktp_gen_label_height);
+						@include zoom(height, $dsktp_gen_label_height);
+						vertical-align: middle;	
+
+						&.checklabel{
+							width: 100%;
+							@include zoom(height, $dsktp_checkbox_label_height);
+							@include zoom(line-height, $dsktp_checkbox_label_height);
+							cursor: pointer;
+							@include zoom(padding-left, $dsktp_checkbox_left_spacing);
+							position: relative;
+
+							&::before{
+								content: '';
+								@include zoom(width, $dsktp_checkbox_size);
+								@include zoom(height, $dsktp_checkbox_size);
+								display: block;
+								border: $dsktp_checkbox_border;
+								background: $checkbox_background_unchecked;
+								border-radius: $dsktp_checkbox_border_rads;
+								position: absolute;
+								left: 0;
+								top: 50%;
+								@include transition(background);
+								@include timing(snap);
+								@include duration(0.6s);
+								@include prefix(transform, translateY(-50%));
+							}
+
+							&::after{
+								@include checkMark();
+								@include iconFont();
+								color: $checkbox_color;
+								@include zoom(font-size, $dsktp_checkbox_size);
+								position: absolute;
+								@include zoom(left, $dsktp_checkbox_position);
+								top: 50%;
+								@include prefix(transform, translateY(-50%));
+							}
+
+							&.check{
+								&::before{
+									background: $checkbox_background_checked;
+								}
+							}
+						}
+					}
+
+					.cell{
+						display: table-cell;
+						width: 100%;
+						@include zoom(line-height, 4rem);
+						@include zoom(height, 4rem);
+						vertical-align: middle;						
+
+						input{
+							width: 100%;
+							@include formType();
+							border: none;
+							border-bottom: 1px solid $border_colors;
+							background: transparent;
+							padding: 0 10px;
+							@include zoom(line-height, $dsktp_gen_label_height);
+							@include zoom(height, $dsktp_gen_label_height);
+							font-weight: 400;
+
+							&:focus{
+								outline: none;
+								border-color: $highlight_color;
+							}
+						}
+
+						.dropdown-box{
+							@include zoom(line-height, $dsktp_gen_label_height);
+							@include zoom(height, $dsktp_gen_label_height);
+							vertical-align: middle;
+							cursor: pointer;
+							position: relative;
+
+							&::after{
+								content: '\62';
+								display: block;
+								position: absolute;
+								top: 50%;
+								right: 0;
+								@include prefix(transform, translateY(-30%));
+								font-family: 'form-icons-light';
+							}
+							
+
+							.selected{
+								text-align: left;
+								@include zoom(line-height, $dsktp_gen_label_height);
+								@include zoom(height, $dsktp_gen_label_height);
+								border-bottom: 1px solid $black;
+								padding: 0 10px;
+								font-weight: 400;
+							}
+
+							.options-container{
+								text-align: left;
+								position: absolute;
+								background: $highlight_color;
+								width: 100%;
+								height: 0;
+								overflow-y: auto;
+								overflow-x: hidden;
+								left: 0;
+								top: 100%;
+								border: 1px solid transparent;
+								@include transition(all);
+								@include timing(snap);
+								@include duration(0.6s);
+
+								.options{
+									padding: 0 10px;
+									@include transition(all);
+									@include timing(snap);
+									@include duration(0.6s);
+									
+									&:hover, &:active, &:focus{
+										color: $alt;
+										background: $black;
+									}
+								}
+							}
+						}
+
+						&.opened{
+							.dropdown-box{
+								.selected{
+									border-bottom: 1px solid transparent;
+								}
+								.options-container{
+									border: 1px solid $black;
+									z-index: 5;
+								}
+							}
+						}
+					}
+
+					&.field-paragraph{
+						display: block;
+						label{
+							display: block;
+							position: absolute;
+							@include formType();
+							@include zoom(height, 5.5rem);
+							@include zoom(line-height, 5.5rem);
+							left: 0;
+							top: 0;
+							z-index: 2;
+							vertical-align: middle;
+							background: $alt;
+							@include zoom(padding-right, 2rem);
+						}
+
+						.mbl{
+							display: none;
+						}
+
+						.paragraph-sizer{
+							position: relative;
+							textarea{
+								width: 100%;
+								height: 100% !important;
+								position: absolute;
+								z-index: 1;
+								left: 0;
+								top: 0;
+								@include formType();
+								@include zoom(line-height, 5.4rem);
+								@include zoom(height, 5.4rem);
+								background: transparent;
+								resize: none;
+								overflow: hidden;
+								border: none;
+								@include zoom(text-indent, 134px);
+								padding: 0 10px;
+								text-overflow: ellipsis;
+
+								&:focus{
+									outline: none;
+								}
+							}
+
+							span{
+								width: 100%;
+								@include formType();
+								border: none;
+								border-bottom: 1px solid $black;
+								background: transparent;
+								padding: 0 10px;
+								@include zoom(line-height, 5.4rem);
+								@include zoom(height, 5.4rem);
+								font-weight: 400;
+								@include zoom(font-size, 2rem);
+								display: block;
+							}
+
+							&.focus{
+								span{
+									border-bottom: 1px solid $accent;
+								}
+							}
+						}
+
+						
+					}
+
+					&.red{
+						label{
+							color: #a11c26 !important;
+						}
+					}
+				}
+
+				&.submit-handle{
+					display: block;
+
+					.field-submit{
+						display: block;
+						text-align: center;
+						@include zoom(padding-top, 10rem);
+
+						a{
+							display: inline-block;
+							color: $black;
+							border: 3px solid $black;
+							@include submitFont();
+							font-family: 'Avenir W01', sans-serif;
+							@include zoom(padding-left, 3.5rem);
+							@include zoom(padding-right, 3.5rem);
+							line-height: 2;
+							cursor: pointer;
+							@include transition(all);
+							@include duration(0.6s);
+							@include timing(snap);
+
+							&:hover, &:active, &:focus{
+								background: $accent;
+								border: 3px solid $accent;
+								color: $alt;
+								text-decoration: none;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
