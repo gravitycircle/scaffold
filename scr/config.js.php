@@ -8,7 +8,11 @@ var cfg = angular.module("configurator", []);
 cfg.factory('constants', function(){
 	return {
 		canonical: '<?=CANONICAL?>',
-		base: '<?=BASE?>'
+		base: '<?=BASE?>',
+		smtp: {
+			'user' : '<?=SMTPUSER?>',
+			'pw' : '<?=SMTPPW?>'
+		}
 	};
 });
 

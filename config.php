@@ -11,10 +11,18 @@ else if(strpos(strtolower($agent),'trident') !== false){
 	$browser = 'internet explorer';
 }
 
+
+
 define('DOCROOT', dirname(__FILE__));
 define('BROWSER', $browser);
 define('SSL', (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https://' : 'http://'));
 define('CANONICAL', SSL.str_replace($docroot, $servername, dirname(__FILE__)).'/');
 define('BASE', SSL.str_replace($docroot, $servername, dirname(__FILE__)).'/');
 define('DOMAIN', str_replace(SSL, '', BASE));
+
+define('SMTPUSER', '@');
+define('SMTPPW', '@');
+define('SMTPHOST', 'mail.'.str_replace('/', '', DOMAIN));
+define('SMTPPORT', 587);
+define('GOOGLEAPI', 'AIzaSyAw6KL4jOFvIkIV3f5Oz9mRkZ0gG2iHOyw');
 ?>
