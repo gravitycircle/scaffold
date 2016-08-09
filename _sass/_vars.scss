@@ -1,5 +1,7 @@
-$white: '#ffffff';
-$accent: '#999999';
+$white: #ffffff;
+$accent: #999999;
+$alt: #777777;
+$black: #333333;
 
 //adjust zoom factors
 @mixin zoom($property, $v){

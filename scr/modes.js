@@ -176,7 +176,7 @@
 				});
 				var g = null;
 				$scope.initialize = function(){
-					$scope.field = $scope.$parent.registration.fields[$attrs.index];
+					$scope.field = $scope.$parent[$attrs.target][$attrs.index];
 					submission.register($scope.field.id, $scope.field.require, $scope.field.type);
 					var compose;
 					if($scope.field.type == 'text' || $scope.field.type == 'email'){

@@ -26,7 +26,42 @@
 				});
 			},
 			controller: function($scope, $element, $attrs){
-				$scope.intro = constants.base+'introduction.php';
+				$scope.testfields =[
+					{
+						'label' : 'Text field',
+						'type' : 'text',
+						'id' : 'test-text',
+						'require' : true
+					},
+					{
+						'label' : 'Dropdown field',
+						'type' : 'dropdown',
+						'id' : 'test-drop',
+						'require' : true,
+						'values' : [
+							{
+								'value' : 'test',
+								'label' : 'Test Value 1'
+							},
+							{
+								'value' : 'test2',
+								'label' : 'Test Value 2'
+							}
+						]
+					},
+					{
+						'label' : 'Comments',
+						'type' : 'paragraph',
+						'id' : 'comments',
+						'require' : false
+					},
+					{
+						'label' : 'Submit',
+						'type': 'submit',
+						'id' : 'submit',
+						'require' : false
+					}
+				];
 			}
 		};
 	}]);

@@ -3,16 +3,16 @@
 }
 
 @mixin downArrow(){
-	// content: '\62';
-	// font-family: 'form-icons-light';
+	content: '\62';
+	font-family: 'form-icons-light';
 }
 
 @mixin checkMark(){
-	// content: '\66';
+	content: '\66';
 }
 
 @mixin iconFont() {
-	// font-family: 'form-icons-light';
+	font-family: 'form-icons-light';
 }
 
 @mixin formType() {
@@ -20,12 +20,19 @@
 }
 $border_colors: $black;
 $highlight_color: $accent;
+$background_color: $white;
 
+/* HEIGHTS & MARGIN*/
 $dsktp_gen_label_height: 4rem;
+$dsktp_paragraph_label_height: 1.375 * $dsktp_gen_label_height;
+$dsktp_paragraph_line_height: 1.35 * $dsktp_gen_label_height;
+$dsktp_submit_top_margin: 2.5* $dsktp_gen_label_height;
 $dsktp_checkbox_label_height: $dsktp_gen_label_height;
 
+$mbl_gen_label_height: $dsktp_gen_label_height;
+
 $checkbox_color: $black;
-$checkbox_background_checked: $black;
+$checkbox_background_checked: $border_colors;
 $checkbox_background_unchecked: transparent;
 $checkbox_border_color: $border_colors;
 
@@ -33,6 +40,11 @@ $dsktp_checkbox_left_spacing: 3rem;
 $dsktp_checkbox_size: 1.8rem;
 $dsktp_checkbox_border: 2px solid $checkbox_border_color;
 $dsktp_checkbox_border_rads: 5px;
+
+$mbl_checkbox_left_spacing: $dsktp_checkbox_left_spacing * 2;
+$mbl_checkbox_size: $dsktp_checkbox_size;
+$mbl_checkbox_border: 2px solid $checkbox_border_color;
+$mbl_checkbox_border_rads: 2px;
 
 $dsktp_checkbox_size: 1rem;
 $dsktp_checkbox_position: 0.4rem;
@@ -52,10 +64,9 @@ html{
 
 						a{
 							display: inline-block;
-							color: $black;
-							border: 3px solid $black;
+							color: $border_colors;
+							border: 3px solid $border_colors;
 							@include submitFont();
-							font-family: 'Avenir W01', sans-serif;
 							@include zoom(padding-left, 3.5rem);
 							@include zoom(padding-right, 3.5rem);
 							line-height: 2;
@@ -65,9 +76,9 @@ html{
 							@include timing(snap);
 
 							&:hover, &:active, &:focus{
-								background: $accent;
-								border: 3px solid $accent;
-								color: $alt;
+								background: $highlight_color;
+								border: 3px solid $highlight_color;
+								color: $background_color;
 								text-decoration: none;
 							}
 						}
@@ -82,41 +93,41 @@ html{
 						&.dsk{
 							display: none;
 						}
-						@include zoom(line-height, 4rem);
-						@include zoom(min-height, 4rem);
-						@include zoom(font-size, 2rem);
+						@include zoom(line-height, $mbl_gen_label_height);
+						@include zoom(min-height, $mbl_gen_label_height);
+						@include formType();
 
 
 						&.checklabel{
 							position: relative;
 							cursor: pointer;
 							white-space: normal;
-							font-size: 1.8rem;
+							@include formType();
 							line-height: 1.2;
 							text-align: left;
 
 							@include breakpoint(max, 2) {
-								padding-left: 4rem;
+								padding-left: $mbl_checkbox_left_spacing;
 								height: auto;
 							}
 
 							&::before{
 								content: '';
 								@include iconFont();
-								@include zoom(width, 1.8rem);
-								@include zoom(height, 1.8rem);
+								@include zoom(width, $mbl_checkbox_size);
+								@include zoom(height, $mbl_checkbox_size);
 								display: inline-block;
 								vertical-align: middle;
-								border: 2px solid $black;
+								border: $mbl_checkbox_border;
 								background: transparent;
-								border-radius: 2px;
+								border-radius: $mbl_checkbox_border_rads;
 								margin-top: -5px;
 								@include transition(background);
 								@include timing(snap);
 								@include duration(0.6s);
 								margin-right: 5px;
 								line-height: 1;
-								color: $alt;
+								color: $background_color;
 
 								@include breakpoint(max, 2) {
 									position: absolute;
@@ -130,7 +141,7 @@ html{
 							&.check{
 								&::before{
 									@include checkMark();
-									background: $black;
+									background: $border_colors;
 									font-size: 1rem;
 								}
 							}
@@ -168,7 +179,7 @@ html{
 							width: 100%;
 							@include formType();
 							border: none;
-							border-bottom: 1px solid $black;
+							border-bottom: 1px solid $border_colors;
 							background: transparent;
 							padding: 0 10px;
 							@include zoom(line-height, 5.4rem);
@@ -179,7 +190,7 @@ html{
 
 						&.focus{
 							span{
-								border-bottom: 1px solid $accent;
+								border-bottom: 1px solid $highlight_color;
 							}
 						}
 					}
@@ -197,7 +208,7 @@ html{
 							width: 100%;
 							@include formType();
 							border: none;
-							border-bottom: 1px solid $black;
+							border-bottom: 1px solid $border_colors;
 							background: transparent;
 							padding: 0 10px;
 							@include zoom(line-height, 4rem);
@@ -207,7 +218,7 @@ html{
 
 							&:focus{
 								outline: none;
-								border-color: $accent;
+								border-color: $highlight_color;
 							}
 						}
 
@@ -233,7 +244,7 @@ html{
 								text-align: left;
 								@include zoom(line-height, 4rem);
 								@include zoom(height, 4rem);
-								border-bottom: 1px solid $black;
+								border-bottom: 1px solid $border_colors;
 								padding: 0 10px;
 								font-weight: 400;
 								@include zoom(font-size, 2rem);
@@ -242,7 +253,7 @@ html{
 							.options-container{
 								text-align: left;
 								position: absolute;
-								background: $alt;
+								background: $background_color;
 								width: 100%;
 								height: 0;
 								overflow-y: auto;
@@ -263,8 +274,8 @@ html{
 									@include duration(0.6s);
 									
 									&:hover, &:active, &:focus{
-										color: $alt;
-										background: $black;
+										color: $background_color;
+										background: $border_colors;
 									}
 								}
 							}
@@ -276,7 +287,7 @@ html{
 									border-bottom: 1px solid transparent;
 								}
 								.options-container{
-									border: 1px solid $black;
+									border: 1px solid $border_colors;
 									z-index: 5;
 								}
 							}
@@ -355,8 +366,8 @@ html{
 					.cell{
 						display: table-cell;
 						width: 100%;
-						@include zoom(line-height, 4rem);
-						@include zoom(height, 4rem);
+						@include zoom(line-height, $dsktp_gen_label_height);
+						@include zoom(height, $dsktp_gen_label_height);
 						vertical-align: middle;						
 
 						input{
@@ -384,13 +395,12 @@ html{
 							position: relative;
 
 							&::after{
-								content: '\62';
 								display: block;
 								position: absolute;
 								top: 50%;
 								right: 0;
 								@include prefix(transform, translateY(-30%));
-								font-family: 'form-icons-light';
+								@include downArrow();
 							}
 							
 
@@ -398,7 +408,7 @@ html{
 								text-align: left;
 								@include zoom(line-height, $dsktp_gen_label_height);
 								@include zoom(height, $dsktp_gen_label_height);
-								border-bottom: 1px solid $black;
+								border-bottom: 1px solid $border_colors;
 								padding: 0 10px;
 								font-weight: 400;
 							}
@@ -406,7 +416,7 @@ html{
 							.options-container{
 								text-align: left;
 								position: absolute;
-								background: $highlight_color;
+								background: $background_color;
 								width: 100%;
 								height: 0;
 								overflow-y: auto;
@@ -425,8 +435,8 @@ html{
 									@include duration(0.6s);
 									
 									&:hover, &:active, &:focus{
-										color: $alt;
-										background: $black;
+										color: $background_color;
+										background: $highlight_color;
 									}
 								}
 							}
@@ -438,7 +448,7 @@ html{
 									border-bottom: 1px solid transparent;
 								}
 								.options-container{
-									border: 1px solid $black;
+									border: 1px solid $border_colors;
 									z-index: 5;
 								}
 							}
@@ -451,14 +461,14 @@ html{
 							display: block;
 							position: absolute;
 							@include formType();
-							@include zoom(height, 5.5rem);
-							@include zoom(line-height, 5.5rem);
+							@include zoom(height, $dsktp_paragraph_label_height);
+							@include zoom(line-height, $dsktp_paragraph_label_height);
 							left: 0;
 							top: 0;
 							z-index: 2;
 							vertical-align: middle;
-							background: $alt;
-							@include zoom(padding-right, 2rem);
+							background: $background_color;
+							@include zoom(padding-right, $dsktp_gen_label_height / 2);
 						}
 
 						.mbl{
@@ -497,10 +507,9 @@ html{
 								border-bottom: 1px solid $black;
 								background: transparent;
 								padding: 0 10px;
-								@include zoom(line-height, 5.4rem);
-								@include zoom(height, 5.4rem);
+								@include zoom(line-height, $dsktp_paragraph_line_height);
 								font-weight: 400;
-								@include zoom(font-size, 2rem);
+								@include formType();
 								display: block;
 							}
 
@@ -527,14 +536,13 @@ html{
 					.field-submit{
 						display: block;
 						text-align: center;
-						@include zoom(padding-top, 10rem);
+						@include zoom(padding-top, $dsktp_submit_top_margin);
 
 						a{
 							display: inline-block;
-							color: $black;
-							border: 3px solid $black;
+							color: $border_colors;
+							border: 3px solid $border_colors;
 							@include submitFont();
-							font-family: 'Avenir W01', sans-serif;
 							@include zoom(padding-left, 3.5rem);
 							@include zoom(padding-right, 3.5rem);
 							line-height: 2;
@@ -544,9 +552,9 @@ html{
 							@include timing(snap);
 
 							&:hover, &:active, &:focus{
-								background: $accent;
-								border: 3px solid $accent;
-								color: $alt;
+								background: $highlight_color;
+								border: 3px solid $highlight_color;
+								color: $background_color;
 								text-decoration: none;
 							}
 						}
