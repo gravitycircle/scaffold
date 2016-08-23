@@ -19,7 +19,11 @@ function main($json = true) {
 	{
 		if(substr($file, 0, 1) !== '.' && substr($file, 0, 6) !== 'favico')
 		{
-			array_push($filearr, BASE.$folder.'/'.$file);
+			$inspect = explode('.', $file);
+
+			if(array_pop($inspect) != 'html'){
+				array_push($filearr, BASE.$folder.'/'.$file);
+			}
 		}
 	}
 
@@ -29,7 +33,9 @@ function main($json = true) {
 	{
 		if(substr($file, 0, 1) !== '.' && substr($file, 0, 6) !== 'favico')
 		{
-			array_push($filearr, BASE.$folder.'/'.$file);
+			if(array_pop($inspect) != 'html'){
+				array_push($filearr, BASE.$folder.'/'.$file);
+			}
 		}
 	}
 
