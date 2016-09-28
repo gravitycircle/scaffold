@@ -1,5 +1,5 @@
 (function(){
-	var app = angular.module("main", ['htmlcustom', 'configurator', 'siteviews', 'modes', 'ngMap']);
+	var app = angular.module("main", ['htmlcustom', 'configurator', 'siteviews', 'modes', 'ngMap', 'communicator']);
 
 	app.config(['$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode(true);
@@ -14,54 +14,26 @@
 			restrict: 'E',
 			templateUrl: 'shadow/main.html',
 			scope: {
-				logo : '@'
+				data : '@'
 			},
 			link: function(scope, element, attrs){
-				sources.get(function(){
+				sources.get(function(content){
 					//post-load
 					
-				}, function(){
+				}, function(content){
 					//pre-load
-					
+					scope.initiate(content.contents);
+				}, function(progress){
+					//while
 				});
+
 			},
 			controller: function($scope, $element, $attrs){
-				$scope.testfields =[
-					{
-						'label' : 'Text field',
-						'type' : 'text',
-						'id' : 'test-text',
-						'require' : true
-					},
-					{
-						'label' : 'Dropdown field',
-						'type' : 'dropdown',
-						'id' : 'test-drop',
-						'require' : true,
-						'values' : [
-							{
-								'value' : 'test',
-								'label' : 'Test Value 1'
-							},
-							{
-								'value' : 'test2',
-								'label' : 'Test Value 2'
-							}
-						]
-					},
-					{
-						'label' : 'Comments',
-						'type' : 'paragraph',
-						'id' : 'comments',
-						'require' : false
-					},
-					{
-						'label' : 'Submit',
-						'type': 'submit',
-						'id' : 'submit',
-						'require' : false
-					}
-				];
+				$scope.initiate = function(content){
+					$scope.data = content;
+					$scope.fields = $scope.data.test.fields;
+					console.log($scope.fields);
+				};
 			}
 		};
 	}]);

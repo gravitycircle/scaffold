@@ -21,7 +21,8 @@ ob_start();
 	<script type="text/javascript" src="lib/transit.js"></script>
 	<script type="text/javascript" src="scr/config.js.php"></script>
 	<script type="text/javascript" src="scr/views.js"></script>
-	<script type="text/javascript" src="scr/html.js"></script>
+	<script type="text/javascript" src="ext/html.js"></script>
+	<script type="text/javascript" src="ext/comms.js"></script>
 	<script type="text/javascript" src="scr/modes.js"></script>
 	<script type="text/javascript" src="scr/main.js"></script>
 	<link rel="stylesheet" href="css/style.css" />
