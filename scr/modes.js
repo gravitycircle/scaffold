@@ -80,6 +80,9 @@
 					if($scope.field.type == 'text' || $scope.field.type == 'email'){
 						compose = '<text-field class="rendering"></text-field>';
 					}
+					else if($scope.field.type == 'email'){
+						compose = '<email-field class="rendering"></email-field>';
+					}
 					else if($scope.field.type == 'dropdown'){
 						compose = '<dropdown-field class="rendering"></dropdown-field>';
 					}
@@ -146,6 +149,43 @@
 	}]);
 
 	mode.directive('textField', ['submission', function(submission){
+		return {
+			restrict: 'E',
+			templateUrl: 'shadow/fields/text.html',
+			replace: true,
+			scope : {
+				render: '@',
+				mrk: '@'
+			},
+			link: function(scope, element, attrs){
+
+			},
+			controller: function($scope, $element, $attrs){
+				$scope.render = $scope.$parent.field;
+				$scope.render.idname = $scope.render.id.replace('[', '-').replace(']', '');
+				if($scope.$parent.field.require){
+					$scope.mrk = '*';
+				}
+				else{
+					$scope.mrk = '';
+				}
+
+				$scope.typing = function(){
+					$('.field-handler').removeClass('red');
+					submission.set($scope.render.id, $($element).find('input').val(), $scope.render.require, $scope.render.type);
+					if($($element).find('.input-error').length > 0){
+						$($element).find('.input-error').removeClass('input-error');
+					}
+
+					if($('body').find('.input-error').length < 1){
+						$('body').find('.error-msg').removeClass('shown');
+					}
+				};
+			}
+		};
+	}]);
+
+	mode.directive('emailField', ['submission', function(submission){
 		return {
 			restrict: 'E',
 			templateUrl: 'shadow/fields/text.html',
@@ -315,7 +355,7 @@
 		};
 	}]);
 	
-	mode.directive('submitField', ['submission', function(submission){
+	mode.directive('submitField', ['submission', 'email', 'lasso', function(submission, email, lasso){
 		return{
 			restrict: 'E',
 			replace: true,
@@ -327,9 +367,30 @@
 				//do submission here
 				$scope.render = $scope.$parent.field;
 
+				$scope.mail = function(){};
 
-				$scope.exec = function(){
-					console.log(submission.data);
+				$scope.curlLasso = function(){
+					lasso.verify(submission.data, function(){
+
+					}, function(){
+
+					}, function(){
+
+					});
+				};
+
+				$scope.exec = function(how){
+					if(typeof how == 'undefined'){
+						how = 'mail';
+					}
+
+					if(how == 'mail'){
+						$scope.mail();
+					}
+
+					else if (how == 'lasso') {
+						$scope.curlLasso();
+					}
 				};
 			}
 		};

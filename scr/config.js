@@ -1,17 +1,57 @@
 /*jslint plusplus: true */
-cfg.factory('fetch', ['$http','$sce',function($http, $sce){
+cfg.factory('fetch', ['$http','$sce', 'constants',function($http, $sce, constants){
 	return {
-		url: function(urlresource)
+		get: function(urlresource)
 		{
 			return $http.get(urlresource);
 		},
-		secured: function(urlresource)
+		secureget: function(url, params, action, fail)
 		{
-			return $http.get($sce.trustAsResourceUrl(urlresource));
+			$http.get(constants.base+'php/request.php?token='+constants.api).then(function(resp){
+				//pass
+				var parameters = $.param(params);
+				var token = resp.data.key;
+
+				$http.get($sce.trustAsResourceUrl(url)+'?request='+token+'&'+parameters).then(function(response){
+					if(typeof action == 'function') {
+						action(response);
+					}
+				}, function(){
+					if(typeof fail == 'function') {
+						fail('Invalid API Key');
+					}
+				});
+
+			}, function(){
+				//fail
+				if(typeof fail == 'function') {
+					fail('Invalid Request Key');
+				}
+			});
 		},
-		post: function(urlresource, data)
+		post: function(url, params, data, action, fail)
 		{
-			return $http.post($sce.trustAsResourceUrl(urlresource), data);
+			$http.get(constants.base+'php/request.php?token='+constants.api).then(function(resp){
+				//pass
+				var parameters = $.param(params);
+				var token = resp.data.key;
+
+				$http.post($sce.trustAsResourceUrl(url)+'?key='+token+'&'+parameters, data).then(function(response){
+					if(typeof action == 'function') {
+						action(response);
+					}
+				}, function(){
+					if(typeof fail == 'function') {
+						fail('Invalid API Key');
+					}
+				});
+
+			}, function(){
+				//fail
+				if(typeof fail == 'function') {
+					fail('Invalid Request Key');
+				}
+			});
 		}
 	};
 }]);
@@ -94,7 +134,9 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 				else{
 					svg = 'false';
 				}
-				fetch.secured(constants.canonical+'_data/main.php?request=1&svg='+svg).then(function(response){
+				fetch.secureget(constants.canonical+'_data/main.php', {
+					'svg' : svg
+				}, function(response){
 					o.contents = response.data;
 					
 					if(typeof specifics == 'string') {

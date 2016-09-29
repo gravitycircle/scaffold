@@ -54,10 +54,20 @@
 				}
 			},
 			verify: function(data, pass, fail, error) {
-				fetch.post(constants.base+'php/lasso.php?verify', data).then(function(response){
-					
-				}, function(response){
+				fetch.post(constants.base+'php/lasso.php', {
+					'verify' : 1
+				}, data, function(response){
+					if(typeof pass == 'function') {
+						pass(response);
+					}
 
+					if(typeof fail == 'function') {
+						fail(response);
+					}
+				}, function(response){
+					if(typeof error == 'function') {
+						error(response);
+					}
 				});
 			}
 		};
@@ -78,73 +88,23 @@
 						no(response);
 					}
 				});
-				
 			},
-			servercheck : function(object, respond, error){
-				fetch.post(constants.canonical+'php/mailer.php?verify=1', object).then(function(response){
-					respond(response);
+			verify: function(data, pass, fail, error) {
+				fetch.post(constants.base+'php/mailer.php', {
+					'verify' : 1
+				}, data, function(response){
+					if(typeof pass == 'function') {
+						pass(response);
+					}
+
+					if(typeof fail == 'function') {
+						fail(response);
+					}
 				}, function(response){
-					error('There was an error in the PHP API endpoint.');
+					if(typeof error == 'function') {
+						error(response);
+					}
 				});
-			},
-			verify: function(answers, email_fields, pass, fail, error) {
-				var o = this;
-				if(!o.functionlock){
-					o.functionlock = true;
-					var passed = [];
-					var failed = [];
-					var email_verify = [];
-
-					for(var index in answers) {
-						if(answers[index] === false){
-							failed.push(index);
-						}
-						else{
-							passed.push(index);
-						}
-					}
-
-					if(failed.length > 0){
-						fail(failed);
-						return false;
-					}
-
-
-					if(typeof answers != 'object'){
-						error('Invalid answers object type.');
-					}
-					else{
-						if($.isArray(email_fields) && email_fields.length > 0){
-							for(var i in email_fields){
-								if(typeof answers[email_fields[i]] == 'undefined'){
-									error('Email fields does not match answer structure.');
-									return false;
-								}
-								else{
-									email_verify.push({
-										'name' : email_fields[i],
-										'value' : answers[email_fields[i]]
-									});
-								}
-							}
-
-							o.servercheck(email_verify, function(response){
-								if(response.data.fail.length > 0){
-									fail(response.data.fail);
-								}
-								else{
-									pass();
-								}
-							}, function(err){
-								error(err);
-							});
-						}
-						else{
-							pass();
-						}
-					}
-
-				}
 			},
 			compose: function(from, replyto, to, subject, body) {
 				//parse

@@ -1,6 +1,6 @@
 <?php
 include_once('config.php');
-include_once(DOCROOT.'/_data/main.php');
+include_once(DOCROOT.'/_data/collate.php');
 include_once('php/server.php');
 $gen_data = main(false);
 ob_start();
@@ -14,18 +14,18 @@ ob_start();
 	<link rel="shortcut icon" href="<?=BASE?>img/favico.ico" type="image/vnd.microsoft.icon" />
 	<link rel="icon" type="image/png" href="<?=BASE?>img/favico.png" />
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?=GOOGLEAPI?>"></script>
-	<script type="text/javascript" src="lib/modernizr.js"></script> 
-	<script type="text/javascript" src="lib/jquery.js"></script>
-	<script type="text/javascript" src="lib/angular.js"></script>
-	<script type="text/javascript" src="lib/angular-maps.js"></script>
-	<script type="text/javascript" src="lib/transit.js"></script>
-	<script type="text/javascript" src="scr/config.js.php"></script>
-	<script type="text/javascript" src="scr/views.js"></script>
-	<script type="text/javascript" src="ext/html.js"></script>
-	<script type="text/javascript" src="ext/comms.js"></script>
-	<script type="text/javascript" src="scr/modes.js"></script>
-	<script type="text/javascript" src="scr/main.js"></script>
-	<link rel="stylesheet" href="css/style.css" />
+	<script type="text/javascript" src="<?=BASE?>lib/modernizr.js"></script> 
+	<script type="text/javascript" src="<?=BASE?>lib/jquery.js"></script>
+	<script type="text/javascript" src="<?=BASE?>lib/angular.js"></script>
+	<script type="text/javascript" src="<?=BASE?>lib/angular-maps.js"></script>
+	<script type="text/javascript" src="<?=BASE?>lib/transit.js"></script>
+	<script type="text/javascript" src="<?=BASE?>scr/config.js.php"></script>
+	<script type="text/javascript" src="<?=BASE?>scr/views.js"></script>
+	<script type="text/javascript" src="<?=BASE?>ext/html.js"></script>
+	<script type="text/javascript" src="<?=BASE?>ext/comms.js"></script>
+	<script type="text/javascript" src="<?=BASE?>scr/modes.js"></script>
+	<script type="text/javascript" src="<?=BASE?>scr/main.js"></script>
+	<link rel="stylesheet" href="<?=BASE?>css/style.css" />
 	<base href="<?=BASE?>">
 </head>
 <body></body>

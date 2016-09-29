@@ -1,5 +1,6 @@
 <?php
 include_once('../config.php');
+include_once('../php/keygen.php');
 header("Content-type: text/javascript");
 ?>
 (function() {
@@ -12,7 +13,8 @@ cfg.factory('constants', function(){
 		smtp: {
 			'user' : '<?=SMTPUSER?>',
 			'pw' : '<?=SMTPPW?>'
-		}
+		},
+		api: '<?=generate(APIKEY)?>'
 	};
 });
 

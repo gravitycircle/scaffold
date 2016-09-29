@@ -19,6 +19,8 @@ define('SSL', (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https
 define('CANONICAL', SSL.str_replace($docroot, $servername, dirname(__FILE__)).'/');
 define('BASE', SSL.str_replace($docroot, $servername, dirname(__FILE__)).'/');
 define('DOMAIN', str_replace(SSL, '', BASE));
+//up to 12 digit hex only. ty.
+define('APIKEY', 'ea77d54c0fbd');
 
 define('SMTPUSER', '@');
 define('SMTPPW', '@');

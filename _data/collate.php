@@ -1,7 +1,7 @@
 <?php
 include_once('collect.php');
 include_once('content.php');
-
+include_once(DOCROOT.'/php/keygen.php');
 function main($json = true) {
 
 	$output = array();

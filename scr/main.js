@@ -9,7 +9,7 @@
 		
 	}]);
 
-	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'email', 'modal', function($compile, $window, $timeout, $location, features, sources, constants, email, modal){
+	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'email', 'modal', 'fetch', function($compile, $window, $timeout, $location, features, sources, constants, email, modal, fetch){
 		return{
 			restrict: 'E',
 			templateUrl: 'shadow/main.html',
@@ -32,7 +32,6 @@
 				$scope.initiate = function(content){
 					$scope.data = content;
 					$scope.fields = $scope.data.test.fields;
-					console.log($scope.fields);
 				};
 			}
 		};

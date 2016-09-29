@@ -1,10 +1,10 @@
 <?php
-if(isset($_GET['request']) && $_GET['request'] == 1) {
-	include_once('../config.php');	
+if(isset($_GET['request'])) {
+	include_once('../config.php');
+	include_once('collate.php');
 }
-include_once('collate.php');
 
-if(isset($_GET['request']) && $_GET['request'] == '1') {
+if(isset($_GET['request']) && degenerate($_GET['request'])) {
 	header('Cache-Control: no-cache, must-revalidate');
 	header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
 	header('Content-type: application/json');

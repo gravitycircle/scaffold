@@ -26,7 +26,7 @@ function get_fields($lasso) {
 			'key' => 'lasso-key',
 			'label' => 'Lasso Field',
 			'id' => 'field-id',
-			'type' => 'text',
+			'type' => 'email',
 			'require' => true
 		),
 		array(
