@@ -5,11 +5,23 @@
 		$locationProvider.html5Mode(true);
 	}]);
 
-	app.factory('navigator', ['$location', function($location){
-		
+	app.factory('pathmgr', ['$location', function($location){
+		return {
+			locate : function(path){
+				path = path.replace('/debug', '');
+
+				if(path == '/' || path === ''){
+					return 'home';
+				}
+				else{
+					path = path.replace('/', '');
+					return path;
+				}
+			}
+		};
 	}]);
 
-	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'email', 'modal', 'fetch', function($compile, $window, $timeout, $location, features, sources, constants, email, modal, fetch){
+	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'email', 'modal', 'fetch', 'pathmgr', function($compile, $window, $timeout, $location, features, sources, constants, email, modal, fetch, pathmgr){
 		return{
 			restrict: 'E',
 			template: constants.templates.shadow.main,
@@ -33,6 +45,7 @@
 					$scope.data = content;
 					$scope.fields = $scope.data.test.fields;
 				};
+
 			}
 		};
 	}]);
