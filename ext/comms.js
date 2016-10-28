@@ -76,8 +76,10 @@
 	com.factory('email', ['fetch', 'constants', function(fetch, constants){
 		return{
 			functionlock : false,
-			sendmail: function(object, yes, no) {
-				fetch.post(constants.canonical+'php/mailer.php?mail', object).then(function(response){
+			send: function(object, yes, no) {
+				fetch.post(constants.base+'php/mailer.php', {
+					'mail' : 1
+				}, object, function(response){
 					if(typeof yes == 'function')
 					{
 						yes(response.data);
@@ -123,9 +125,18 @@
 				//parse
 				var out = '<table border="0" width="600" style="margin: auto;"><tbody>';
 				var h = '';
+				var def = '';
 				for(var o in object){
 					h = o.split('-').join(' ');
-					out = out + '<tr><td style="font-weight: bold;">'+h.charAt(0).toUpperCase()+h.slice(1)+': </td><td>'+decodeURIComponent(object[o])+'</td></tr>';
+					
+					if(decodeURIComponent(object[o]) === ''){
+						def = defaultvalue;
+					}
+					else{
+						def = decodeURIComponent(object[o]);
+					}
+
+					out = out + '<tr><td style="font-weight: bold;">'+h.charAt(0).toUpperCase()+h.slice(1)+': </td><td>'+def+'</td></tr>';
 				}
 
 				out = out+'</tbody></table>';

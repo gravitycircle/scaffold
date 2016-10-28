@@ -1,6 +1,7 @@
 <?php
-include_once('../../config.php');
+include_once('../config.php');
 include_once('keygen.php');
+include_once('../_data/content.php');
 if(isset($_GET['key']) && degenerate($_GET['key'])){
 	if(isset($_GET['verify'])){
 		$input = json_decode(file_get_contents("php://input"), true);
@@ -84,13 +85,21 @@ if(isset($_GET['key']) && degenerate($_GET['key'])){
 			  $mail->Subject = urldecode($data['subject']);
 	//		  $mail->AltBody = 'To view the message, please use an HTML compatible email viewer!'; // optional - MsgHTML will create an alternate automatically
 			  $mail->MsgHTML('<div style="width: 650px; margin: 20px auto 20px;">'.str_replace('[date]', $theDate, urldecode($data['body'])).'</div>');
+			  $mail->SMTPOptions = array(
+				'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+				)
+			  );
 			  $mail->Send();
 				header('Cache-Control: no-cache, must-revalidate');
 				header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
 				header('Content-type: application/json');
 			  echo json_encode(array(
 			  	'status' => 'Successful',
-			  	'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates.'
+			  	'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates.',
+			  	'debug' => 'ok'
 			  ));
 			} catch (phpmailerException $e) {
 			  //echo $e->errorMessage(); //Pretty error messages from PHPMailer
@@ -99,7 +108,8 @@ if(isset($_GET['key']) && degenerate($_GET['key'])){
 				header('Content-type: application/json');
 			  echo json_encode(array(
 			  	'status' => 'Failed',
-			  	'message' => 'There was a technical issue in the registration process and we cannot continue with your registration. We are at work right now on fixing this issue. Please check back at a later time. Thank you for your interest.'
+			  	'message' => 'There was a technical issue in the registration process and we cannot continue with your registration. We are at work right now on fixing this issue. Please check back at a later time. Thank you for your interest.',
+			  	'debug' => 'Mailer: '.$e->errorMessage()
 			  ));
 			} catch (Exception $e) {
 			  //echo $e->getMessage(); //Boring error messages from anything else!
@@ -108,7 +118,8 @@ if(isset($_GET['key']) && degenerate($_GET['key'])){
 				header('Content-type: application/json');
 			  echo json_encode(array(
 			  	'status' => 'Failed',
-			  	'message' => 'There was a technical issue in the registration process and we cannot continue with your registration. We are at work right now on fixing this issue. Please check back at a later time. Thank you for your interest.'
+			  	'message' => 'There was a technical issue in the registration process and we cannot continue with your registration. We are at work right now on fixing this issue. Please check back at a later time. Thank you for your interest.',
+			  	'debug' => 'PHP: '.$e->getMessage()
 			  ));
 			}
 		}

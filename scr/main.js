@@ -12,7 +12,7 @@
 	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'email', 'modal', 'fetch', function($compile, $window, $timeout, $location, features, sources, constants, email, modal, fetch){
 		return{
 			restrict: 'E',
-			templateUrl: 'shadow/main.html',
+			template: constants.templates.shadow.main,
 			scope: {
 				data : '@'
 			},

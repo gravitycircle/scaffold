@@ -36,4 +36,8 @@ function scan_imgs(){
 
 	return $filearr;
 }
+
+function scan_templates(){
+	
+}
 ?>

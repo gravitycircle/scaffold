@@ -24,10 +24,10 @@ function main($json = true) {
 	else{
 		$output['meta'] = array(
 			'lost' => array(
-				'title' => 'Angular: Site Scaffolding & Bootstrap',
+				'title' => $output['site_name'].' - Page Not Found',
 				'description' => '---',
 				'og' => array(
-					'title' => 'Angular: Site Scaffolding & Bootstrap',
+					'title' => $output['site_name'].' - Page Not Found',
 					'description' => '---',
 					'site_name' => 'Angular: Site Scaffolding & Bootstrap',
 					'url' => BASE,
@@ -35,7 +35,7 @@ function main($json = true) {
 				),
 				'tw' => array(
 					'card' => 'summary',
-					'title' => 'Angular: Site Scaffolding & Bootstrap',
+					'title' => $output['site_name'].' - Page Not Found',
 					'description' => '---',
 					'image' => BASE.'img/non-render/og-logo.jpg'
 				)

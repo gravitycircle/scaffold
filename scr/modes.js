@@ -53,10 +53,10 @@
 		};
 	}]);
 
-	mode.directive('field', ['$compile', 'submission', function($compile, submission){
+	mode.directive('field', ['$compile', 'submission', 'constants', function($compile, submission, constants){
 		return{
 			restrict: 'E',
-			templateUrl: 'shadow/modified-elements/field.html',
+			template: constants.templates['modified-elements'].field,
 			replace: true,
 			scope : {
 				field : '@'
@@ -106,10 +106,10 @@
 		};
 	}]);
 
-	mode.directive('checkboxField', ['submission', function(submission){
+	mode.directive('checkboxField', ['submission', 'constants', function(submission, constants){
 		return{
 			restrict: 'E',
-			templateUrl: 'shadow/fields/checkbox.html',
+			template: constants.templates.fields.checkbox,
 			replace: true,
 			scope: {
 				render: '@',
@@ -148,10 +148,10 @@
 		};
 	}]);
 
-	mode.directive('textField', ['submission', function(submission){
+	mode.directive('textField', ['submission', 'constants', function(submission, constants){
 		return {
 			restrict: 'E',
-			templateUrl: 'shadow/fields/text.html',
+			template: constants.templates.fields.text,
 			replace: true,
 			scope : {
 				render: '@',
@@ -185,10 +185,10 @@
 		};
 	}]);
 
-	mode.directive('emailField', ['submission', function(submission){
+	mode.directive('emailField', ['submission', 'constants', function(submission, constants){
 		return {
 			restrict: 'E',
-			templateUrl: 'shadow/fields/text.html',
+			template: constants.templates.fields.text,
 			replace: true,
 			scope : {
 				render: '@',
@@ -222,10 +222,10 @@
 		};
 	}]);
 
-	mode.directive('paragraphField', ['submission', function(submission){
-		return{
+	mode.directive('paragraphField', ['submission', 'constants', function(submission, constants){
+		return {
 			restrict: 'E',
-			templateUrl: 'shadow/fields/paragraph.html',
+			template: constants.templates.field.paragraph,
 			scope: {
 				render: '@',
 				mrk: '@'
@@ -273,10 +273,10 @@
 		};
 	}]);
 
-	mode.directive('dropdownField', ['submission', function(submission){
-		return{
+	mode.directive('dropdownField', ['submission', 'constants', function(submission, constants){
+		return {
 			restrict: 'E',
-			templateUrl: 'shadow/fields/dropdown.html',
+			template: constants.templates.fields.dropdown,
 			scope:{
 
 			},
@@ -355,11 +355,11 @@
 		};
 	}]);
 	
-	mode.directive('submitField', ['submission', 'email', 'lasso', function(submission, email, lasso){
+	mode.directive('submitField', ['submission', 'email', 'lasso', 'constants', function(submission, email, lasso, constants){
 		return{
 			restrict: 'E',
 			replace: true,
-			templateUrl: 'shadow/fields/submit.html',
+			template: constants.templates.fields.submit,
 			scope: {
 				render: '@'
 			},
