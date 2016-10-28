@@ -1,6 +1,11 @@
 <?php
 include_once('../config.php');
 include_once('../php/keygen.php');
+require_once(DOCROOT.'/php/minifier/src/Minify.php');
+require_once(DOCROOT.'/php/minifier/src/CSS.php');
+require_once(DOCROOT.'/php/minifier/src/JS.php');
+require_once(DOCROOT.'/php/minifier/src/Exception.php');
+require_once(DOCROOT.'/php/minifier/src/Converter.php');
 function scanTemplates($dir, $base){
     $ffs = scandir($dir);
     foreach($ffs as $ff){
@@ -35,8 +40,7 @@ foreach($templates as $t) {
 	$filearr[$folder][$filename] = $filecontent;
 
 }
-
-header("Content-type: text/javascript");
+ob_start();
 ?>
 (function() {
 var cfg = angular.module("configurator", []);
@@ -56,3 +60,11 @@ include_once('config.js');
 		};
 	});
 })();
+<?php
+$js = ob_get_clean();
+
+use MatthiasMullie\Minify;
+$shrink = new Minify\JS($js);
+header("Content-type: text/javascript");
+echo $shrink->minify();
+?>
