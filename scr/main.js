@@ -1,32 +1,51 @@
 (function(){
-	var app = angular.module("main", ['htmlcustom', 'configurator', 'siteviews', 'modes', 'ngMap']);
+	var app = angular.module("main", ['htmlcustom', 'configurator', 'siteviews', 'modes', 'ngMap', 'communicator']);
 
 	app.config(['$locationProvider', function($locationProvider) {
 		$locationProvider.html5Mode(true);
 	}]);
 
-	app.factory('navigator', ['$location', function($location){
-		
+	app.factory('pathmgr', ['$location', function($location){
+		return {
+			locate : function(path){
+				path = path.replace('/debug', '');
+
+				if(path == '/' || path === ''){
+					return 'home';
+				}
+				else{
+					path = path.replace('/', '');
+					return path;
+				}
+			}
+		};
 	}]);
 
-	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'email', 'modal', function($compile, $window, $timeout, $location, features, sources, constants, email, modal){
+	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'email', 'modal', 'fetch', 'pathmgr', function($compile, $window, $timeout, $location, features, sources, constants, email, modal, fetch, pathmgr){
 		return{
 			restrict: 'E',
-			templateUrl: 'shadow/main.html',
+			template: constants.templates.shadow.main,
 			scope: {
-				logo : '@'
+				data : '@'
 			},
 			link: function(scope, element, attrs){
-				sources.get(function(){
+				sources.get(function(content){
 					//post-load
 					
-				}, function(){
+				}, function(content){
 					//pre-load
-					
+					scope.initiate(content.contents);
+				}, function(progress){
+					//while
 				});
+
 			},
 			controller: function($scope, $element, $attrs){
-				$scope.intro = constants.base+'introduction.php';
+				$scope.initiate = function(content){
+					$scope.data = content;
+					$scope.fields = $scope.data.test.fields;
+				};
+
 			}
 		};
 	}]);

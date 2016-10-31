@@ -1,82 +1,10 @@
 <?php
-if(isset($_GET['request']) && $_GET['request'] == 1) {
+if(isset($_GET['request'])) {
 	include_once('../config.php');
+	include_once('collate.php');
 }
 
-function main($json = true) {
-	$output = array();
-	$filearr = array();
-
-	if(isset($_GET['svg']) && $_GET['svg'] == 'true'){
-		$folder = 'img/svg';
-	}
-	else{
-		$folder = 'img/png';
-	}
-
-	$arr = scandir (DOCROOT.'/'.$folder.'/');
-	foreach($arr as $file)
-	{
-		if(substr($file, 0, 1) !== '.' && substr($file, 0, 6) !== 'favico')
-		{
-			array_push($filearr, BASE.$folder.'/'.$file);
-		}
-	}
-
-	$folder = 'img/all';
-	$arr = scandir (DOCROOT.'/'.$folder.'/');
-	foreach($arr as $file)
-	{
-		if(substr($file, 0, 1) !== '.' && substr($file, 0, 6) !== 'favico')
-		{
-			array_push($filearr, BASE.$folder.'/'.$file);
-		}
-	}
-
-	$output['nav'] = array(
-		array(
-			'name' => 'Home',
-			'path' => ''
-		)
-	);
-
-	$output['site_name'] = 'Angular: Site Scaffolding & Bootstrap';
-
-	$output['preload'] = $filearr;
-
-	$output['contents'] = array(
-	)
-	;
-	if($json) {
-		return json_encode($output);
-	}
-	else{
-		$output['meta'] = array(
-			'lost' => array(
-				'title' => 'Angular: Site Scaffolding & Bootstrap',
-				'description' => '---',
-				'og' => array(
-					'title' => 'Angular: Site Scaffolding & Bootstrap',
-					'description' => '---',
-					'site_name' => 'Angular: Site Scaffolding & Bootstrap',
-					'url' => BASE,
-					'image' => BASE.'img/non-render/og-logo.jpg' 
-				),
-				'tw' => array(
-					'card' => 'summary',
-					'title' => 'Angular: Site Scaffolding & Bootstrap',
-					'description' => '---',
-					'image' => BASE.'img/non-render/og-logo.jpg'
-				)
-			)
-		);
-		return $output;
-	}
-}
-
-
-
-if(isset($_GET['request']) && $_GET['request'] == '1') {
+if(isset($_GET['request']) && degenerate($_GET['request'])) {
 	header('Cache-Control: no-cache, must-revalidate');
 	header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
 	header('Content-type: application/json');

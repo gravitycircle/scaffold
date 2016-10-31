@@ -1,4 +1,4 @@
-# ![---](https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png) Angular: Site Scaffolding & Bootstrap v0.4 (Rollback)
+# ![---](https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png) Angular: Site Scaffolding & Bootstrap v0.5 (Unstable)
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
@@ -21,7 +21,7 @@ SEO has been set up. Under the __seo_ folder, the _index.php_ file has an _seo f
 
 This is only the introduction page. The installation file for this scaffolding setup has not yet been configured and I'm not too sure if it'll work out of the box since the framework stack is still in active development. To start working with the stack anyway, please rename the 'index.php file' into something different and rename the _index.php file to index.php.
 
-**Pending changes for the current sprint:**
+**Currently undergoing the following changes:**
 
  - Refactored php/mailer.php file to accept and verify forms. Made to be reusable.
  - Refactored the 'lasso' directive under config.js. Made to be, again, reusable.

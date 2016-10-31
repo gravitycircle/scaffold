@@ -1,11 +1,11 @@
-<div ng-attr-id="{{render.id}}" class="field-handler field-dropdown">
-	<label>{{render.label}}*</label>
+<div ng-attr-id="{{render.idname}}" class="field-handler field-dropdown">
+	<label>{{render.label}}{{mrk}}</label>
 	<div class="cell">
 		<div class="dropdown-box" ng-click="toggle()">
 			<div class="choices">
 				<div class="selected"></div>
 				<div class="options-container">
-					<div class="options" ng-repeat="f in render.filter" ng-click="choose(f)">{{f}}</div>
+					<div class="options" ng-repeat="f in render.values" ng-click="choose(f.value, f.name)">{{f.name}}</div>
 				</div>
 			</div>
 		</div>
