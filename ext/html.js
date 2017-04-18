@@ -87,101 +87,126 @@
 	}]);
 
 	mod.factory('modal', [function(){
-		return {
-			'htmlmodal' : function(html, onload){
-				var o = this;
-				$('body').append('<div class="modal-shader"><div class="modal-window"><div class="modal-text">'+html+'</div></div></div>');
-
-				$('.modal-shader').transition({
+		var template = '<div class="shader cncl"><div class="sizer"><div class="modal-window%CLASS%"><a href="#" class="form-close close cncl"></a><div class="modal-title">%TITLE%</div><div class="modal-text">%HTML%</div><div class="modal-footer">%FOOT%</div></div></div></div>';
+		
+		var closeModal = function(callback){
+			$('.shader').css({
+				'pointer-events' : 'none'
+			});
+			$('.modal-window').transition({
+				'opacity' : 0,
+				'x' : 0,
+				'y' : -60
+			}, 600, function(){
+				$('.shader').transition({
 					'opacity' : 1,
-					'width' : '100%',
-					'height' : '100%'
-				}, 500, function(){
-					$('.modal-shader .modal-window').transition({
-						'scale' : [1,1],
-						'x' : '-50%',
-						'y' : '-50%',
-						'opacity' : 1
-					}, 300, function(){
-						$('.modal-text, .modal-control').transition({
-							'opacity' : 1
-						}, 300, function(){
-							if(typeof onload == 'function'){
-								onload();
-							}
-						});
-					});
+					'width' : 0,
+					'height' : 0
+				}, 300, function(){
+					$('.shader').remove();
 				});
+			});
+		};
 
+		var eventActions = function(cls, evt, fn, create){
+			if(create) {
+				$('.'+cls).on(evt, function(ev){
+					fn(ev, closeModal);
+				});
+			}
+			else{
+				$('.'+cls).off(evt);
+			}
+		};
 
-			},
-			'hidemodal' : function(afterclose){
-				if($('.modal-shader').length > 0){
-					$('.modal-window').transition({
-						'opacity' : 0
-					}, 300, function(){
-						$('.modal-shader').transition({
-							'width' : 0,
-							'height' : 0,
-							'opacity' : 0
-						}, 500, function(){
-							$('.modal-shader').off('click');
-							$('.modal-window').off('click');
-							$('.modal-control a').off('click');
-
-							$('.modal-shader').remove();
-
-							if(typeof afterclose == 'function'){
-								afterclose();
+		return {
+			dialogue: function(title, msg, cta) {
+				//cta:
+				/*
+				{
+					{
+						'text' : 'Link Text',
+						'class' : 'unique-identifier',
+						'other-classes' : ['other-classes-in-array'],
+						'events' : {
+							'click' : function(e){
+	
+							},
+							'hover' : function(e){
+								
 							}
-						});
-					});
+						}
+					},
+					{
+						'text' : 'Link Text',
+						'class' : 'unique-identifier',
+						'other-classes' : ['other-classes-in-array'],
+						'events' : {
+							'click' : function(e){
+	
+							},
+							'hover' : function(e){
+								
+							}
+						}
+					}
 				}
-			},
-			'showmodal' : function(heading, message, buttontext, onload, onclose){
-				var o = this;
-				$('body').append('<div class="modal-shader"><div class="modal-window"><div class="modal-text"><h2>'+heading+'</h2>'+message+'</div><div class="modal-control"><a href="#" class="action">'+buttontext+'</a></div></div></div>');
+	
+				*/
 
-				$('.modal-shader').transition({
+				var t = template+'';
+				t = t.replace('%TITLE%', title);
+				t = t.replace('%CLASS%', ' modal-dialogue');
+				t = t.replace('%HTML%', '<p>'+msg+'</p>');
+				var actions = {};
+				var buttons = [];
+				if(typeof cta == 'object' && cta !== null) {
+					for(var i in cta) {
+						buttons.push('<a href="#" class="'+cta[i]['class']+' '+cta[i]['other-classes'].join(' ')+'">'+cta[i].text+'</a>');
+						if(typeof actions[cta[i]['class']] != 'undefined') {
+							console.error('Modal Error: Cannot launch modal, duplicates found.');
+							return false;
+						}
+						else{
+							actions[cta[i]['class']] = cta[i].events;
+						}
+					}
+					t = t.replace('%FOOT%', buttons.join(''));
+				}
+				else{
+					t = t.replace('%FOOT%', '<a href="#" class="button cncl">Close</a>');
+				}
+
+
+				$('body').append(t);
+
+				$('.shader').transition({
 					'opacity' : 1,
 					'width' : '100%',
 					'height' : '100%'
-				}, 500, function(){
-					$('.modal-shader .modal-window').transition({
-						'scale' : [1,1],
-						'x' : '-50%',
-						'y' : '-50%',
-						'opacity' : 1
-					}, 300, function(){
-						$('.modal-text, .modal-control').transition({
-							'opacity' : 1
-						}, 300, function(){
-							$('.modal-shader').on('click', function(){
-								if(typeof onclose == 'function'){
-									o.hidemodal(onclose);
+				}, 300, function(){
+					$('.modal-window').transition({
+						'opacity' : 1,
+						'x' : 0,
+						'y' : 0
+					}, 600, function(){
+						//events
+						$('.cncl').on('click', function(e){
+							closeModal();
+							for(var cls in actions){
+								//eventActions(cls, evt, fn, create)
+								for(var evt in actions[cls]) {
+									eventActions(cls, evt, actions[cls][evt], false);
 								}
-								else{
-									o.hidemodal();
-								}
-							});
-
-							$('.modal-window').on('click', function(e){
-								e.stopPropagation();
-							});
-
-							$('.modal-control a').on('click', function(e){
-								e.preventDefault();
-								if(typeof onclose == 'function'){
-									o.hidemodal(onclose);
-								}
-								else{
-									o.hidemodal();
-								}
-							});
-							if(typeof onload == 'function'){
-								onload();
 							}
 						});
+
+						for(var cls in actions){
+							//eventActions(cls, evt, fn, create)
+							for(var evt in actions[cls]) {
+								eventActions(cls, evt, actions[cls][evt], true);
+							}
+						}
 					});
 				});
 			}

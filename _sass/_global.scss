@@ -1,6 +1,9 @@
 html{
 	body{
 		#wrapper{
+			.button{
+				color: #000 !important;
+			}
 			.text-container, .email-container{
 				padding: 20px 0;
 				@include inputField(fsize(0.8), $black, $white, 'sans', 'body', 'sans', 'body', 'block'){

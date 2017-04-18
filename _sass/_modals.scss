@@ -1,81 +1,90 @@
 html{
 	body{
-		.modal-shader{
-			width: 100%;
-			height: 100%;
-			z-index: 20;
-			background: rgba(0, 0, 0, 0.7);
-			position: absolute;
-			cursor: pointer;
-			height: 0;
-			width: 0;
-			opacity: 0;
-			overflow: hidden;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			@include prefix(transform, translate(-50%, -50%));
-			
-			.modal-window{
-				background: $white;
-				border-radius: 5px;
-				width: 800px;
-				max-width: 100%;
+		.shader{
+			@include mScrollFix(){
+				opacity: 0;
+				z-index: 20;
+				background: rgba(0,0,0,0.7);
 				position: absolute;
 				top: 50%;
 				left: 50%;
-				cursor: default;
-				@include prefix(transform, translate(-50%, -50%) scale(1, 0));
-				opacity: 0;
-				overflow: hidden;
-				
-				.modal-text{
+				@include reposition(-50%, -50%);
+				width: 0;
+				height: 0;
+				overflow-y: auto;
+				text-align: center;
+			}
+
+			&::before{
+				content: '';
+				display: inline-block;
+				vertical-align: middle;
+				width: 0;
+				height: 100%;
+			}
+
+			.sizer{
+				width: 100%;
+				position: relative;
+				padding: 15px;
+				display: inline-block;
+				vertical-align: middle;
+				max-width: 830px;				
+
+				.modal-window{
 					opacity: 0;
-					padding: 15px;
-					@include min(4) {
-						padding: 15px 115px;
-					}
-					border-bottom: 1px solid #ddd;
-					text-align: center;
+					@include reposition(0, -60px);
+					position: relative;
+					box-shadow: 0 0 10px rgba(0,0,0,0.5);
+					&.modal-dialogue{
+						background: $white;
+						border-radius: 3px;
+						overflow: hidden;
 
-					h2{
-						color: $accent;
-						@include zoom(font-size, 2.25rem);
-						line-height: 1.6;
-						margin: 0;
-						letter-spacing: 0.02em;
-						text-transform: uppercase;
-					}
-				}
-
-				.modal-control{
-					opacity: 0;
-					padding: 15px;
-					text-align: right;
-					text-align: center;
-					a{
-						display: inline-block;
-						@include zoom(height, 3rem);
-						@include zoom(font-size, 1.6rem);
-						text-transform: uppercase;
-						@include zoom(padding-left, 1.6rem);
-						@include zoom(padding-right, 1.6rem);
-						@include zoom(line-height, 3rem);
-						background: $accent;
-						color: #fff;
-						border-radius: 5px;
-						border: 1px solid $accent;
-						@include transition(all);
-						@include timing(linear);
-						@include duration(0.2s);
-
-						&:hover, &:active, &:focus{
-							text-decoration: none;
-							background: $white;
-							color: $accent;
-							border-color: $accent;
+						.modal-title{
+							@include type('sans', 'head');
+							line-height: 2.5;
+							text-align: center;
+							padding-left: 20px;
+							padding-right: 20px;
+							border-bottom: 1px solid rgba($black, 0.4);
 						}
 
+						.modal-text{
+							@include type('sans', 'body');
+							p{
+								text-align: left;
+								padding-left: 20px;
+								padding-right: 20px;
+							}
+							padding-top: 20px;
+							padding-bottom: 20px;
+						}
+
+						.modal-footer{
+							border-top: 1px solid rgba($black, 0.4);
+							padding-top: 20px;
+							padding-bottom: 20px;
+							.button{
+								@include button (fsize(2), 'sans', 'body', $black, $white){
+									&:hover, &:active, &:focus{
+										background: $black;
+										color: $white;
+									}
+								};
+							}
+						}
+					}
+
+					.close{
+						position: absolute;
+						top: 15px;
+						right: 15px;
+						color: $black;
+
+						&:hover{
+							opacity: 0.7;
+						}
 					}
 				}
 			}

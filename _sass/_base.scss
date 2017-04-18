@@ -51,9 +51,7 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 	cursor: pointer;
 	background: $bg;
 
-	&:hover, &:active, &:focus{
-		@content;
-	}
+	@content;
 }
 
 @mixin dimensions($width, $height: false){
