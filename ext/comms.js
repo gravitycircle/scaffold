@@ -1,13 +1,13 @@
 (function(){
 	var com = angular.module("communicator", []);
 
-	com.factory('lasso', ['$sce', 'constants', 'fetch', function($sce, constants, fetch){
+	com.factory('crm', ['$sce', 'constants', 'fetch', function($sce, constants, fetch){
+		var guid;
 		return {
-			object : {},
-			guid : '',
-			track : function(trackcode, title, url){
+			lasso : {},
+			lassoTrack : function(trackcode, title, url){
 				var LassoCRM = LassoCRM || {};
-				this.object = LassoCRM;
+				this.lasso = LassoCRM;
 				(function(ns){
 					ns.tracker = new LassoAnalytics(trackcode);
 				})(LassoCRM);
@@ -42,10 +42,10 @@
 				}
 
 			},
-			setGuid : function(fetch){
+			lassoGuid : function(fetch){
 				if(this.guid === '')
 				{
-					this.guid = this.object.tracker.readCookie("ut");
+					this.guid = this.lasso.tracker.readCookie("ut");
 				}
 
 				if(typeof fetch != 'undefined')
@@ -56,58 +56,59 @@
 		};
 	}]);
 
-	com.factory('email', ['fetch', 'constants', function(fetch, constants){
-		return{
-			functionlock : false,
-			send: function(object, yes, no) {
-				fetch.post(constants.base+'php/mailer.php', {
-					'mail' : 1
-				}, object, function(response){
-					if(typeof yes == 'function')
-					{
-						yes(response.data);
-					}
-				}, function(response){
-					if(typeof no == 'function')
-					{
-						no(response);
-					}
-				});
-			},
-			compose: function(from, replyto, to, subject, body) {
+	com.factory('deliver', ['fetch', 'constants', 'crm', function(fetch, constants, crm){
+		var compose = function(from, replyto, to, subject, body) {
 				//parse
-
 				var emaildetails = {
 					'from' : encodeURIComponent(from.join('|')),
 					'replyTo' : encodeURIComponent(replyto.join('|')),
 					'To' : encodeURIComponent(to.join('|')),
 					'subject': encodeURIComponent(subject),
-					'body' : encodeURIComponent(body)
+					'body' : body
 				};
 
 				return emaildetails;
-			},
-			tabulate: function(object, defaultvalue) {
-				//parse
-				var out = '<table border="0" width="600" style="margin: auto;"><tbody>';
-				var h = '';
-				var def = '';
-				for(var o in object){
-					h = o.split('-').join(' ');
-					
-					if(decodeURIComponent(object[o]) === ''){
-						def = defaultvalue;
-					}
-					else{
-						def = decodeURIComponent(object[o]);
-					}
+		};
 
-					out = out + '<tr><td style="font-weight: bold;">'+h.charAt(0).toUpperCase()+h.slice(1)+': </td><td>'+def+'</td></tr>';
+		var locked = false;
+
+		return{
+			email: function(from, replyto, to, subject, object, defaultvalue, yes, no) {
+				if(!locked) {
+					locked = true;
+					fetch.post(constants.base+'php/mailer.php', {
+						'mail' : 1
+					}, compose(from, replyto, to, subject, object), function(response){
+						if(typeof yes == 'function')
+						{
+							yes(response.data);
+						}
+						locked = false;
+					}, function(response){
+						if(typeof no == 'function')
+						{
+							no(response);
+						}
+						locked = false;
+					});
 				}
+			},
+			crm : function(which, object, exec) {
+				if(!locked) {
+					locked = true;
 
-				out = out+'</tbody></table>';
+					if(typeof exec == 'undefined') {
+						exec = 1;
+					}
 
-				return out;
+					fetch.post(constants.base+'php/'+which+'.php', {
+						'send' : exec
+					}, object, function(response){
+						locked = false;
+					}, function(response){
+						locked = false;
+					});
+				}
 			}
 		};
 	}]);

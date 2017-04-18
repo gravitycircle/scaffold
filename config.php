@@ -25,6 +25,6 @@ define('APIKEY', 'ea77d54c0fbd');
 define('SMTPUSER', '@');
 define('SMTPPW', '@');
 define('SMTPHOST', '@');
-define('SMTPPORT', 587);
+define('SMTPPORT', 465);
 define('GOOGLEAPI', '@');
 ?>

@@ -21,7 +21,7 @@
 		};
 	}]);
 
-	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'email', 'modal', 'fetch', 'pathmgr', function($compile, $window, $timeout, $location, features, sources, constants, email, modal, fetch, pathmgr){
+	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'modal', 'fetch', 'pathmgr', function($compile, $window, $timeout, $location, features, sources, constants, modal, fetch, pathmgr){
 		return{
 			restrict: 'E',
 			template: constants.templates.shadow.main,

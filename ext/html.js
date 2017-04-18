@@ -93,6 +93,8 @@
 			$('.shader').css({
 				'pointer-events' : 'none'
 			});
+
+			$('.shader').removeClass('act');
 			$('.modal-window').transition({
 				'opacity' : 0,
 				'x' : 0,
@@ -184,14 +186,16 @@
 					'opacity' : 1,
 					'width' : '100%',
 					'height' : '100%'
-				}, 300, function(){
+				}, 600, function(){
 					$('.modal-window').transition({
 						'opacity' : 1,
 						'x' : 0,
 						'y' : 0
 					}, 600, function(){
 						//events
+						$('.shader').addClass('act');
 						$('.cncl').on('click', function(e){
+							e.preventDefault();
 							closeModal();
 							for(var cls in actions){
 								//eventActions(cls, evt, fn, create)
@@ -207,6 +211,10 @@
 								eventActions(cls, evt, actions[cls][evt], true);
 							}
 						}
+
+						$('.modal-window').on('click', function(e){
+							e.stopPropagation();
+						});
 					});
 				});
 			}

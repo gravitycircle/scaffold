@@ -395,7 +395,7 @@
 		};
 	}]);
 	
-	mode.directive('submitField', ['$sce', 'submission', 'email', 'lasso', 'constants', function($sce, submission, email, lasso, constants){
+	mode.directive('submitField', ['$sce', 'submission', 'deliver', 'crm', 'constants', 'modal', function($sce, submission, deliver, crm, constants, modal){
 		return{
 			restrict: 'E',
 			replace: true,
@@ -414,6 +414,7 @@
 						for(var i in failed) {
 							$('#'+failed[i]).find('label').addClass('input-error');
 						}
+						modal.dialogue('Submission Failed', 'Unfortunately, your submission was not completed due to some missing or incorrect information. Please fill in all fields that are marked with an asterisk (*) correctly. The fields that need editing are highlighted in red.');
 					}, function(resp){
 
 					});

@@ -1,19 +1,24 @@
 html{
 	body{
 		.shader{
-			@include mScrollFix(){
-				opacity: 0;
-				z-index: 20;
-				background: rgba(0,0,0,0.7);
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				@include reposition(-50%, -50%);
-				width: 0;
-				height: 0;
-				overflow-y: auto;
-				text-align: center;
+			opacity: 0;
+			z-index: 20;
+			background: rgba(0,0,0,0.7);
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			@include reposition(-50%, -50%);
+			width: 0;
+			height: 0;
+			overflow: hidden;
+			text-align: center;
+
+			&.act{
+				@include mScrollFix() {
+					overflow-y: auto;
+				}
 			}
+			
 
 			&::before{
 				content: '';
