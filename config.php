@@ -24,7 +24,7 @@ define('APIKEY', 'ea77d54c0fbd');
 
 define('SMTPUSER', '@');
 define('SMTPPW', '@');
-define('SMTPHOST', 'mail.'.str_replace('/', '', DOMAIN));
+define('SMTPHOST', '@');
 define('SMTPPORT', 587);
-define('GOOGLEAPI', 'AIzaSyAw6KL4jOFvIkIV3f5Oz9mRkZ0gG2iHOyw');
+define('GOOGLEAPI', '@');
 ?>

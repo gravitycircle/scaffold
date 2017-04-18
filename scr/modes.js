@@ -2,7 +2,7 @@
 	//differing frameworks
 	var mode = angular.module("modes", []);
 
-	mode.factory('submission', [function(){
+	mode.factory('submission', ['constants', 'fetch',function(constants, fetch){
 		return{
 			data : {},
 			required: [],
@@ -49,6 +49,27 @@
 						d.data[i] = '';
 					}
 				}
+			},
+			verify: function(data, pass, fail, error) {
+				fetch.post(constants.base+'php/verify.php', {
+					'verify' : 1
+				}, data, function(response){
+					if(response.data.length < 1) {
+						if(typeof pass == 'function') {
+							pass();
+						}
+					}
+					else{
+						if(typeof fail == 'function') {
+							fail(response.data);
+						}
+					}
+
+				}, function(response){
+					if(typeof error == 'function') {
+						error(response);
+					}
+				});
 			}
 		};
 	}]);
@@ -106,7 +127,7 @@
 		};
 	}]);
 
-	mode.directive('checkboxField', ['submission', 'constants', function(submission, constants){
+	mode.directive('checkboxField', ['$sce', 'submission', 'constants', function($sce, submission, constants){
 		return{
 			restrict: 'E',
 			template: constants.templates.fields.checkbox,
@@ -129,13 +150,13 @@
 				}
 
 				$scope.toggle = function(){
-					$('.field-handler').removeClass('red');
-					if(!$($element).find('label').hasClass('check')){
-						$($element).find('label').addClass('check');
+					$($element).find('label').removeClass('input-error');
+					if(!$($element).hasClass('check')){
+						$($element).addClass('check');
 						submission.set($scope.render.id, $scope.$parent.field.value, $scope.render.require, $scope.render.type);
 					}
 					else{
-						$($element).find('label').removeClass('check');
+						$($element).removeClass('check');
 						if($scope.$parent.require) {
 							submission.set($scope.render.id, false, $scope.render.require, $scope.render.type);
 						}
@@ -144,11 +165,15 @@
 						}
 					}
 				};
+
+				$scope.sanitize = function(html) {
+					return $sce.trustAsHtml(html);
+				};
 			}
 		};
 	}]);
 
-	mode.directive('textField', ['submission', 'constants', function(submission, constants){
+	mode.directive('textField', ['$sce', 'submission', 'constants', function($sce, submission, constants){
 		return {
 			restrict: 'E',
 			template: constants.templates.fields.text,
@@ -181,11 +206,15 @@
 						$('body').find('.error-msg').removeClass('shown');
 					}
 				};
+
+				$scope.sanitize = function(html) {
+					return $sce.trustAsHtml(html);
+				};
 			}
 		};
 	}]);
 
-	mode.directive('emailField', ['submission', 'constants', function(submission, constants){
+	mode.directive('emailField', ['$sce', 'submission', 'constants', function($sce, submission, constants){
 		return {
 			restrict: 'E',
 			template: constants.templates.fields.text,
@@ -218,14 +247,18 @@
 						$('body').find('.error-msg').removeClass('shown');
 					}
 				};
+
+				$scope.sanitize = function(html) {
+					return $sce.trustAsHtml(html);
+				};
 			}
 		};
 	}]);
 
-	mode.directive('paragraphField', ['submission', 'constants', function(submission, constants){
+	mode.directive('paragraphField', ['$sce', 'submission', 'constants', function($sce, submission, constants){
 		return {
 			restrict: 'E',
-			template: constants.templates.field.paragraph,
+			template: constants.templates.fields.paragraph,
 			scope: {
 				render: '@',
 				mrk: '@'
@@ -243,8 +276,7 @@
 				}
 
 				$scope.typing = function(){
-					$('.field-handler').removeClass('red');
-					submission.set($scope.render.id, $($element).find('input').val(), $scope.render.require, $scope.render.type);
+					submission.set($scope.render.id, $($element).find('textarea').val(), $scope.render.require, $scope.render.type);
 
 					$($element).find('textarea').scrollTop(0);
 
@@ -269,11 +301,15 @@
 						$($element).find('.paragraph-sizer').addClass('focus');
 					}
 				};
+
+				$scope.sanitize = function(html) {
+					return $sce.trustAsHtml(html);
+				};
 			}
 		};
 	}]);
 
-	mode.directive('dropdownField', ['submission', 'constants', function(submission, constants){
+	mode.directive('dropdownField', ['$sce', 'submission', 'constants', function($sce, submission, constants){
 		return {
 			restrict: 'E',
 			template: constants.templates.fields.dropdown,
@@ -351,11 +387,15 @@
 						$('body').find('.error-msg').removeClass('shown');
 					}
 				};
+
+				$scope.sanitize = function(html) {
+					return $sce.trustAsHtml(html);
+				};
 			}
 		};
 	}]);
 	
-	mode.directive('submitField', ['submission', 'email', 'lasso', 'constants', function(submission, email, lasso, constants){
+	mode.directive('submitField', ['$sce', 'submission', 'email', 'lasso', 'constants', function($sce, submission, email, lasso, constants){
 		return{
 			restrict: 'E',
 			replace: true,
@@ -367,30 +407,20 @@
 				//do submission here
 				$scope.render = $scope.$parent.field;
 
-				$scope.mail = function(){};
-
-				$scope.curlLasso = function(){
-					lasso.verify(submission.data, function(){
-
-					}, function(){
-
-					}, function(){
+				$scope.exec = function(){
+					submission.verify(submission.data, function(){
+						//passed
+					}, function(failed){
+						for(var i in failed) {
+							$('#'+failed[i]).find('label').addClass('input-error');
+						}
+					}, function(resp){
 
 					});
 				};
 
-				$scope.exec = function(how){
-					if(typeof how == 'undefined'){
-						how = 'mail';
-					}
-
-					if(how == 'mail'){
-						$scope.mail();
-					}
-
-					else if (how == 'lasso') {
-						$scope.curlLasso();
-					}
+				$scope.sanitize = function(html) {
+					return $sce.trustAsHtml(html);
 				};
 			}
 		};

@@ -181,9 +181,10 @@ $styles: array - style urls
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="icon" sizes="192x192" type="image/png" href="<?=BASE?>img/shortcut-icon.png" />
+	<link rel="shortcut icon" href="<?=BASE?>img/shortcut-icon.ico" type="image/vnd.microsoft.icon" />
 	<title><?=$gen_data['site_name']?></title>
-	<link rel="shortcut icon" href="<?=BASE?>img/favico.ico" type="image/vnd.microsoft.icon" />
-	<link rel="icon" type="image/png" href="<?=BASE?>img/favico.png" />
 <?php
 if(!$search_engine){
 	if($uridata[0] == 'debug') {
@@ -213,8 +214,28 @@ if(!$search_engine){
 	<script type="text/javascript" src="<?=BASE?>script.js"></script>
 <?php
 	}
+	foreach($scripts['externals'] as $library) {
+?>
+	<script type="text/javascript" src="<?=$library?>"></script>
+<?php
+	}
+
+	if(sizeof($scripts['inlines']) > 0) {
+?>
+	<script type="text/javascript"><?=implode("\r\n", $scripts['inlines'])?></script>
+<?php
+	}
 ?>
 	<link rel="stylesheet" href="<?=BASE?>css/style.css" />
+<?php
+	if(sizeof($styles) > 0 ){
+		foreach($styles as $im) {
+?>
+	<link rel="stylesheet" href="<?=$im?>" />
+<?php
+		}
+	}
+?>
 	<base href="<?=BASE?>"><?php
 }
 ?></head>

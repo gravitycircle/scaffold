@@ -1,0 +1,532 @@
+@mixin inputField ($gap: fsize(0.8), $fg: $black, $bg: transparent, $labelFamily: 'sans', $labelType: 'body', $textFamily: 'sans', $textType: 'body', $layout: 'table') {
+	@if $layout == 'table' {
+		@include min(4) {
+			width: 100%;
+			display: table;
+
+			.field-handler{
+				display: table-row;
+
+				label{
+					display: table-cell;
+					white-space: nowrap;
+					@include type($labelFamily, $labelType);
+					padding-right: $gap;
+					color: $fg;
+					background: $bg;
+					&.input-error{
+						color: $error;
+					}
+				}
+
+				.cell{
+					display: table-cell;
+					width: 100%;
+
+					input{
+						color: $fg;
+						background: $bg;
+						padding-right: $gap/2;
+						padding-left: $gap/2;
+						width: 100%;
+						@include type($textFamily, $textType);
+						border-radius: none;
+						&:focus{
+							box-shadow: none;
+							outline: none;
+						}
+						@content;
+					}
+				}
+			}
+		}
+
+		@include max(3) {
+			display: block;
+			width: 100%;
+			position: relative;
+
+			.field-handler{
+				display: block;
+
+				label{
+					display: block;
+					@include type($labelFamily, $labelType);
+					color: $fg;
+					&.input-error{
+						color: $error;
+					}
+				}
+
+				.cell{
+					input{
+						padding-right: $gap/2;
+						padding-left: $gap/2;
+						width: 100%;
+						@include type($textFamily, $textType);
+						border-radius: none;
+						&:focus{
+							box-shadow: none;
+							outline: none;
+						}
+						@content;
+					}
+				}
+			}
+		}
+	}
+	@else if $layout == 'block' {
+		display: block;
+		width: 100%;
+		position: relative;
+
+		.field-handler{
+			display: block;
+
+			label{
+				display: block;
+				@include type($labelFamily, $labelType);
+				color: $fg;
+				&.input-error{
+					color: $error;
+				}
+			}
+
+			.cell{
+				input{
+					padding-right: $gap/2;
+					padding-left: $gap/2;
+					width: 100%;
+					@include type($textFamily, $textType);
+					border-radius: none;
+					&:focus{
+						box-shadow: none;
+						outline: none;
+					}
+					@content;
+				}
+			}
+		}
+	}
+}
+
+@mixin dropdownField ($gap: fsize(0.8), $maxheight: false, $fg: $black, $bg: $white, $downarrow: "\e907", $iconFamily: 'form-icons', $labelFamily: 'sans', $labelType: 'body', $textFamily: 'sans', $textType: 'body', $layout: 'table') {
+	@if $layout == 'table' {
+		@include min(4) {
+			width: 100%;
+			display: table;
+		}
+		@include max(3) {
+			display: block;
+		}
+	}
+	@else if $layout == 'block' {
+		display: block;
+	}
+
+	.field-handler{
+		@if $layout == 'table' {
+			@include min(4) {
+				display: table-row;
+			}
+			@include max(3) {
+				display: block;
+			}
+		}
+		@else if $layout == 'block' {
+			display: block;
+		}
+
+		label{
+			@if $layout == 'table' {
+				@include min(4) {
+					display: table-cell;
+					white-space: nowrap;
+					padding-right: $gap;
+				}
+				@include max(3) {
+					display: block;
+				}
+			}
+			@else if $layout == 'block' {
+				display: block;
+			}
+			@include type($labelFamily, $labelType);
+			color: $fg;
+			&.input-error{
+				color: $error;
+			}
+		}
+
+		.cell{
+			@if $layout == 'table' {
+				@include min(4) {
+					display: table-cell;
+				}
+			}
+
+			width: 100%;
+			@include type($textFamily, $textType);
+			position: relative;
+			.dropdown-box{
+				width: 100%;
+				height: 100%;
+				position: relative;
+
+
+				.choices{
+					position: relative;
+					&::before{
+						content: '•';
+						opacity: 0;
+					}
+					
+					.selected{
+						@include type($textFamily, $textType);
+						padding-right: $gap * 1.5;
+						padding-left: $gap / 2;
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						color: $fg;
+
+						&::after{
+							position: absolute;
+							content: $downarrow;
+							font-family: $iconFamily;
+							display: block;
+							position: absolute;
+							right: $gap/4;
+							top: 50%;
+							font-size: $gap * 0.75;
+							@include reposition(0, -50%);
+						}
+					}
+					
+					.options-container {
+						@include prefix(user-select, none);
+						color: $fg;
+						position: absolute;
+						border: 1px solid $bg;
+						border-top: 1px solid $fg;
+						top: 100%;
+						left: 0;
+						width: 100%;
+						height: 0;
+						@include transition(all);
+						@include duration(0.6s);
+						@include timing(snap);
+						overflow: hidden;
+						background: $bg;
+						.options{
+							@include transition(all);
+							@include duration(0.6s);
+							@include timing(snap);
+							@include type($textFamily, $textType);
+							padding-right: $gap / 2;
+							padding-left: $gap / 2;
+
+							&:hover{
+								@content;
+							}
+						}
+					}
+				}
+			}
+
+			&.opened{
+				.choices{
+					.selected{
+						z-index: 3;
+					}
+
+					.options-container{
+						border: 1px solid $fg;
+						z-index: 3;
+					}
+				}
+			}
+		}
+	}
+}
+
+@mixin checkboxField ($gap: fsize(0.8), $fg: $black, $bg: $white, $checkMark: "\e908", $iconFamily: 'form-icons', $labelFamily: 'sans', $labelType: 'body', $layout: 'standard') {
+	@if $layout == 'standard' {
+		@include clearFix();
+		.field-handler{
+			float: left;
+			@include prefix(user-select, none);
+			label{
+				@include type($labelFamily, $labelType);
+				display: block;
+				position: relative;
+				cursor: pointer;
+				color: $fg;
+
+				span{
+					padding-left: $gap;
+					display: inline-block;
+					vertical-align: middle;
+				}
+
+				&.input-error{
+					span{
+						color: $error;
+					}
+				}
+
+				&::before{
+					border: 2px solid $black;
+					display: inline-block;
+					vertical-align: middle;
+					content: '';
+					font-family: $iconFamily;
+					box-sizing: border-box;
+					width: $gap * 1.1;
+					height: $gap * 1.1;
+					font-size: $gap;
+					line-height: ($gap * 1.1) - 0.5;
+					text-align: center;
+				}
+			}
+
+			.tog{
+				display: none;
+			}
+
+			&.check{
+				label{
+					&::before{
+						content: $checkMark;
+					}
+				}
+			}
+		}
+	}
+	@else if $layout == 'switch' {
+		@include clearFix();
+		.field-handler{
+			float: left;
+			@include prefix(user-select, none);
+			label{
+				@include type($labelFamily, $labelType);
+				display: inline-block;
+				vertical-align: middle;
+				position: relative;
+				cursor: pointer;
+				color: $fg;
+
+				&.input-error{
+					span{
+						color: $error;
+					}
+				}
+			}
+
+			.tog{
+				display: inline-block;
+				vertical-align: middle;
+				position: relative;
+				line-height: $gap * 2;
+				height: $gap * 2;
+				border-radius: 3px;
+				box-shadow: inset 1px 2px 10px rgba($fg, 0.3);
+				margin-left: $gap;
+				overflow: hidden;
+				background: $bg;
+				cursor: pointer;
+				color: $fg;
+
+				&::before{
+					@include transition(all);
+					@include duration(0.6s);
+					@include timing(snap);
+					@incldue reposition(0, 0);
+					content: '';
+					display: block;
+					width: $gap * 3;
+					height: 100%;
+					top: 0;
+					left: 0;
+					background: $bg;
+					border-radius: 3px;
+					border: 1px solid rgba($fg, 0.5);
+					position: absolute;
+				}
+
+
+				span{
+					@include type($labelFamily, $labelType);
+					text-transform: uppercase;
+					display: inline-block;
+					width: $gap * 3;
+					vertical-align: middle;
+					font-size: $gap;
+					text-align: center;
+				}
+			}
+
+			&.check{
+				.tog{
+					&::before{
+						@include reposition(100%, 0);
+					}
+				}
+			}
+		}
+	}
+}
+
+@mixin paragraphField ($fg: $black, $bg: $white, $gap: fsize(0.8), $lineHeight: 1.4, $lines: 3, $labelFamily: 'sans', $labelType: 'body', $textFamily: 'sans', $textType: 'body', $rules: false) {
+	display: block;
+	position: relative;
+	@if $lines > 3 {
+		$lines: 3;
+	}
+	@else if $lines < 1 {
+		$lines: 1;
+	}
+
+	@if $rules == true {
+		.field-handler{
+			.standard{
+				display: none;
+			}
+
+			.paragraph-sizer{
+				height: fsize($lineHeight*$lines);
+				position: relative;
+
+				label{
+					position: absolute;
+					top: 0;
+					left: 0;
+					display: block;
+					background: $white;
+					color: $fg;
+					padding-right: $gap;
+					@include type($labelFamily, $labelType);
+					line-height: fsize($lineHeight);
+					z-index: 2;
+
+					&.input-error{
+						color: $error;
+					}
+				}
+				
+				textarea{
+					display: block;
+					border: none;
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					color: $fg;
+					line-height: fsize($lineHeight);
+					@include type($textFamily, $textType);
+					resize: none;
+
+					&:focus{
+						outline: none;
+						box-shadow: none;
+					}
+				}
+				
+				span{
+					pointer-events: none;
+					opacity: 0.8;
+					height: fsize($lineHeight);
+					display: block;
+					border-bottom: 1px solid $fg;
+
+					@if $lines == 2 {
+						&.line-three{
+							display: none;
+						}
+					}
+
+					@if $lines == 1 {
+						&.line-two {
+							display: none;
+						}
+					}
+				}
+
+			}
+		}
+
+		@content;
+	}
+	@else {
+		.field-handler{
+			.standard{
+				display: block;
+				display: block;
+				color: $fg;
+				@include type($labelFamily, $labelType);
+
+				&.input-error{
+					color: $error;
+				}
+			}
+			.paragraph-sizer{
+				height: fsize($lineHeight*$lines) + 1.2rem;
+				position: relative;
+				
+				label{
+					display: none;
+				}
+
+				textarea{
+					display: block;
+					border: 1px solid rgba($fg, 0.5);
+					padding: 5px;
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					color: $fg;
+					line-height: fsize($lineHeight);
+					@include type($textFamily, $textType);
+					resize: none;
+
+					&:focus{
+						outline: none;
+						box-shadow: none;
+					}
+				}
+
+				span{
+					display: none;
+				}
+			}
+		}
+	}
+}
+
+@mixin submitField ($gap: fsize(2), $fg: $black, $bg: $white, $labelFamily: 'sans', $labelType: 'body'){
+	.field-handler{
+		text-align: center;
+		@include prefix(user-select, none);
+
+		.submit-button{
+			@include transition(all);
+			@include duration(0.6s);
+			@include timing(snap);
+			display: inline-block;
+			@include type($labelFamily, $labelType);
+			line-height: 2.5;
+			padding-left: $gap;
+			padding-right: $gap;
+			text-transform: uppercase;
+			border: 1px solid $fg;
+			color: $fg;
+			background: $bg;
+			cursor: pointer;
+
+			&:hover, &:active, &:focus{
+				@content;
+			}
+		}
+	}
+}

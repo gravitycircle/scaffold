@@ -19,14 +19,21 @@ function build_content(){
 	return $output;
 }
 
-function get_fields($lasso) {
+function get_fields($match) {
 	//---BUILD FIELDS HERE
 	$fields = array(
 		array(
 			'key' => 'lasso-key',
 			'label' => 'Lasso Field',
 			'id' => 'field-id',
-			'type' => 'email',
+			'type' => 'text',
+			'require' => true
+		),
+		array(
+			'key' => 'lasso-key3',
+			'label' => 'Lasso Paragraph',
+			'id' => 'field-id-2',
+			'type' => 'paragraph',
 			'require' => true
 		),
 		array(
@@ -37,14 +44,14 @@ function get_fields($lasso) {
 			'require' => true,
 			'values' => array(
 				array(
-					'value' => 'value-set-1',
+					'key' => 'value-set-1',
 					'name' => 'Value Set 1',
-					'lasso' => 'lasso-value-1'
+					'value' => 'lasso-value-1'
 				),
 				array(
-					'value' => 'value-set-2',
+					'key' => 'value-set-2',
 					'name' => 'Value Set 2',
-					'lasso' => 'lasso-value-2'
+					'value' => 'lasso-value-2'
 				)
 			)
 		),
@@ -53,10 +60,12 @@ function get_fields($lasso) {
 			'label' => 'Checkbox',
 			'id' => 'cb-sample',
 			'type' => 'checkbox',
-			'require' => false,
+			'require' => true,
 			'set' => array(
-				'lasso' => 'lasso-value',
-				'value' => 'post-value'
+				'label' => 'Nice Value',
+				'value' => 'lasso-value',
+				'key' => 'post-value',
+				'no' => 'Negative Answer'
 			)
 		),
 		array(
@@ -69,34 +78,7 @@ function get_fields($lasso) {
 
 	$build = array();
 
-	if($lasso) {
-		foreach($fields as $field) {
-			if($field['type'] != 'submit') {
-				$built = array(
-					'id' => $field['id'],
-					'key' => $field['key']
-				);
-
-				if($field['type'] == 'dropdown'){
-					$vals = array();
-					foreach($field['values'] as $v) {
-						array_push($vals, array(
-							'value' => $v['lasso'],
-							'id' => $v['value']
-						));
-					}
-
-					$built['matches'] = $vals;
-				}
-				else if($field['type'] == 'checkbox') {
-					$build['match'] = $field['set']['lasso'];
-				}
-
-				array_push($build, $built);
-			}
-		}
-	}
-	else{
+	if(!$match) {
 		foreach($fields as $field) {
 			$built = array(
 				'label' => $field['label'],
@@ -112,7 +94,7 @@ function get_fields($lasso) {
 				$vals = array();
 				foreach($field['values'] as $v) {
 					array_push($vals, array(
-						'value' => $v['value'],
+						'value' => $v['key'],
 						'name' => $v['name']
 					));
 				}
@@ -120,13 +102,119 @@ function get_fields($lasso) {
 				$built['values'] = $vals;
 			}
 			else if($field['type'] == 'checkbox') {
-				$built['value'] = $field['set']['value'];
+				$built['value'] = $field['set']['key'];
 			}
 
 			array_push($build, $built);
 		}
 	}
+	else{
+		foreach($fields as $field) {
+			if($field['type'] == 'dropdown') {
+				$vars = array();
+
+				foreach($field['values'] as $v) {
+					$vars[$v['key']] = array(
+						'label' => $v['name'],
+						'val' => $v['value']
+					);
+				}
+
+				$build[$field['id']] = array(
+					'key' => $field['key'],
+					'label' => $field['key'],
+					'type' => 'dropdown',
+					'matches' => $vars
+				);
+			}
+			else if($field['type'] == 'checkbox') {
+				$build[$field['id']] = array(
+					'key' => $field['key'],
+					'label' => $field['key'],
+					'type' => 'checkbox',
+					'no' => $field['set']['no'],
+					'match' => array(
+						$field['set']['key'] => array(
+							'val' => $field['set']['value'],
+							'label' => $field['set']['label']
+						)
+					)
+				);
+			}
+			else{
+				$build[$field['id']] = array(
+					'key' => $field['key'],
+					'label' => $field['label'],
+					'type' => $field['type']
+				);
+			}
+		}
+	}
 
 	return $build;
 }
+
+function get_match($inputName, $inputValue, $crm) {
+	$matches = get_fields(true);
+
+	if($matches[$inputName]['type'] == 'dropdown') {
+		if($crm) {
+			return array(
+				'key' => $matches[$inputName]['key'],
+				'value' => $matches[$inputName]['matches'][$inputValue]['val']
+			);
+		}
+		else{
+			return array(
+				'key' => $matches[$inputName]['label'],
+				'value' => $matches[$inputName]['matches'][$inputValue]['label']
+			);
+		}
+	}
+	else if ($matches[$inputName]['type'] == 'checkbox') {
+		if($crm) {
+			if($inputValue != '' && isset($matches[$inputName]['match'][$inputValue]['val'])){
+				return array(
+					'key' => $matches[$inputName]['key'],
+					'value' => $matches[$inputName]['match'][$inputValue]['val']
+				);
+			}
+			else{
+				return array(
+					'key' => $matches[$inputName]['key'],
+					'value' => false
+				);
+			}
+		}
+		else{
+			if($inputValue != '' && isset($matches[$inputName]['match'][$inputValue]['val'])){
+				return array(
+					'key' => $matches[$inputName]['label'],
+					'value' => $matches[$inputName]['match'][$inputValue]['label']
+				);
+			}
+			else{
+				return array(
+					'key' => $matches[$inputName]['label'],
+					'value' => $matches[$inputName]['no']
+				);
+			}
+		}
+	}
+	else {
+		if($crm) {
+			return array(
+				'key' => $matches[$inputName]['key'],
+				'value' => $inputValue
+			);
+		}
+		else{
+			return array(
+				'key' => $matches[$inputName]['label'],
+				'value' => $inputValue
+			);
+		}
+	}
+}
+
 ?>

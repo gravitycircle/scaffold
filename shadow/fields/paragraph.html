@@ -1,10 +1,10 @@
 <div ng-attr-id="{{render.idname}}" class="field-handler field-paragraph">
-	<label class="mbl">{{render.label}}{{mrk}}</label>
+	<label class="standard" ng-bind-html="sanitize(render.label+mrk)"></label>
 	<div class="paragraph-sizer">
-		<label class="dsk">{{render.label}}{{mrk}}</label>
+		<label class="tabled" ng-bind-html="sanitize(render.label+mrk)"></label>
 		<textarea ng-keyup="typing();" ng-focus="focus(true);" ng-blur="focus(false);"></textarea>
-		<span></span>
-		<span></span>
-		<span></span>
+		<span class="line-one"></span>
+		<span class="line-one line-two"></span>
+		<span class="line-one line-two line-three"></span>
 	</div>
 </div>

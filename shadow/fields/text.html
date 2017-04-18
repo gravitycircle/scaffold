@@ -1,5 +1,5 @@
 <div ng-attr-id="{{render.idname}}" class="field-handler field-text">
-	<label>{{render.label}}{{mrk}}</label>
+	<label ng-bind-html="sanitize(render.label+mrk);"></label>
 	<div class="cell">
 		<input type="text" value="" ng-keyup="typing();"/>
 	</div>

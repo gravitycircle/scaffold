@@ -1,3 +1,1 @@
-<div ng-attr-id="{{render.idname}}" class="field-handler field-checkbox">
-	<label class="checklabel" ng-click="toggle();">{{render.label}}{{mrk}}</label>
-</div>
+<div ng-attr-id="{{render.idname}}" class="field-handler field-checkbox" ng-click="toggle();"><label class="checklabel"><span ng-bind-html="sanitize(render.label+mrk)"></span></label><span class="tog"><span>Yes</span><span>No</span></span></div>

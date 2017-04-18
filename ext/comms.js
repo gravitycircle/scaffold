@@ -52,23 +52,6 @@
 				{
 					return this.guid;
 				}
-			},
-			verify: function(data, pass, fail, error) {
-				fetch.post(constants.base+'php/lasso.php', {
-					'verify' : 1
-				}, data, function(response){
-					if(typeof pass == 'function') {
-						pass(response);
-					}
-
-					if(typeof fail == 'function') {
-						fail(response);
-					}
-				}, function(response){
-					if(typeof error == 'function') {
-						error(response);
-					}
-				});
 			}
 		};
 	}]);
@@ -88,23 +71,6 @@
 					if(typeof no == 'function')
 					{
 						no(response);
-					}
-				});
-			},
-			verify: function(data, pass, fail, error) {
-				fetch.post(constants.base+'php/mailer.php', {
-					'verify' : 1
-				}, data, function(response){
-					if(typeof pass == 'function') {
-						pass(response);
-					}
-
-					if(typeof fail == 'function') {
-						fail(response);
-					}
-				}, function(response){
-					if(typeof error == 'function') {
-						error(response);
 					}
 				});
 			},
