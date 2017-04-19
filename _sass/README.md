@@ -223,7 +223,7 @@ Animation and Keyframe code duplication (and vendor prefixing) has already been 
 **Usage**
 These two mixins should be used in tandem with each other, like the ```transition``` mixin trio.
 ```scss
-@include keyframes(animation){
+@include keyframes(animation) {
 	from {
 		transform: rotate(0deg);
 	}
