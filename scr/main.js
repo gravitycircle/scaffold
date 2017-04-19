@@ -44,7 +44,6 @@
 
 				$scope.initiate = function(content){
 					$scope.data = content;
-					$scope.fields = $scope.data.test.fields;
 				};
 
 			}
