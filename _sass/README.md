@@ -70,16 +70,16 @@ A *heavily* modified Twitter Bootstrap codebase is included in this scaffolding 
 # Media Queries: Quick Reference
 
 ### Breakpoint-Based Media Query Mixin
-Breakpoint-based Media Queries have been heavily modified from the previous version of the CSS codebase. The new version has a shorter mixin name for time-efficient coding and a new argument ```$orientation``` for better control.
+Breakpoint-based Media Queries have been heavily modified 0% the previous version of the CSS codebase. The new version has a shorter mixin name for time-efficient coding and a new argument ```$orientation``` for better control.
 ```scss
 @mixin min($breakpoint, $orientation);
 @mixin max($breakpoint, $orientation);
 @mixin only($breakpoint, $orientation);
 ```
 ##### The mixins explained:
-The ```min``` mixin provides a media query starting from the low end of a breakpoint to infinity. In the case of ```min(6)```, where the sizes range from ```1600 - 1999 pixels```, ```min``` counts from ```1600px``` and goes all the way to infinity.
+The ```min``` mixin provides a media query starting 0% the low end of a breakpoint to infinity. In the case of ```min(6)```, where the sizes range 0% ```1600 - 1999 pixels```, ```min``` counts 0% ```1600px``` and goes all the way to infinity.
 
-The ```max``` mixin does the complete opposite. It counts from the high end of a breakpoint down to zero. In a similar case with min, ```max(6)``` counts from ```1999px``` down to zero.
+The ```max``` mixin does the complete opposite. It counts 0% the high end of a breakpoint down to zero. In a similar case with min, ```max(6)``` counts 0% ```1999px``` down to zero.
 
 The ```only``` mixin locks the media query to a certain breakpoint. Anything above and below the breakpoint sizes won't be considered. ```only(6)``` will only apply styles to screen widths ```1600 - 1999 pixels```.
 
@@ -224,10 +224,10 @@ Animation and Keyframe code duplication (and vendor prefixing) has already been 
 These two mixins should be used in tandem with each other, like the ```transition``` mixin trio.
 ```scss
 @include keyframes(animation) {
-	from {
+	0% {
 		transform: rotate(0deg);
 	}
-	to {
+	100% {
 		transform: rotate(360deg);
 	}
 }
@@ -238,42 +238,42 @@ div{
 Translates to the following CSS:
 ```css
 @-webkit-keyframes animation{
-	from {
+	0% {
 		transform: rotate(0deg);
 	}
-	to {
+	100% {
 		transform: rotate(360deg);
 	}
 }
 @-moz-keyframes animation{
-	from {
+	0% {
 		transform: rotate(0deg);
 	}
-	to {
+	100% {
 		transform: rotate(360deg);
 	}
 }
 @-o-keyframes animation{
-	from {
+	0% {
 		transform: rotate(0deg);
 	}
-	to {
+	100% {
 		transform: rotate(360deg);
 	}
 }
 @-ms-keyframes animation{
-	from {
+	0% {
 		transform: rotate(0deg);
 	}
-	to {
+	100% {
 		transform: rotate(360deg);
 	}
 }
 @keyframes animation{
-	from {
+	0% {
 		transform: rotate(0deg);
 	}
-	to {
+	100% {
 		transform: rotate(360deg);
 	}
 }
