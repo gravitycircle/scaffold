@@ -156,7 +156,7 @@ Applies values according to the breakpoint ID and fills in any missing values.
 *Applies 40 width on screens > 1999, 30px on screens 1600 to 1999 and 20px width to screens < 1600.*
 
 ---
-#Transition and Animation: Quick Reference
+# Transition and Animation: Quick Reference
 
 CSS transition and animations are pretty tricky and verbose when coded manually. The mixins below will shorten the manually typed-down code by a huge margin without sacrificing flexibility.
 
@@ -393,7 +393,7 @@ div{
 }
 ```
 ### Positioning and Re-positioning - Absolute / Fixed Elements
-This mixin works the best with ```position: absolute;``` or ```position: fixed;``` elements since it uses the ```top```, ```left```, ```bottom```, ```right``` and ```transform``` properties.
+This mixin works the best with ```position: absolute;``` or ```position: fixed;``` elements since it uses the ```top```, ```left```, ```bottom```, ```right``` and ```transform-translate``` properties.
 ```scss
 div{
 	position: absolute;
