@@ -23,21 +23,21 @@ function get_fields($match) {
 	//---BUILD FIELDS HERE
 	$fields = array(
 		array(
-			'key' => 'lasso-key',
+			'key' => 'Questions[85248]',
 			'label' => 'Lasso Field',
 			'id' => 'field-id',
 			'type' => 'text',
-			'require' => true
+			'require' => false
 		),
 		array(
-			'key' => 'lasso-key3',
+			'key' => 'Questions[69592]',
 			'label' => 'Lasso Paragraph',
 			'id' => 'field-id-2',
 			'type' => 'paragraph',
 			'require' => true
 		),
 		array(
-			'key' => 'lasso-key2',
+			'key' => 'Questions[15434]',
 			'label' => 'Dropdown',
 			'id' => 'dd-sample',
 			'type' => 'dropdown',
@@ -46,24 +46,24 @@ function get_fields($match) {
 				array(
 					'key' => 'value-set-1',
 					'name' => 'Value Set 1',
-					'value' => 'lasso-value-1'
+					'value' => '00001'
 				),
 				array(
 					'key' => 'value-set-2',
 					'name' => 'Value Set 2',
-					'value' => 'lasso-value-2'
+					'value' => '00002'
 				)
 			)
 		),
 		array(
-			'key' => 'lasso-key-3',
+			'key' => 'Questions[41415]',
 			'label' => 'Checkbox',
 			'id' => 'cb-sample',
 			'type' => 'checkbox',
 			'require' => true,
 			'set' => array(
 				'label' => 'Nice Value',
-				'value' => 'lasso-value',
+				'value' => '00003',
 				'key' => 'post-value',
 				'no' => 'Negative Answer'
 			)
@@ -71,7 +71,26 @@ function get_fields($match) {
 		array(
 			'label' => 'Test',
 			'type' => 'submit',
-			'id' => 'test-submitter'
+			'id' => 'test-submitter',
+			'receiver' => array('Administrator', 'richard.y.ong@outlook.com'),
+			'defaults' => array(
+				'disclaimer' => 'This email is intended only for the person(s) named in the message header. Unless otherwise indicated, it contains information that is confidential, privileged and/or exempt from disclosure under applicable law. If you have received this message in error, please notify the sender of the error and delete the message. Thank you.',
+				'empty' => 'Unspecified'
+			),
+			'prompts' => array(
+				'success' => array(
+					'title' => 'Registration Complete',
+					'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates. Thank you for your interest.'
+				),
+				'verify_error' => array(
+					'title' => 'Submission Failed',
+					'message' => 'Unfortunately, your submission was not completed due to some missing or incorrect information. Please fill in all fields that are marked with an asterisk (*) correctly. The fields that need editing are highlighted in red.'
+				),
+				'submit_error' => array(
+					'title' => 'Submission Failed',
+					'message' => 'There was a connection issue and we cannot connect to the submission system. You may come back and try again on a later date if you wish to try again. We apologize for the inconvenience.'
+				)
+			)
 		)
 	);
 	//----
@@ -105,6 +124,12 @@ function get_fields($match) {
 				$built['value'] = $field['set']['key'];
 			}
 
+			if($field['type'] == 'submit') {
+				$built['receiver'] = $field['receiver'];
+				$built['prompts'] = $field['prompts'];
+				$built['defaults'] = $field['defaults'];
+			}
+
 			array_push($build, $built);
 		}
 	}
@@ -122,7 +147,7 @@ function get_fields($match) {
 
 				$build[$field['id']] = array(
 					'key' => $field['key'],
-					'label' => $field['key'],
+					'label' => $field['label'],
 					'type' => 'dropdown',
 					'matches' => $vars
 				);
@@ -130,7 +155,7 @@ function get_fields($match) {
 			else if($field['type'] == 'checkbox') {
 				$build[$field['id']] = array(
 					'key' => $field['key'],
-					'label' => $field['key'],
+					'label' => $field['label'],
 					'type' => 'checkbox',
 					'no' => $field['set']['no'],
 					'match' => array(
@@ -142,11 +167,13 @@ function get_fields($match) {
 				);
 			}
 			else{
-				$build[$field['id']] = array(
-					'key' => $field['key'],
-					'label' => $field['label'],
-					'type' => $field['type']
-				);
+				if($field['type'] != 'submit') {
+					$build[$field['id']] = array(
+						'key' => $field['key'],
+						'label' => $field['label'],
+						'type' => $field['type']
+					);
+				}
 			}
 		}
 	}
@@ -154,20 +181,20 @@ function get_fields($match) {
 	return $build;
 }
 
-function get_match($inputName, $inputValue, $crm) {
+function get_match($inputName, $inputValue, $defaultValue, $crm) {
 	$matches = get_fields(true);
 
 	if($matches[$inputName]['type'] == 'dropdown') {
 		if($crm) {
 			return array(
 				'key' => $matches[$inputName]['key'],
-				'value' => $matches[$inputName]['matches'][$inputValue]['val']
+				'value' => (!isset($matches[$inputName]['matches'][$inputValue]['val']) ? $defaultValue : $matches[$inputName]['matches'][$inputValue]['val'])
 			);
 		}
 		else{
 			return array(
 				'key' => $matches[$inputName]['label'],
-				'value' => $matches[$inputName]['matches'][$inputValue]['label']
+				'value' => (!isset($matches[$inputName]['matches'][$inputValue]['label']) ? $defaultValue : $matches[$inputName]['matches'][$inputValue]['label'])
 			);
 		}
 	}
@@ -196,23 +223,28 @@ function get_match($inputName, $inputValue, $crm) {
 			else{
 				return array(
 					'key' => $matches[$inputName]['label'],
-					'value' => $matches[$inputName]['no']
+					'value' => (!isset($matches[$inputName]['no']) ? $defaultValue : $matches[$inputName]['no'])
 				);
 			}
 		}
 	}
 	else {
-		if($crm) {
-			return array(
-				'key' => $matches[$inputName]['key'],
-				'value' => $inputValue
-			);
-		}
-		else{
-			return array(
-				'key' => $matches[$inputName]['label'],
-				'value' => $inputValue
-			);
+		if($matches[$inputName]['type'] != 'submit') {
+			if(!$inputValue || $inputValue == '') {
+				$inputValue = $defaultValue;
+			}
+			if($crm) {
+				return array(
+					'key' => $matches[$inputName]['key'],
+					'value' => $inputValue
+				);
+			}
+			else{
+				return array(
+					'key' => $matches[$inputName]['label'],
+					'value' => $inputValue
+				);
+			}
 		}
 	}
 }

@@ -57,14 +57,16 @@
 	}]);
 
 	com.factory('deliver', ['fetch', 'constants', 'crm', function(fetch, constants, crm){
-		var compose = function(from, replyto, to, subject, body) {
+		var compose = function(from, replyto, to, subject, body, defaultvalue, disclaimer) {
 				//parse
 				var emaildetails = {
 					'from' : encodeURIComponent(from.join('|')),
 					'replyTo' : encodeURIComponent(replyto.join('|')),
 					'To' : encodeURIComponent(to.join('|')),
 					'subject': encodeURIComponent(subject),
-					'body' : body
+					'default' : encodeURIComponent(defaultvalue),
+					'disclaimer' : encodeURIComponent(disclaimer),
+					'data' : body
 				};
 
 				return emaildetails;
@@ -73,12 +75,12 @@
 		var locked = false;
 
 		return{
-			email: function(from, replyto, to, subject, object, defaultvalue, yes, no) {
+			email: function(from, replyto, to, subject, object, defaultvalue, disclaimer, yes, no) {
 				if(!locked) {
 					locked = true;
 					fetch.post(constants.base+'php/mailer.php', {
 						'mail' : 1
-					}, compose(from, replyto, to, subject, object), function(response){
+					}, compose(from, replyto, to, subject, object, defaultvalue, disclaimer), function(response){
 						if(typeof yes == 'function')
 						{
 							yes(response.data);
@@ -93,7 +95,7 @@
 					});
 				}
 			},
-			crm : function(which, object, exec) {
+			crm : function(which, object, yes, no, exec) {
 				if(!locked) {
 					locked = true;
 
@@ -101,11 +103,20 @@
 						exec = 1;
 					}
 
-					fetch.post(constants.base+'php/'+which+'.php', {
+					fetch.post(constants.base+'php/crm/'+which+'.php', {
 						'send' : exec
 					}, object, function(response){
+						if(typeof yes == 'function')
+						{
+							yes(response.data);
+						}
 						locked = false;
-					}, function(response){
+					}, function(){
+						if(typeof no == 'function')
+						{
+							no();
+						}
+
 						locked = false;
 					});
 				}

@@ -331,7 +331,6 @@
 				}
 				var open;
 				$scope.toggle = function(){
-
 					$('.options-container').css({
 						'height' : 0
 					});
@@ -407,14 +406,112 @@
 				//do submission here
 				$scope.render = $scope.$parent.field;
 
-				$scope.exec = function(){
+				$scope.exec = function(forMail){
 					submission.verify(submission.data, function(){
 						//passed
+						$($element).find('a').text('Please Wait');
+						$($element).find('a').css({
+							'pointer-events' : 'none'
+						});
+
+						if(forMail) {
+							deliver.email(['Registration Data', constants.smtp.user], ['Registration Data', constants.smtp.user], $scope.render.receiver, 'Registration Successful', submission.data, $scope.render.defaults.empty, $scope.render.defaults.disclaimer, function(response){
+								if(response.success) {
+									modal.dialogue($scope.render.prompts.success.title, $scope.render.prompts.success.message, false, function(){
+										submission.reset();
+										$('input').val('');
+										$('textarea').val('');
+										$('.selected').text('');
+										$('.check').removeClass('check');
+										$($element).find('a').text($scope.render.label);
+										$($element).find('a').css({
+											'pointer-events' : ''
+										});
+									});
+								}
+								else{
+									modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
+										submission.reset();
+										$('input').val('');
+										$('textarea').val('');
+										$('.selected').text('');
+										$('.check').removeClass('check');
+										console.error(response.debug);
+										$($element).find('a').text($scope.render.label);
+										$($element).find('a').css({
+											'pointer-events' : ''
+										});
+									});
+									
+								}
+
+							}, function(){
+								modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
+									submission.reset();
+									$('input').val('');
+									$('textarea').val('');
+									$('.selected').text('');
+									$('.check').removeClass('check');
+									console.error('Connectivity: Cannot reach server.');
+									$($element).find('a').text($scope.render.label);
+									$($element).find('a').css({
+										'pointer-events' : ''
+									});
+								});
+							});
+						}
+						else{
+							deliver.crm('test', submission.data, function(response){
+								if(response.success) {
+									modal.dialogue($scope.render.prompts.success.title, $scope.render.prompts.success.message, false, function(){
+										submission.reset();
+										$('input').val('');
+										$('textarea').val('');
+										$('.selected').text('');
+										$('.check').removeClass('check');
+										$($element).find('a').text($scope.render.label);
+										$($element).find('a').css({
+											'pointer-events' : ''
+										});
+									});
+								}
+								else{
+									modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
+										submission.reset();
+										$('input').val('');
+										$('textarea').val('');
+										$('.selected').text('');
+										$('.check').removeClass('check');
+										console.error(response.debug);
+										$($element).find('a').text($scope.render.label);
+										$($element).find('a').css({
+											'pointer-events' : ''
+										});
+									});
+									
+								}
+							}, function(){
+								//fail
+								modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
+									submission.reset();
+									$('input').val('');
+									$('textarea').val('');
+									$('.selected').text('');
+									$('.check').removeClass('check');
+									console.error('Connectivity: Cannot reach server.');
+									$($element).find('a').text($scope.render.label);
+									$($element).find('a').css({
+										'pointer-events' : ''
+									});
+								});
+							}, 1);
+						}
+
 					}, function(failed){
 						for(var i in failed) {
 							$('#'+failed[i]).find('label').addClass('input-error');
 						}
-						modal.dialogue('Submission Failed', 'Unfortunately, your submission was not completed due to some missing or incorrect information. Please fill in all fields that are marked with an asterisk (*) correctly. The fields that need editing are highlighted in red.');
+						modal.dialogue($scope.render.prompts.verify_error.title, $scope.render.prompts.verify_error.message);
 					}, function(resp){
 
 					});

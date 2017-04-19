@@ -106,6 +106,9 @@
 					'height' : 0
 				}, 300, function(){
 					$('.shader').remove();
+					if(typeof callback == 'function') {
+						callback();
+					}
 				});
 			});
 		};
@@ -122,7 +125,7 @@
 		};
 
 		return {
-			dialogue: function(title, msg, cta) {
+			dialogue: function(title, msg, cta, onload, afterclose) {
 				//cta:
 				/*
 				{
@@ -193,10 +196,14 @@
 						'y' : 0
 					}, 600, function(){
 						//events
+						if(typeof onload == 'function') {
+							onload();
+						}
+
 						$('.shader').addClass('act');
 						$('.cncl').on('click', function(e){
 							e.preventDefault();
-							closeModal();
+							closeModal(afterclose);
 							for(var cls in actions){
 								//eventActions(cls, evt, fn, create)
 								for(var evt in actions[cls]) {
