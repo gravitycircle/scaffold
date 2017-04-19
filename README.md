@@ -1,4 +1,4 @@
-# ![---](https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png) Angular: Site Scaffolding & Bootstrap v0.5 (Unstable)
+# ![---](http://angular.richardbryanong.com/img/favico.png) Angular: Site Scaffolding & Bootstrap v0.6 (Stable)
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
@@ -21,13 +21,22 @@ SEO has been set up. Under the __seo_ folder, the _index.php_ file has an _seo f
 
 This is only the introduction page. The installation file for this scaffolding setup has not yet been configured and I'm not too sure if it'll work out of the box since the framework stack is still in active development. To start working with the stack anyway, please rename the 'index.php file' into something different and rename the _index.php file to index.php.
 
-**Currently undergoing the following changes:**
+**Past Changes:**
 
  - Refactored php/mailer.php file to accept and verify forms. Made to be reusable.
  - Refactored the 'lasso' directive under config.js. Made to be, again, reusable.
  - Refactored the form field directives for easy scripting, main.php will also be refactored.
  - _seo/ folder updated for easy metadata coding.
  - Deployed for live testing on test server for CORS - related adjustments.
+
+**Framework Changes:**
+ - Refactored _data structure into a more staggered non-CMS data management system.
+ - JS files are all minified into 3 files: library.js, config.js and script.js. These files do not exist, they are made on the fly.
+ - Note: Need to further optimize minification.
+ - CSS Base has been heavily modified, moved all CSS calls into 'scaffolding.scss'. All base.scss contains are mixins.
+ - Increased number of breakpoints from 4 to 7. Created min/max mixins for sizes, and orientation mixin for orientation.
+ - Removed unecessary Boostrap CSS code. Kept the base grid the same.
+ - Converted all Bootstrap CSS into self-contained in '.grid' elements.
 
 **Future Update Notes:**
 

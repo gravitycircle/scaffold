@@ -11,25 +11,25 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 
 @function zoomFactor($bp, $v){
 	@if $bp == 1 {
-		@return $v * 0.7;
+		@return $v * $zf1;
 	}
 	@else if $bp == 2 {
-		@return $v * 0.75;
+		@return $v * $zf2;
 	}
 	@else if $bp == 3 {
-		@return $v * 0.75;
+		@return $v * $zf3;
 	}
 	@else if $bp == 4 {
-		@return $v * 0.8;
+		@return $v * $zf4;
 	}
 	@else if $bp == 5 {
-		@return $v * 0.82;
+		@return $v * $zf5;
 	}
 	@else if $bp == 6 {
-		@return $v * 1;
+		@return $v * $zf6;
 	}
 	@else if $bp == 7 {
-		@return $v * 1;
+		@return $v * $zf7;
 	}
 	@else {
 		@return $v;
@@ -65,15 +65,15 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 	}
 }
 
-@mixin position($x, $y, $startFromRight: false, $startFromBottom: false){
-	@if $startFromRight == false {
+@mixin position($x, $y, $reversex: false, $reversey: false){
+	@if $reversex == false {
 		left: $x;
 	}
 	@else {
 		right: $x;
 	}
 
-	@if $startFromBottom == false {
+	@if $reversey == false {
 		top: $y;
 	}
 	@else {
@@ -512,41 +512,38 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 
 @mixin transition($what...)
 {
-  -webkit-transform: translateZ(0);
-   -moz-transform: translateZ(0);
-   -ms-transform: translateZ(0);
-   -o-transform: translateZ(0);
-   transform: translateZ(0);
+	-webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
 
-   -webkit-backface-visibility: hidden;
-   -moz-backface-visibility: hidden;
-   -ms-backface-visibility: hidden;
-   backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
 
-   -webkit-perspective: 1000;
-   -moz-perspective: 1000;
-   -ms-perspective: 1000;
-   perspective: 1000;
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	perspective: 1000;
 
   @if $what == 'auto' {
-    
-    -moz-transition-property : all;
-    -webkit-transition-property : all;
-    -o-transition-property : all;
-    -ms-transition-property : all;
-    transition-property : all;
-
-   } @else {
-   
-    -moz-transition-property : $what;
-    -webkit-transition-property : $what;
-    -o-transition-property : $what;
-    -ms-transition-property : $what;
-    transition-property : $what;
-   }
+	-moz-transition-property : all;
+	-webkit-transition-property : all;
+	-o-transition-property : all;
+	-ms-transition-property : all;
+	transition-property : all;
+} @else {
+	-moz-transition-property : $what;
+	-webkit-transition-property : $what;
+	-o-transition-property : $what;
+	-ms-transition-property : $what;
+	transition-property : $what;
+	}
 }
 
-@mixin transition_pure($what...)
+@mixin transition_unfixed($what...)
 {
    -webkit-backface-visibility: hidden;
    -moz-backface-visibility: hidden;
@@ -612,8 +609,8 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
   }
 }
 
-@mixin animate($kiframes, $duration, $delay, $iterations, $timing, $direction) {
-  @include prefix(animation-name, $kiframes);
+@mixin animate($k_frames, $duration, $timing, $iterations: infinite, $direction: normal, $delay: false) {
+  @include prefix(animation-name, $k_frames);
   @include prefix(animation-duration, $duration);
   @include prefix(animation-timing-function, curve($timing));
   @include prefix(animation-iteration-count, $iterations);

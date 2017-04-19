@@ -1,4 +1,5 @@
-# ![---](https://dl.dropboxusercontent.com/u/65873649/CDN/Codepen/favico.png) Angular: Site Scaffolding & Bootstrap v0.3
+# ![---](http://angular.richardbryanong.com/img/favico.png)
+# Angular: Site Scaffolding & Bootstrap v0.6
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
@@ -17,11 +18,11 @@ Please make sure your config.php is set up to the right Base address by changing
 
 Also note that BASE refers to the base URL of the site itself. CANONICAL refers to the base URL of any API endpoint you will be using that runs alongside this application.
 
-#Twitter Bootstrap + SASS/SCSS
+# Twitter Bootstrap + SASS/SCSS
 
-A modified Twitter Bootstrap is included in this scaffolding framework. In this case, there are 7 break points to allow a more precise control over elements that scale over different screen sizes and orientations.
+A *heavily* modified Twitter Bootstrap codebase is included in this scaffolding framework. In this case, there are 7 break points to allow a more precise control over elements that scale over different screen sizes and orientations.
 
-###Breakpoints: Quick Reference
+### Breakpoints: Quick Reference
 
  - Extra Small (Smartwatches ~ iPhone 4)
 	 - ID: 1
@@ -35,15 +36,15 @@ A modified Twitter Bootstrap is included in this scaffolding framework. In this 
 	 - Container width: 100%
 	 - #preloader width: 20px
 	 - CSS Breakpoint identifier: ph
- - Tablets (iPads and other tablets > 7")
+ - Tablets (iPads - Portrait and other tablets > 7")
 	 - ID: 3
-	 - Size: 768 ~ 1024
+	 - Size: 768 ~ 1023
 	 - Container width: 750px
 	 - #preloader width: 30px
 	 - CSS Breakpoint identifier: sm
- - Standard Definition ~ MDPI (older desktops, laptops, netbooks, chromebooks)
+ - Standard Definition ~ MDPI (iPads - Landscape, older desktops, laptops, netbooks, chromebooks)
 	 - ID: 4
-	 - Size: 1025 ~ 1199
+	 - Size: 1024 ~ 1199
 	 - Container width: 993px
 	 - #preloader width: 40px
 	 - CSS Breakpoint identifier: md
@@ -65,48 +66,32 @@ A modified Twitter Bootstrap is included in this scaffolding framework. In this 
 	 - Container width: 1552px
 	 - #preloader width: 70px
 	 - CSS Breakpoint identifier: qd
+---
+# Media Queries: Quick Reference
 
-### Media Queries: Quick Reference
-
-####Breakpoint-Based Media Query Mixin
-To use breakpoints more efficiently, you can use the following mixin:
+### Breakpoint-Based Media Query Mixin
+Breakpoint-based Media Queries have been heavily modified from the previous version of the CSS codebase. The new version has a shorter mixin name for time-efficient coding and a new argument ```$orientation``` for better control.
 ```scss
-@mixin breakpoint($minmaxonly, $breakpointID) { ... };
+@mixin min($breakpoint, $orientation);
+@mixin max($breakpoint, $orientation);
+@mixin only($breakpoint, $orientation);
 ```
-Replace ```$minmaxonly``` with either ```min```, ```max``` or ```only``` and a matching breakpoint ID.
-```scss
-@include breakpoint(max,4) {
-	.element{
-		width: 100%;
-	}
-};
+##### The mixins explained:
+The ```min``` mixin provides a media query starting from the low end of a breakpoint to infinity. In the case of ```min(6)```, where the sizes range from ```1600 - 1999 pixels```, ```min``` counts from ```1600px``` and goes all the way to infinity.
 
-/*or*/
-.element{
-	@include breakpoint(max,4) {
-		width: 100%;
-	};
+The ```max``` mixin does the complete opposite. It counts from the high end of a breakpoint down to zero. In a similar case with min, ```max(6)``` counts from ```1999px``` down to zero.
+
+The ```only``` mixin locks the media query to a certain breakpoint. Anything above and below the breakpoint sizes won't be considered. ```only(6)``` will only apply styles to screen widths ```1600 - 1999 pixels```.
+
+##### Usage:
+To use the mixin (in this case 'min'), just fill in the arguments and add a ```{ ••• }``` block for your css:
+```scss
+@include min(3, 'landscape') {
+    display: block; //only applies to smartphones (and smaller-sized tablets) on landscape
 }
 ```
-*Applies* ```width: 100%;``` *to* ```.element``` *in any screen size with a maximum width of 1199px*
-```scss
-.element{
-	@include breakpoint(min, 3) {
-		width: 100%;
-	};
-}
-```
-*Applies* ```width: 100%;``` *to* ```.element``` *in any screen size with a minimum width of 768px*
-```scss
-@include breakpoint(only, 2) {
-	.element{
-		width: 100%;
-	}
-};
-```
-*Applies* ```width: 100%;``` *to* ```.element``` *in any screen size with a minimum width of 400px and a maximum width of 767px*
 
-####Screen-size Based Media Query
+#### Screen-size Based Media Query
 To do media queries by specific screen sizes, the following mixin applies:
 ```scss
 @mixin screen($min, $max) { ... };
@@ -127,7 +112,7 @@ Replace ```$min``` with the minimum screen width your style applies to and ```$m
 	}
 }
 ```
-*Applies *```width: 100%``` *to* ```.element``` *in any screen size with a minimum of 300px*
+*Applies*```width: 100%``` *to* ```.element``` *in any screen size with a minimum of 300px*
 ```scss
 @include screen(300px, 500px) {
 	.element{
@@ -135,7 +120,7 @@ Replace ```$min``` with the minimum screen width your style applies to and ```$m
 	}
 };
 ```
-*Applies *```width: 100%``` *to* ```.element``` *in any screen size with a minimum of 300px and a maximum of 500px*
+*Applies*```width: 100%``` *to* ```.element``` *in any screen size with a minimum of 300px and a maximum of 500px*
 ```scss
 @include screen(false, 500px) {
 	.element{
@@ -143,45 +128,14 @@ Replace ```$min``` with the minimum screen width your style applies to and ```$m
 	}
 };
 ```
-*Applies *```width: 100%``` *to* ```.element``` *in any screen size with a maximum of 500px*
+*Applies*```width: 100%``` *to* ```.element``` *in any screen size with a maximum of 500px*
 
-####Orientation-size Based Media Query
-To do media queries based on screen orientation (mobile browsers only, as of date of writing):
-```scss
-@mixin orientation($orientation) { ... };
-```
-Replace ```$orientation``` with ```landscape``` or ```portrait``` only works on mobile. 
-
-```scss
-/*Example 1:*/
-@include orientation(landscape) {
-	.element{
-		width: 100%;
-	}
-}
-
-/*Example 2:*/
-@include orientation(portrait) {
-	.element{
-		width: 100%;
-	}
-}
-
-/*Example 3:*/
-@include orientation(some-other-value) {
-	.element{
-		width: 100%;
-	}
-}
-```
-*The first example will be seen only on devices that are on landscape view and on desktop browsers. The second example will only bee seen on devices that are in portrait view. The third example simply ignores whatever styles you place under its* ```@content``` *value.*
-
-####Print
+#### Print
 To add a print stylesheet, use a mixin instead of needing to add another stylesheet.
 ```scss
 @mixin print{ ... }
 ```
-####Breakpoint Scaling
+#### Breakpoint Scaling
 Applies values according to the breakpoint ID and fills in any missing values.
 ```scss
 @mixin upScale($property, $bp1, $bp2, ..., $bp7, $prefix);
@@ -201,8 +155,9 @@ Applies values according to the breakpoint ID and fills in any missing values.
 ```
 *Applies 40 width on screens > 1999, 30px on screens 1600 to 1999 and 20px width to screens < 1600.*
 
-####Shortcuts
-#####Browser Prefixing
+#### Shortcuts
+##### Browser Prefixing
+This is to add all browser prefixes (example: ```-webkit-``` ) styles without typing the duplications yourself.
 ```scss
 @mixin prefix($property, $value);
 
@@ -222,7 +177,8 @@ Applies values according to the breakpoint ID and fills in any missing values.
 	box-sizing: border-box;
 }
 ```
-#####Responsive Hiding
+##### Responsive Hiding
+Hide element (```display: none```) when the screen with fits the breakpoints specified in the arguments.
 ```scss
 @mixin hide($x, ..., $x);
 
@@ -251,7 +207,8 @@ Applies values according to the breakpoint ID and fills in any missing values.
 	}
 }
 ```
-#####The famous float "ClearFix"
+##### The famous float "ClearFix"
+Adds a pseudo element to *clear* any floating elements so that its container sizes up correctly.
 ```scss
 @mixin clearFix();
 
@@ -271,31 +228,8 @@ Applies values according to the breakpoint ID and fills in any missing values.
 }
 ```
 
-####Center Vertically
-*Note that mixin can only be used in the children of elements with a relative or absolute position for best results.*
-```scss
-@mixin verticalCenter($x, $y);
-
-/* usage */
-.element{
-	@include vertCenter(-50%, -50%);
-}
-```
-```css
-/* yields */
-.element{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	-moz-transform: translate(-50%, -50%);
-	-o-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-}
-```
-
-####Viewport Width + Height
+##### Viewport Width + Height
+There was an issue with iOS devices, but these have already been fixed.
 ```scss
 @mixin calc-vh($property, $value);
 @mixin calc-vw($property, $value);
@@ -360,7 +294,187 @@ Applies values according to the breakpoint ID and fills in any missing values.
 	}
 }
 ```
-*By the time of writing, this does not support browser prefixes just yet.*
+##### Transitions
+The issue with webkit browser animation stuttering has been addressed and the fixes have been put in place. However you may override the fixes yourself anytime.
+```scss
+@mixin transition($what...);
+@mixin duration($time);
+@mixin timing($preset);
 
+/*Usage: All three will always be used in tandem with each other.*/
+@include transition(opacity, color); /* or alternatively */ @include transition(all);
+@include duration(0.6s); /* or alternatively */ @include duration(600ms);
+@include timing('snap'); /* or alternatively */ @include timing(cubic-bezier(0.55, 0.055, 0.675, 0.19));
+```
+For the ```timing``` mixin, there are presets already preprogrammed in: ```snap```, ```linear```, ```sine``` & ```fall```.
+**Example:**
+```scss
+div{
+    @include transition(all);
+    @include timing(snap);
+    @include duration(0.6s);
+}
+```
+Will yield the following CSS:
+```css
+.div{
+    -webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	perspective: 1000;
+    -moz-transition-property : all;
+	-webkit-transition-property : all;
+	-o-transition-property : all;
+	-ms-transition-property : all;
+	transition-property : all;
+	-moz-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
+    -webkit-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
+    -o-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
+    -ms-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
+    transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
+    -moz-transition-duration : 0.6s;
+    -webkit-transition-duration : 0.6s;
+    -o-transition-duration : 0.6s;
+    -ms-transition-duration : 0.6s;
+    transition-duration : 0.6s;
+}
+```
+##### Animation and Keyframes
+Animation and Keyframe code duplication (and vendor prefixing) has already been addressed by the ```animation``` and ```keyframes``` mixins.
+```scss
+@mixin animate($keyframe_name, $duration, $timing, $iterations: infinite, $direction: normal, $delay: false);
+@mixin keyframes($keyframe_name) { ••• };
+```
+**Usage**
+These two mixins should be used in tandem with each other, like the ```transition``` mixin trio.
+```scss
+@include keyframes(animation){
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+div{
+	@include animate('animation', 0.8s, linear);
+}
+```
+Translates to the following CSS:
+```css
+@-webkit-keyframes animation{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@-moz-keyframes animation{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@-o-keyframes animation{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@-ms-keyframes animation{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes animation{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
 
+div{
+	-webkit-animation-name: animation;
+	-moz-animation-name: animation;
+	-o-animation-name: animation;
+	-ms-animation-name: animation;
+	animation-name: animation;
+	-webkit-animation-duration: 0.8s;
+	-moz-animation-duration: 0.8s;
+	-o-animation-duration: 0.8s;
+	-ms-animation-duration: 0.8s;
+	animation-duration: 0.8s;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-timing-function: linear;
+	-o-animation-timing-function: linear;
+	-ms-animation-timing-function: linear;
+	animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+	-moz-animation-iteration-count: infinite;
+	-o-animation-iteration-count: infinite;
+	-ms-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+	-webkit-animation-direction: normal;
+	-moz-animation-direction: normal;
+	-o-animation-direction: normal;
+	-ms-animation-direction: normal;
+	animation-direction: normal;
+}
+```
+##### Autosizing
+To autosize or 'zoom' your measurements depending on a certain factor per screen size, use the ```zoom``` mixin, which in turn uses the ```zoomFactor``` function and the ```upScale``` mixin. The purpose of ```zoom``` is to quickly auto-resize sizes depending on the breakpoint and its respective 'zoom factor' denoted in the ```_vars.scss``` file (```$zf1 - $zf7 variables```).
+**Usage:**
+```scss
+div{
+	@include zoom(margin-left, 20px);
+}
+```
+##### Positioning and Re-positioning - Absolute / Fixed Elements
+This mixin works the best with ```position: absolute;``` or ```position: fixed;``` elements since it uses the ```top```, ```left```, ```bottom```, ```right``` and ```transform``` properties.
+```scss
+div{
+	position: absolute;
+	display: block;
+	width: 30px;
+	height: 30px;
+	@include position(50%, 50%); //(top 50%, left 50%)
+	@include reposition(-50%, -50%); //(translate(-50%, -50%)
+}
+```
+This will center the div in a positioned (```absolute```, ```relative```, ```fixed```) parent regardless of the parent's size.
+```scss
+div{
+	position: absolute;
+	display: block;
+	width: 30px;
+	height: 30px;
+	@include position(50%, 50%, true); //(top 50%, right 50%)
+	@include reposition(50%, -50%); //(translate(50%, -50%)
+}
+```
+The ```position``` mixin, positions the element in percentage width/height -- depending on the axis -- of the parent element or in pixels relative to the top, left, right or bottom of the parent element. 
+
+The ```reposition``` mixin, positions the element in percentage width/height -- depending on the axis -- of the current element or in pixels relative to the current position of the current element.
+
+##### Typography
+-- to be added --
 #### ~Happy coding!

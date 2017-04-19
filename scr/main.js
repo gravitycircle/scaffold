@@ -21,7 +21,7 @@
 		};
 	}]);
 
-	app.directive('body', ['$compile', '$window', '$timeout', '$location', 'features', 'sources', 'constants', 'modal', 'fetch', 'pathmgr', function($compile, $window, $timeout, $location, features, sources, constants, modal, fetch, pathmgr){
+	app.directive('body', ['$compile', '$window', '$timeout', '$location', '$sce', 'features', 'sources', 'constants', 'modal', 'fetch', 'pathmgr', function($compile, $window, $timeout, $location, $sce, features, sources, constants, modal, fetch, pathmgr){
 		return{
 			restrict: 'E',
 			template: constants.templates.shadow.main,
@@ -41,21 +41,6 @@
 
 			},
 			controller: function($scope, $element, $attrs){
-				$scope.openM = function(){
-					modal.dialogue('Test Dialogue', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium ullam cum, recusandae sapiente aut et pariatur excepturi nam ipsum modi eligendi, libero perferendis, soluta molestias sunt saepe debitis labore ut.', [
-						{
-							'text' : 'Other Test',
-							'class' : 'unique-identifier',
-							'other-classes' : ['button'],
-							'events' : {
-								'click' : function(e, closeWindow){
-									e.preventDefault();
-									closeWindow();
-								}
-							}
-						}
-					]);
-				};
 
 				$scope.initiate = function(content){
 					$scope.data = content;
