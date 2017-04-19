@@ -4,15 +4,15 @@
 This is the starting point of every new site I create using a combination of the following frameworks:
 
 *   **Javascript**
-    *   AngularJS v1.3.15
-    *   jQuery v2.1.3
+	*   AngularJS v1.3.15
+	*   jQuery v2.1.3
 *   **Preprocessors**
-    *   Compass (requires Ruby and gem installation)
-    *   SASS (requires Ruby and gem installation)
-    *   PHP v5.6.11 (requires running on a server. Preferrably Apache 2.0)
+	*   Compass (requires Ruby and gem installation)
+	*   SASS (requires Ruby and gem installation)
+	*   PHP v5.6.11 (requires running on a server. Preferrably Apache 2.0)
 *   **Markup and Styling**
-    *   HTML 5
-    *   CSS
+	*   HTML 5
+	*   CSS
 
 Please make sure your config.php is set up to the right Base address by changing the BASE and CANONICAL constants. You'll know that you've set it correctly if you see a red logo on the top of this page after a refresh. Currently the constants are set to adapt to the URLs of your files based on where the active Apache directory is.
 
@@ -87,7 +87,7 @@ The ```only``` mixin locks the media query to a certain breakpoint. Anything abo
 To use the mixin (in this case 'min'), just fill in the arguments and add a ```{ ••• }``` block for your css:
 ```scss
 @include min(3, 'landscape') {
-    display: block; //only applies to smartphones (and smaller-sized tablets) on landscape
+	display: block; //only applies to smartphones (and smaller-sized tablets) on landscape
 }
 ```
 
@@ -156,146 +156,10 @@ Applies values according to the breakpoint ID and fills in any missing values.
 *Applies 40 width on screens > 1999, 30px on screens 1600 to 1999 and 20px width to screens < 1600.*
 
 ---
-# Shortcuts
+#Transition and Animation: Quick Reference
 
-### Browser Prefixing
-This is to add all browser prefixes (example: ```-webkit-``` ) styles without typing the duplications yourself.
-```scss
-@mixin prefix($property, $value);
+CSS transition and animations are pretty tricky and verbose when coded manually. The mixins below will shorten the manually typed-down code by a huge margin without sacrificing flexibility.
 
-/* usage */
-.element{
-	@include prefix(box-sizing, border-box);
-}
-```
-
-```css
-/* yields */
-.element{
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-o-box-sizing: border-box;
-	-ms-box-sizing: border-box;
-	box-sizing: border-box;
-}
-```
-### Responsive Hiding
-Hide element (```display: none```) when the screen with fits the breakpoints specified in the arguments.
-```scss
-@mixin hide($x, ..., $x);
-
-/* usage */
-.element{
-	@include hide(4,5,6);
-}
-```
-```css
-/* yields */
-@media only screen and (min-width: 1025px) and (max-width: 1199px) {
-	.element{
-		display: none;
-	}
-}
-
-@media only screen and (min-width: 1200px) and (max-width: 1999px) {
-	.element{
-		display: none;
-	}
-}
-
-@media only screen and (min-width: 2000px) {
-	.element{
-		display: none;
-	}
-}
-```
-### The famous float "ClearFix"
-Adds a pseudo element to *clear* any floating elements so that its container sizes up correctly.
-```scss
-@mixin clearFix();
-
-/* usage */
-.element{
-	@include clearFix();
-}
-```
-```css
-/* yields */
-.element::after{
-	content: '';
-	width: 100%;
-	height: 0;
-	clear: both;
-	pointer-events: none;
-}
-```
-
-### Viewport Width + Height
-There was an issue with iOS devices, but these have already been fixed.
-```scss
-@mixin calc-vh($property, $value);
-@mixin calc-vw($property, $value);
-
-/* usage */
-.element{
-	@include calc-vw(width, 50);
-}
-```
-
-```css
-/* yields */
-.element{
-	width : 50vw;
-}
-
-@media all and (device-width: 1024px) and (device-height: 768px) and (orientation:portrait){
-	.element{
-		width: 384px;
-	}
-}
-
-@media all and (device-width: 1024px) and (device-height: 768px) and (orientation:landscape){
-	.element{
-		width: 512px;
-	}
-}
-
-@media all and (device-width: 320px) and (device-height: 480px) and (orientation:portrait){
-	.element{
-		width: 160px;
-	}
-}
-
-@media all and (device-width: 320px) and (device-height: 480px) and (orientation:landscape){
-	.element{
-		width: 120px;
-	}
-}
-
-@media all and (device-width: 320px) and (device-height: 568px) and (orientation:portrait){
-	.element{
-		width: 160px;
-	}
-}
-
-@media all and (device-width: 320px) and (device-height: 568px) and (orientation:landscape){
-	.element{
-		width: 284px;
-	}
-}
-
-@media all and (device-width: 375px) and (device-height: 667px) and (orientation:portrait){
-	.element{
-		width: 188px;
-	}
-}
-
-@media all and (device-width: 375px) and (device-height: 667px) and (orientation:landscape){
-	.element{
-		width: 334px;
-	}
-}
-```
 ### Transitions
 The issue with webkit browser animation stuttering has been addressed and the fixes have been put in place. However you may override the fixes yourself anytime.
 ```scss
@@ -312,9 +176,9 @@ For the ```timing``` mixin, there are presets already preprogrammed in: ```snap`
 **Example:**
 ```scss
 div{
-    @include transition(all);
-    @include timing(snap);
-    @include duration(0.6s);
+	@include transition(all);
+	@include timing(snap);
+	@include duration(0.6s);
 }
 ```
 Will yield the following CSS:
@@ -442,6 +306,84 @@ div{
 	animation-direction: normal;
 }
 ```
+
+---
+# Efficiency Mixins: Quick Reference
+
+The following mixins are of optional use. This is just to make your stylesheet coding more efficient.
+
+### Browser Prefixing
+This is to add all browser prefixes (example: ```-webkit-``` ) styles without typing the duplications yourself.
+```scss
+@mixin prefix($property, $value);
+
+/* usage */
+.element{
+	@include prefix(box-sizing, border-box);
+}
+```
+
+```css
+/* yields */
+.element{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+```
+### Responsive Hiding
+Hide element (```display: none```) when the screen with fits the breakpoints specified in the arguments.
+```scss
+@mixin hide($x, ..., $x);
+
+/* usage */
+.element{
+	@include hide(4,5,6);
+}
+```
+```css
+/* yields */
+@media only screen and (min-width: 1025px) and (max-width: 1199px) {
+	.element{
+		display: none;
+	}
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1999px) {
+	.element{
+		display: none;
+	}
+}
+
+@media only screen and (min-width: 2000px) {
+	.element{
+		display: none;
+	}
+}
+```
+### The famous float "ClearFix"
+Adds a pseudo element to *clear* any floating elements so that its container sizes up correctly.
+```scss
+@mixin clearFix();
+
+/* usage */
+.element{
+	@include clearFix();
+}
+```
+```css
+/* yields */
+.element::after{
+	content: '';
+	width: 100%;
+	height: 0;
+	clear: both;
+	pointer-events: none;
+}
+```
+
 ### Autosizing
 To autosize or 'zoom' your measurements depending on a certain factor per screen size, use the ```zoom``` mixin, which in turn uses the ```zoomFactor``` function and the ```upScale``` mixin. The purpose of ```zoom``` is to quickly auto-resize sizes depending on the breakpoint and its respective 'zoom factor' denoted in the ```_vars.scss``` file (```$zf1 - $zf7 variables```).
 **Usage:**
@@ -477,6 +419,76 @@ The ```position``` mixin, positions the element in percentage width/height -- de
 
 The ```reposition``` mixin, positions the element in percentage width/height -- depending on the axis -- of the current element or in pixels relative to the current position of the current element.
 
-##### Typography
--- to be added --
+### Viewport Width + Height
+There was an issue with iOS devices, but these have already been fixed.
+```scss
+@mixin calc-vh($property, $value);
+@mixin calc-vw($property, $value);
+
+/* usage */
+.element{
+	@include calc-vw(width, 50);
+}
+```
+
+```css
+/* yields */
+.element{
+	width : 50vw;
+}
+
+@media all and (device-width: 1024px) and (device-height: 768px) and (orientation:portrait){
+	.element{
+		width: 384px;
+	}
+}
+
+@media all and (device-width: 1024px) and (device-height: 768px) and (orientation:landscape){
+	.element{
+		width: 512px;
+	}
+}
+
+@media all and (device-width: 320px) and (device-height: 480px) and (orientation:portrait){
+	.element{
+		width: 160px;
+	}
+}
+
+@media all and (device-width: 320px) and (device-height: 480px) and (orientation:landscape){
+	.element{
+		width: 120px;
+	}
+}
+
+@media all and (device-width: 320px) and (device-height: 568px) and (orientation:portrait){
+	.element{
+		width: 160px;
+	}
+}
+
+@media all and (device-width: 320px) and (device-height: 568px) and (orientation:landscape){
+	.element{
+		width: 284px;
+	}
+}
+
+@media all and (device-width: 375px) and (device-height: 667px) and (orientation:portrait){
+	.element{
+		width: 188px;
+	}
+}
+
+@media all and (device-width: 375px) and (device-height: 667px) and (orientation:landscape){
+	.element{
+		width: 334px;
+	}
+}
+```
+
+---
+
+# Typography
+
+-- COMING SOON --
 #### ~Happy coding!
