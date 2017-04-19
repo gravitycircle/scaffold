@@ -22,9 +22,9 @@ define('DOMAIN', str_replace(SSL, '', BASE));
 //up to 12 digit hex only. ty.
 define('APIKEY', 'ea77d54c0fbd');
 
-define('SMTPUSER', 'richard@kevinlouisdesign.com');
-define('SMTPPW', 'K74ep47D');
-define('SMTPHOST', 'mail.emailhome.com');
+define('SMTPUSER', '@');
+define('SMTPPW', '@');
+define('SMTPHOST', '@');
 define('SMTPPORT', 465);
 define('GOOGLEAPI', '@');
 ?>
