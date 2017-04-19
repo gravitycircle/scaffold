@@ -154,9 +154,10 @@ Applies values according to the breakpoint ID and fills in any missing values.
 }
 ```
 *Applies 40 width on screens > 1999, 30px on screens 1600 to 1999 and 20px width to screens < 1600.*
+---
+# Shortcuts
 
-#### Shortcuts
-##### Browser Prefixing
+### Browser Prefixing
 This is to add all browser prefixes (example: ```-webkit-``` ) styles without typing the duplications yourself.
 ```scss
 @mixin prefix($property, $value);
@@ -177,7 +178,7 @@ This is to add all browser prefixes (example: ```-webkit-``` ) styles without ty
 	box-sizing: border-box;
 }
 ```
-##### Responsive Hiding
+### Responsive Hiding
 Hide element (```display: none```) when the screen with fits the breakpoints specified in the arguments.
 ```scss
 @mixin hide($x, ..., $x);
@@ -207,7 +208,7 @@ Hide element (```display: none```) when the screen with fits the breakpoints spe
 	}
 }
 ```
-##### The famous float "ClearFix"
+### The famous float "ClearFix"
 Adds a pseudo element to *clear* any floating elements so that its container sizes up correctly.
 ```scss
 @mixin clearFix();
@@ -228,7 +229,7 @@ Adds a pseudo element to *clear* any floating elements so that its container siz
 }
 ```
 
-##### Viewport Width + Height
+### Viewport Width + Height
 There was an issue with iOS devices, but these have already been fixed.
 ```scss
 @mixin calc-vh($property, $value);
@@ -294,7 +295,7 @@ There was an issue with iOS devices, but these have already been fixed.
 	}
 }
 ```
-##### Transitions
+### Transitions
 The issue with webkit browser animation stuttering has been addressed and the fixes have been put in place. However you may override the fixes yourself anytime.
 ```scss
 @mixin transition($what...);
@@ -348,7 +349,7 @@ Will yield the following CSS:
     transition-duration : 0.6s;
 }
 ```
-##### Animation and Keyframes
+### Animation and Keyframes
 Animation and Keyframe code duplication (and vendor prefixing) has already been addressed by the ```animation``` and ```keyframes``` mixins.
 ```scss
 @mixin animate($keyframe_name, $duration, $timing, $iterations: infinite, $direction: normal, $delay: false);
@@ -440,7 +441,7 @@ div{
 	animation-direction: normal;
 }
 ```
-##### Autosizing
+### Autosizing
 To autosize or 'zoom' your measurements depending on a certain factor per screen size, use the ```zoom``` mixin, which in turn uses the ```zoomFactor``` function and the ```upScale``` mixin. The purpose of ```zoom``` is to quickly auto-resize sizes depending on the breakpoint and its respective 'zoom factor' denoted in the ```_vars.scss``` file (```$zf1 - $zf7 variables```).
 **Usage:**
 ```scss
@@ -448,7 +449,7 @@ div{
 	@include zoom(margin-left, 20px);
 }
 ```
-##### Positioning and Re-positioning - Absolute / Fixed Elements
+### Positioning and Re-positioning - Absolute / Fixed Elements
 This mixin works the best with ```position: absolute;``` or ```position: fixed;``` elements since it uses the ```top```, ```left```, ```bottom```, ```right``` and ```transform``` properties.
 ```scss
 div{
