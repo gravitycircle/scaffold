@@ -11,9 +11,7 @@ function get_lasso() {
 
 function build_content(){
 	$output = array(
-		'test' => array(
-			'fields' => get_fields(false)
-		)
+		
 	);
 
 	return $output;
