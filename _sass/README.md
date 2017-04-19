@@ -94,7 +94,7 @@ To use the mixin (in this case 'min'), just fill in the arguments and add a ```{
 #### Screen-size Based Media Query
 To do media queries by specific screen sizes, the following mixin applies:
 ```scss
-@mixin screen($min, $max) { ... };
+@mixin screen($min, $max) { ••• };
 ```
 Replace ```$min``` with the minimum screen width your style applies to and ```$max``` with the maximum screen width you want your style to apply to.
 ```scss
@@ -133,7 +133,7 @@ Replace ```$min``` with the minimum screen width your style applies to and ```$m
 #### Print
 To add a print stylesheet, use a mixin instead of needing to add another stylesheet.
 ```scss
-@mixin print{ ... }
+@mixin print{ ••• }
 ```
 #### Breakpoint Scaling
 Applies values according to the breakpoint ID and fills in any missing values.
