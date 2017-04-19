@@ -154,6 +154,7 @@ Applies values according to the breakpoint ID and fills in any missing values.
 }
 ```
 *Applies 40 width on screens > 1999, 30px on screens 1600 to 1999 and 20px width to screens < 1600.*
+
 ---
 # Shortcuts
 
