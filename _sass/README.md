@@ -320,7 +320,7 @@ div{
 Will yield the following CSS:
 ```css
 .div{
-    -webkit-transform: translateZ(0);
+	-webkit-transform: translateZ(0);
 	-moz-transform: translateZ(0);
 	-ms-transform: translateZ(0);
 	-o-transform: translateZ(0);
@@ -333,21 +333,21 @@ Will yield the following CSS:
 	-moz-perspective: 1000;
 	-ms-perspective: 1000;
 	perspective: 1000;
-    -moz-transition-property : all;
+	-moz-transition-property : all;
 	-webkit-transition-property : all;
 	-o-transition-property : all;
 	-ms-transition-property : all;
 	transition-property : all;
 	-moz-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
-    -webkit-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
-    -o-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
-    -ms-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
-    transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
-    -moz-transition-duration : 0.6s;
-    -webkit-transition-duration : 0.6s;
-    -o-transition-duration : 0.6s;
-    -ms-transition-duration : 0.6s;
-    transition-duration : 0.6s;
+	-webkit-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
+	-o-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
+	-ms-transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
+	transition-timing-function : curve(cubic-bezier(0.000, 0.700, 0.285, 1.000));
+	-moz-transition-duration : 0.6s;
+	-webkit-transition-duration : 0.6s;
+	-o-transition-duration : 0.6s;
+	-ms-transition-duration : 0.6s;
+	transition-duration : 0.6s;
 }
 ```
 ### Animation and Keyframes
