@@ -42,7 +42,7 @@ if($request == 'config.js' || $request == 'config.debug.js'){
 	$filearr = array();
 
 	ob_start();
-	scanTemplates(DOCROOT.'/shadow', BASE.'shadow');
+	scanTemplates(DOCROOT.'/shadow', DOCROOT.'/shadow');
 	$templates = explode('||', substr(ob_get_clean(), 0, -2));
 
 	foreach($templates as $t) {
