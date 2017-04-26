@@ -426,6 +426,7 @@
 					line-height: fsize($lineHeight);
 					@include type($textFamily, $textType);
 					resize: none;
+					background: transparent;
 
 					&:focus{
 						outline: none;
@@ -489,6 +490,7 @@
 					line-height: fsize($lineHeight);
 					@include type($textFamily, $textType);
 					resize: none;
+					background: transparent;
 
 					&:focus{
 						outline: none;
