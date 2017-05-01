@@ -10,14 +10,14 @@ body {
 	color: $black;
 	margin: 0;
 	padding: 0;
-	position: aboslute;
+	position: absolute;
 	@include dimensions(100%);
 	top: 0;
 	left: 0;
 	overflow: hidden;
 
 	#wrapper{
-		position: aboslute;
+		position: absolute;
 		@include dimensions(100%);
 		top: 0;
 		left: 0;
