@@ -174,6 +174,35 @@ $styles: array - style urls
 	$search_engine = _isEngine($_SERVER["HTTP_USER_AGENT"]);
 	$gen_data = main(false);
 	
+	if($uridata[0] == '') {
+		$titleFull = $gen_data['contents']['home']['metadata']['title'];
+	}
+	else{
+		if($uridata[0] == 'debug') {
+			if(!isset($uridata[1])){
+				$target = 'home';
+			}
+			else{
+				if($uridata[1] == '') {
+					$target = 'home';
+				}
+				else{
+					$target = $uridata[1];
+				}
+			}
+		}
+		else{
+			$target = $uridata[0];
+		}
+		if(!isset($gen_data['contents'][$target])){
+			$titleFull = $gen_data['contents']['lost']['metadata']['title'];
+
+		}
+		else{
+			$titleFull = $gen_data['contents'][$target]['metadata']['title'];
+		}
+	}
+
 	ob_start();
 ?>
 <!DOCTYPE html>
@@ -184,7 +213,7 @@ $styles: array - style urls
 	<meta name="theme-color" content="#ffffff">
 	<link rel="icon" sizes="192x192" type="image/png" href="<?=BASE?>img/shortcut-icon.png" />
 	<link rel="shortcut icon" href="<?=BASE?>img/shortcut-icon.ico" type="image/vnd.microsoft.icon" />
-	<title><?=$gen_data['site_name']?></title>
+	<title><?=$titleFull?></title>
 <?php
 if(!$search_engine){
 	if($uridata[0] == 'debug') {

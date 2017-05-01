@@ -118,10 +118,9 @@ cfg.factory('preloader', ['$http', '$sce', 'constants', function($http, $sce, co
 
 
 cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'features', function($sce, fetch, preloader, constants, browser, features){
+	var fetched = {};
 	return{
 		loading: 0,
-		contents: {},
-		img: [],
 		get: function(action, before, whilest, specifics){
 			var o = this;
 			var svg = false;
@@ -137,7 +136,7 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 				fetch.secureget(constants.canonical+'_data/main.php', {
 					'svg' : svg
 				}, function(response){
-					o.contents = response.data;
+					fetched = response.data;
 					
 					if(typeof specifics == 'string') {
 						if(specifics == 'navigation') {
@@ -145,7 +144,7 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 						}
 						else{
 							if(typeof response.data[specifics] != 'undefined') {
-								returndata = response.data[specifics];
+								returndata = response.data.contents[specifics];
 							}
 							else{
 								returndata = response.data;
@@ -156,29 +155,50 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 						returndata = response.data;
 					}
 
-					var pr = response.data.preload;
-					var imgar = [];
-					for(var i=0; i<pr.length; i++)
-					{
-						imgar[i] = pr[i];
-						o.indexer(pr[i]);
-					}
+					var init = response.data['on_init'];
 
-					if(typeof before == 'function')
-					{
-						before(response.data);
-					}
+					preloader.run(init, function(){
+						if(typeof before == 'function') {
+							before(response.data, function(){
+								var pr = response.data.preload;
+								var imgar = [];
+								for(var i=0; i<pr.length; i++)
+								{
+									imgar[i] = pr[i];
+								}
 
-					preloader.run(imgar, function(){
-						action(response.data.contents);
-						o.loading = 1;
-					}, function(progress){
-						if(typeof whilest == 'function'){
-							whilest(progress);
+								preloader.run(imgar, function(){
+									action(response.data.contents);
+									o.loading = 1;
+								}, function(progress){
+									if(typeof whilest == 'function'){
+										whilest(progress);
+									}
+								});
+							});
+						}
+						else{
+							var pr = response.data.preload;
+							var imgar = [];
+							for(var i=0; i<pr.length; i++)
+							{
+								imgar[i] = pr[i];
+							}
+
+							preloader.run(imgar, function(){
+								action(response.data.contents);
+								o.loading = 1;
+							}, function(progress){
+								if(typeof whilest == 'function'){
+									whilest(progress);
+								}
+							});
 						}
 					});
+
+					
 				}, function(response){
-					o.contents = false;
+					fetched = false;
 					action(false);
 				});
 			}
@@ -186,19 +206,19 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 			{
 				if(typeof specifics == 'string') {
 					if(specifics == 'navigation') {
-						returndata = response.data.nav;
+						returndata = fetched.nav;
 					}
 					else{
-						if(typeof response.data[specifics] != 'undefined') {
-							returndata = response.data[specifics];
+						if(typeof fetched[specifics] != 'undefined') {
+							returndata = fetched.contents[specifics];
 						}
 						else{
-							returndata = response.data;
+							returndata = fetched;
 						}
 					}
 				}
 				else{
-					returndata = response.data;
+					returndata = fetched;
 				}
 
 				if(typeof before == 'function') {
@@ -209,9 +229,6 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 					action(returndata);
 				}
 			}
-		},
-		indexer: function(url) {
-			this.img[this.img.length] = url;
 		},
 		image: function(name) {
 			var o = this;
