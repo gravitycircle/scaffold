@@ -204,12 +204,13 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 			}
 			else
 			{
+
 				if(typeof specifics == 'string') {
 					if(specifics == 'navigation') {
 						returndata = fetched.nav;
 					}
 					else{
-						if(typeof fetched[specifics] != 'undefined') {
+						if(typeof fetched.contents[specifics] != 'undefined') {
 							returndata = fetched.contents[specifics];
 						}
 						else{
@@ -219,10 +220,6 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 				}
 				else{
 					returndata = fetched;
-				}
-
-				if(typeof before == 'function') {
-					before(returndata);
 				}
 
 				if(typeof action == 'function') {
