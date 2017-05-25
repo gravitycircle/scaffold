@@ -1,0 +1,9 @@
+_src/
+_old/
+_teaser/
+_sass/
+_study/
+.ftpquota
+.gitignore
+config.rb
+README.md
