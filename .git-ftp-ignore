@@ -10,5 +10,6 @@ _study/*
 .git-ftp-ignore
 .git-ftp-include
 .gitlab-ci.yml
+ftp-setup.sh
 config.rb
 README.md
