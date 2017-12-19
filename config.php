@@ -20,11 +20,8 @@ define('CANONICAL', SSL.str_replace($docroot, $servername, dirname(__FILE__)).'/
 define('BASE', SSL.str_replace($docroot, $servername, dirname(__FILE__)).'/');
 define('DOMAIN', str_replace(SSL, '', BASE));
 //up to 12 digit hex only. ty.
-define('APIKEY', 'ea77d54c0fbd');
+define('APIKEY', 'ee9616833955');
 
-define('SMTPUSER', '@');
-define('SMTPPW', '@');
-define('SMTPHOST', '@');
-define('SMTPPORT', 465);
-define('GOOGLEAPI', '@');
+
+define('DEBUG_MODE', true);
 ?>

@@ -29,15 +29,36 @@ _build(array(
 		'comms.js'
 	),
 	'scripts' => array(
-		'views.js',
-		'modes.js',
-		'main.js'
+		array(
+			'predeployed' => true,
+			'src' => 'views.js'
+		),
+		array(
+			'predeployed' => true,
+			'src' => 'modes.js'
+		),
+		array(
+			'predeployed' => true,
+			'src' => 'main.js'
+		),
+		array(
+			'predeployed' => false,
+			'src' => 'seo.js'
+		)
 	),
 	'externals' => array(
+		// array(
+		// 	'predeployed' => false,
+		// 	'src' => 'https://app.lassocrm.com/analytics.js'
+		// )
 	),
 	'inlines' => array(
+		// array(
+		// 	'predeployed' => false,
+		// 	'src' => '--[JS SCRIPT]--'
+		// )
 	)
 ), array(
 	//styles
 ));
-?>	
+?>

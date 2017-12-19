@@ -121,6 +121,12 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 	var fetched = {};
 	return{
 		loading: 0,
+		globals: function(what){
+			return fetched.contents.globals[what];
+		},
+		grab: function(what) {
+			return fetched.contents[what];
+		},
 		get: function(action, before, whilest, specifics){
 			var o = this;
 			var svg = false;
@@ -137,7 +143,7 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 					'svg' : svg
 				}, function(response){
 					fetched = response.data;
-					
+						
 					if(typeof specifics == 'string') {
 						if(specifics == 'navigation') {
 							returndata = response.data.nav;
@@ -155,11 +161,32 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 						returndata = response.data;
 					}
 
-					var init = response.data['on_init'];
+					var init = response.data.on_init;
+					var ppr = false;
 
-					preloader.run(init, function(){
-						if(typeof before == 'function') {
-							before(response.data, function(){
+					if(typeof init != 'undefined') {
+						if(init.length >= 1) {
+							ppr = true;
+						}
+ 					}
+
+					if(ppr) {
+						preloader.run(init, function(){
+							if(typeof before == 'function') {
+								before(response.data, function(){
+									var imgar = response.data.preload;
+
+									preloader.run(imgar, function(){
+										action(response.data.contents);
+										o.loading = 1;
+									}, function(progress){
+										if(typeof whilest == 'function'){
+											whilest(progress);
+										}
+									});
+								});
+							}
+							else{
 								var pr = response.data.preload;
 								var imgar = [];
 								for(var i=0; i<pr.length; i++)
@@ -175,15 +202,26 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 										whilest(progress);
 									}
 								});
+							}
+						});
+					}
+					else{
+						if(typeof before == 'function') {
+							before(response.data, function(){
+								var imgar = response.data.preload;
+
+								preloader.run(imgar, function(){
+									action(response.data.contents);
+									o.loading = 1;
+								}, function(progress){
+									if(typeof whilest == 'function'){
+										whilest(progress);
+									}
+								});
 							});
 						}
 						else{
-							var pr = response.data.preload;
-							var imgar = [];
-							for(var i=0; i<pr.length; i++)
-							{
-								imgar[i] = pr[i];
-							}
+							var imgar = response.data.preload;
 
 							preloader.run(imgar, function(){
 								action(response.data.contents);
@@ -194,9 +232,7 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 								}
 							});
 						}
-					});
-
-					
+					}
 				}, function(response){
 					fetched = false;
 					action(false);

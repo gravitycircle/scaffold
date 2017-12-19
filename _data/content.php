@@ -9,9 +9,57 @@ function get_lasso() {
 	);
 }
 
-function build_content(){
+function get_configs() {
+	return array(
+		'smtp' => array(
+			'user' => false,
+			'pass' => false,
+			'host' => false,
+			'port' => false
+		),
+		'api' => array(
+
+		)
+	);
+}
+
+function build_content($sitename){
+	$site = ' &lsaquo; '.$sitename;
+
 	$output = array(
-		
+		'config' => get_configs(),
+		'home' => array(
+			'metadata' => array(
+				'title' => 'Home'.$site,
+				'description' => '---',
+				'og' => array(
+					'title' => 'Home'.$site,
+					'description' => '---',
+					'site_name' => 'Home'.$site,
+					'url' => BASE,
+					'image' => BASE.'img/non-render/og-logo.png' 
+				),
+				'tw' => array(
+					'card' => 'summary'
+				)
+			)
+		),
+		'lost' => array(
+			'metadata' => array(
+				'title' => 'HTTP 404 Error: Page Not Found'.$site,
+				'description' => '---',
+				'og' => array(
+					'title' => 'HTTP 404 Error: Page Not Found'.$site,
+					'description' => '---',
+					'site_name' => 'HTTP 404 Error: Page Not Found'.$site,
+					'url' => BASE,
+					'image' => BASE.'img/non-render/og-logo.png' 
+				),
+				'tw' => array(
+					'card' => 'summary'
+				)
+			)
+		)
 	);
 
 	return $output;

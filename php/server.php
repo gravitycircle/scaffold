@@ -31,6 +31,22 @@ function scanTemplates($dir, $base){
         }
     }
 }
+
+function descriptionGenerator($descstring) {
+	if(strlen($descstring) < 157 ) {
+		return $descstring;
+	}
+
+	$pos=strpos($descstring, ' ', 157);
+
+	$newstr = substr($descstring, 0, $pos);
+
+	if($newstr != $descstring) {
+		return $newstr.'&hellip;';
+	}
+
+	return $pos;
+}
 use MatthiasMullie\Minify;
 
 
@@ -66,15 +82,22 @@ if($request == 'config.js' || $request == 'config.debug.js'){
 	include_once(DOCROOT.'/scr/config.js');
 	?>
 		cfg.factory('constants', function(){
+			var dynamic = {};
 			return {
 				canonical: '<?=CANONICAL?>',
 				base: '<?=BASE?>',
-				smtp: {
-					'user' : '<?=SMTPUSER?>',
-					'pw' : '<?=SMTPPW?>'
-				},
 				api: '<?=generate(APIKEY)?>',
-				templates: <?=json_encode($filearr)?>
+				templates: <?=json_encode($filearr)?>,
+				protocol: '<?=SSL?>',
+				debug_mode: <?=DEBUG_MODE ? 'true' : 'false'?>,
+				append : function(name,obj) {
+					if(typeof dynamic[name] == 'undefined') {
+						dynamic[name] = obj;
+					}
+				},
+				retrieve: function(name) {
+					return dynamic[name];
+				}
 			};
 		});
 	})();
@@ -133,8 +156,8 @@ else if ($request == 'script.js'){
 	}
 
 	foreach($scripts['scripts'] as $library) {
-		if(file_exists(DOCROOT.'/scr/'.$library)){
-			$js .= file_get_contents(DOCROOT.'/scr/'.$library);
+		if(file_exists(DOCROOT.'/scr/'.$library['src'])){
+			$js .= file_get_contents(DOCROOT.'/scr/'.$library['src']);
 		}
 	}
 
@@ -175,7 +198,7 @@ $styles: array - style urls
 	$gen_data = main(false);
 	
 	if($uridata[0] == '') {
-		$titleFull = $gen_data['contents']['home']['metadata']['title'];
+		$metadata_full = $gen_data['contents']['home']['metadata'];
 	}
 	else{
 		if($uridata[0] == 'debug') {
@@ -195,11 +218,11 @@ $styles: array - style urls
 			$target = $uridata[0];
 		}
 		if(!isset($gen_data['contents'][$target])){
-			$titleFull = $gen_data['contents']['lost']['metadata']['title'];
+			$metadata_full = $gen_data['contents']['lost']['metadata'];
 
 		}
 		else{
-			$titleFull = $gen_data['contents'][$target]['metadata']['title'];
+			$metadata_full = $gen_data['contents'][$target]['metadata'];
 		}
 	}
 
@@ -213,10 +236,23 @@ $styles: array - style urls
 	<meta name="theme-color" content="#ffffff">
 	<link rel="icon" sizes="192x192" type="image/png" href="<?=BASE?>img/shortcut-icon.png" />
 	<link rel="shortcut icon" href="<?=BASE?>img/shortcut-icon.ico" type="image/vnd.microsoft.icon" />
-	<title><?=$titleFull?></title>
+	<title><?=$metadata_full['title']?></title>
+	<meta name="description" content="<?=descriptionGenerator($metadata_full['description'])?>"/>
+<?php
+	foreach($metadata_full['tw'] as $twtag => $twval) {
+?>
+	<meta name="twitter:<?=$twtag?>" content="<?=$twval?>"/>
+<?php		
+	}
+	foreach($metadata_full['og'] as $ogtag => $ogval) {
+?>
+	<meta property="og:<?=$ogtag?>" content="<?=$ogval?>"/>
+<?php
+	}
+?>
 <?php
 if(!$search_engine){
-	if($uridata[0] == 'debug') {
+	if(DEBUG_MODE) {
 		$topush = array();
 
 		foreach($scripts['libraries'] as $library) {
@@ -227,7 +263,9 @@ if(!$search_engine){
 			array_push($topush, BASE.'ext/'.$library);
 		}
 		foreach($scripts['scripts'] as $library) {
-			array_push($topush, BASE.'scr/'.$library);
+			if($library['predeployed']){
+				array_push($topush, BASE.'scr/'.$library['src']);
+			}
 		}
 
 		foreach($topush as $jslibrary) {
@@ -244,14 +282,35 @@ if(!$search_engine){
 <?php
 	}
 	foreach($scripts['externals'] as $library) {
+		if($library['predeployed']){
 ?>
-	<script type="text/javascript" src="<?=$library?>"></script>
+	<script type="text/javascript" src="<?=$library['src']?>"></script>
 <?php
+		}
+		else{
+			if(!DEBUG_MODE){
+?>
+	<script type="text/javascript" src="<?=$library['src']?>"></script>
+<?php
+			}
+		}
 	}
 
 	if(sizeof($scripts['inlines']) > 0) {
+		$readScr = array();
+
+		foreach($scripts['inlines'] as $scrtxt) {
+			if($scrtxt['predeployed']) {
+				array_push($readScr, $scrtxt['src']);
+			}
+			else{
+				if(!DEBUG_MODE) {
+					array_push($readScr, $scrtxt['src']);
+				}
+			}
+		}
 ?>
-	<script type="text/javascript"><?=implode("\r\n", $scripts['inlines'])?></script>
+	<script type="text/javascript"><?=implode("\r\n", $readScr)?></script>
 <?php
 	}
 ?>

@@ -394,7 +394,7 @@
 		};
 	}]);
 	
-	mode.directive('submitField', ['$sce', 'submission', 'deliver', 'crm', 'constants', 'modal', function($sce, submission, deliver, crm, constants, modal){
+	mode.directive('submitField', ['$sce', 'submission', 'deliver', 'crm', 'constants', 'modal', 'browser', function($sce, submission, deliver, crm, constants, modal, browser){
 		return{
 			restrict: 'E',
 			replace: true,
@@ -415,7 +415,8 @@
 						});
 
 						if(forMail) {
-							deliver.email(['Registration Data', constants.smtp.user], ['Registration Data', constants.smtp.user], $scope.render.receiver, 'Registration Successful', submission.data, $scope.render.defaults.empty, $scope.render.defaults.disclaimer, function(response){
+							var smtpData = constants.retrieve('smtp');
+							deliver.email(['Registration Data', smtpData.user], ['Registration Data', smtpData.user], $scope.render.receiver, 'Registration Successful', submission.data, $scope.render.defaults.empty, $scope.render.defaults.disclaimer, function(response){
 								if(response.success) {
 									modal.dialogue($scope.render.prompts.success.title, $scope.render.prompts.success.message, false, function(){
 										submission.reset();
@@ -436,7 +437,7 @@
 										$('textarea').val('');
 										$('.selected').text('');
 										$('.check').removeClass('check');
-										console.error(response.debug);
+										browser.debug.err(response.debug);
 										$($element).find('a').text($scope.render.label);
 										$($element).find('a').css({
 											'pointer-events' : ''
@@ -452,7 +453,7 @@
 									$('textarea').val('');
 									$('.selected').text('');
 									$('.check').removeClass('check');
-									console.error('Connectivity: Cannot reach server.');
+									browser.debug.err('Connectivity: Cannot reach server.');
 									$($element).find('a').text($scope.render.label);
 									$($element).find('a').css({
 										'pointer-events' : ''
@@ -482,7 +483,7 @@
 										$('textarea').val('');
 										$('.selected').text('');
 										$('.check').removeClass('check');
-										console.error(response.debug);
+										browser.debug.err(response.debug);
 										$($element).find('a').text($scope.render.label);
 										$($element).find('a').css({
 											'pointer-events' : ''
@@ -498,7 +499,7 @@
 									$('textarea').val('');
 									$('.selected').text('');
 									$('.check').removeClass('check');
-									console.error('Connectivity: Cannot reach server.');
+									browser.debug.err('Connectivity: Cannot reach server.');
 									$($element).find('a').text($scope.render.label);
 									$($element).find('a').css({
 										'pointer-events' : ''

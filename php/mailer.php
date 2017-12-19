@@ -1,18 +1,18 @@
 <?php
 include_once('../config.php');
 include_once('keygen.php');
-include_once('../_data/content.php');
+include_once('../_data/collate.php');
 include_once('mail-template.php');
 if(isset($_GET['key']) && degenerate($_GET['key'])){
 	if(isset($_GET['mail']) && isset($_POST))
 	{ 
 		$data = json_decode(file_get_contents("php://input"), true);
-		//print_r($data);
+		$cnfg = get_configs();
 
-		$configurator['username'] = SMTPUSER;
-		$configurator['password'] = SMTPPW;
-		$configurator['host'] = SMTPHOST;
-		$configurator['port'] = SMTPPORT;
+		$configurator['username'] = $cnfg['user'];
+		$configurator['password'] = $cnfg['pass'];
+		$configurator['host'] = $cnfg['host'];
+		$configurator['port'] = $cnfg['port'];
 
 
 		require_once('phpmailer/class.phpmailer.php');

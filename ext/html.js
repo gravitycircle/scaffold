@@ -1,7 +1,21 @@
 (function() {
 	var mod = angular.module("htmlcustom", []);
 
-	mod.service('browser', ['$window', function($window) {
+	mod.service('browser', ['$window', 'constants', function($window, constants) {
+		var getErrStack = function(){
+			var e = new Error();
+			if (!e.stack)
+				try {
+					// IE requires the Error to actually be thrown or else the 
+					// Error's 'stack' property is undefined.
+					throw e;
+				} catch (e) {
+					if (!e.stack) {
+						//return 0; // IE < 10, likely
+					}
+				}
+			return e.stack.toString().split(/\r\n|\n/);
+		};
 		return {
 			detect: function(){
 				var userAgent = $window.navigator.userAgent;
@@ -47,6 +61,22 @@
 				document.body.removeChild (outer);
 
 				return (w1 - w2);
+			},
+			debug: {
+				log : function(){
+					if(constants.debug_mode) {
+						var stack = getErrStack();
+						console.log('%cLogged' + stack[3] + ']', 'font-weight: bold; color: #000166;');
+						console.log.apply(this,arguments);
+					}
+				},
+				err : function(){
+					if(constants.debug_mode) {
+						var stack = getErrStack();
+						console.log('%cError Found' + stack[3] + ']', 'color: #f00; font-weight: bold;');
+						console.log.apply(this,arguments);
+					}
+				}
 			}
 		};
 	}]);
