@@ -1,0 +1,15 @@
+<div ng-attr-id="{{render.idname}}" class="field-handler field-dropdown">
+	<label ng-bind-html="sanitize(render.label+mrk);"></label>
+	<div class="cell">
+		<div class="multiple-box" ng-click="toggle()">
+			<div class="choices">
+				<div class="selected"><span class="number" ng-bind-html="sanitize_number(answers)"></span></div>
+				<div class="options-container">
+					<div ng-attr-id="{{f.value}}" class="options" ng-repeat="f in render.values" ng-click="choose($event, f.value, f.name);">
+						<span class="selector form-radio-unchecked mult-selected"></span><span ng-bind-html="sanitize(f.name)"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -124,11 +124,8 @@
 	content: "\e905";
 }
 
-.form-right:before {
-	content: "\e90d";
-}
-.form-left:before {
-	content: "\e90e";
+.form-search:before {
+	content: "\e900";
 }
 .form-down-light:before {
 	content: "\e901";
@@ -136,25 +133,35 @@
 .form-menu-light:before {
 	content: "\e902";
 }
-.form-search:before {
-	content: "\e900";
-}
-.form-down-solid:before {
-	content: "\e906";
+.form-menu:before {
+	content: "\e903";
 }
 .form-close:before {
 	content: "\e904";
 }
-.form-down:before {
-	content: "\e907";
-}
 .form-close-light:before {
 	content: "\e905";
 }
-.form-menu:before {
-	content: "\e903";
+.form-down-solid:before {
+	content: "\e906";
+}
+.form-down:before {
+	content: "\e907";
 }
 .form-checked:before {
 	content: "\e908";
 }
+.form-right:before {
+	content: "\e90d";
+}
+.form-left:before {
+	content: "\e90e";
+}
+.form-radio-checked:before {
+	content: "\ea54";
+}
+.form-radio-unchecked:before {
+	content: "\ea56";
+}
+
 

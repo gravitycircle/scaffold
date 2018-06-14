@@ -94,7 +94,6 @@
 				}, function(content, event_trigger){
 					//pre-load
 					scope.initiate(content.contents,event_trigger);
-					browser.debug.err(constants.debug_mode);
 				}, function(progress){
 					//while
 				});
@@ -103,8 +102,7 @@
 			controller: function($scope, $element, $attrs){
 				$scope.initiate = function(content, continueEvent){
 					$scope.data = content;
-					constants.append('smtp', content.config.smtp);
-					browser.debug.log(constants.retrieve('smtp'));
+					$scope.fields = content.home.content.fields;
 					continueEvent();
 				};
 

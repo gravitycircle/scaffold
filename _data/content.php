@@ -31,34 +31,53 @@ function build_content($sitename){
 		'home' => array(
 			'metadata' => array(
 				'title' => 'Home'.$site,
-				'description' => '---',
+				'description' => 'Home',
 				'og' => array(
+					'type' => 'article',
 					'title' => 'Home'.$site,
-					'description' => '---',
-					'site_name' => 'Home'.$site,
+					'description' => 'Home',
+					'site_name' => 'Scaffolding',
 					'url' => BASE,
-					'image' => BASE.'img/non-render/og-logo.png' 
+					'image' => BASE.'img/non-render/og-logo.jpg',
+					'image:width' => 1200,
+					'image:height' => 764
 				),
 				'tw' => array(
-					'card' => 'summary'
+					'card' => 'summary_large_image',
+					'title' => 'Home'.$site,
+					'image' => BASE.'img/non-render/og-logo.jpg',
+					'width' => 1200,
+					'height' => 764,
+					'description' => 'Home'
 				)
+			),
+			'content' => array(
+				'fields' => get_fields(false)
 			)
 		),
 		'lost' => array(
 			'metadata' => array(
 				'title' => 'HTTP 404 Error: Page Not Found'.$site,
-				'description' => '---',
+				'description' => 'HTTP 404 Error: Page Not Found',
 				'og' => array(
+					'type' => 'article',
 					'title' => 'HTTP 404 Error: Page Not Found'.$site,
-					'description' => '---',
-					'site_name' => 'HTTP 404 Error: Page Not Found'.$site,
+					'description' => 'HTTP 404 Error: Page Not Found',
+					'site_name' => 'Scaffolding',
 					'url' => BASE,
-					'image' => BASE.'img/non-render/og-logo.png' 
+					'image' => BASE.'img/non-render/og-logo.jpg',
+					'image:width' => 1200,
+					'image:height' => 764
 				),
 				'tw' => array(
-					'card' => 'summary'
+					'card' => 'summary_large_image',
+					'title' => 'HTTP 404 Error: Page Not Found'.$site,
+					'image' => BASE.'img/non-render/og-logo.jpg',
+					'width' => 1200,
+					'height' => 764,
+					'description' => 'HTTP 404 Error: Page Not Found'
 				)
-			)
+			),
 		)
 	);
 
@@ -98,6 +117,39 @@ function get_fields($match) {
 					'key' => 'value-set-2',
 					'name' => 'Value Set 2',
 					'value' => '00002'
+				)
+			)
+		),
+		array(
+			'key' => 'Questions[15432]',
+			'label' => 'Multiple',
+			'id' => 'ms-sample',
+			'type' => 'multiple',
+			'particle' => array(
+				'Choice',
+				'Choices'
+			),
+			'require' => true,
+			'values' => array(
+				array(
+					'key' => 'value-set-1',
+					'name' => 'Value Set 1',
+					'value' => '00001'
+				),
+				array(
+					'key' => 'value-set-2',
+					'name' => 'Value Set 2',
+					'value' => '00002'
+				),
+				array(
+					'key' => 'value-set-3',
+					'name' => 'Value Set 3',
+					'value' => '00003'
+				),
+				array(
+					'key' => 'value-set-4',
+					'name' => 'Value Set 4',
+					'value' => '00004'
 				)
 			)
 		),
@@ -166,6 +218,23 @@ function get_fields($match) {
 
 				$built['values'] = $vals;
 			}
+
+			if($field['type'] == 'multiple'){
+				$vals = array();
+				foreach($field['values'] as $v) {
+					array_push($vals, array(
+						'value' => $v['key'],
+						'name' => $v['name']
+					));
+				}
+
+				$built['values'] = $vals;
+				$built['particle'] = array(
+					'singular' => $field['particle'][0],
+					'plural' => $field['particle'][1]
+				);
+			}
+
 			else if($field['type'] == 'checkbox') {
 				$built['value'] = $field['set']['key'];
 			}
@@ -195,6 +264,23 @@ function get_fields($match) {
 					'key' => $field['key'],
 					'label' => $field['label'],
 					'type' => 'dropdown',
+					'matches' => $vars
+				);
+			}
+			else if($field['type'] == 'multiple') {
+				$vars = array();
+
+				foreach($field['values'] as $v) {
+					$vars[$v['key']] = array(
+						'label' => $v['name'],
+						'val' => $v['value']
+					);
+				}
+
+				$build[$field['id']] = array(
+					'key' => $field['key'],
+					'label' => $field['label'],
+					'type' => 'multiple',
 					'matches' => $vars
 				);
 			}
@@ -241,6 +327,33 @@ function get_match($inputName, $inputValue, $defaultValue, $crm) {
 			return array(
 				'key' => $matches[$inputName]['label'],
 				'value' => (!isset($matches[$inputName]['matches'][$inputValue]['label']) ? $defaultValue : $matches[$inputName]['matches'][$inputValue]['label'])
+			);
+		}
+	}
+	else if($matches[$inputName]['type'] == 'multiple') {
+		if($crm) {
+
+			$answergroup = json_decode(urldecode($inputValue), true);
+			$answervalue = array();
+			foreach($answergroup as $ans) {
+				array_push($answervalue, (!isset($matches[$inputName]['matches'][$ans]['val']) ? $defaultValue : $matches[$inputName]['matches'][$ans]['val']));
+			}
+
+			return array(
+				'key' => $matches[$inputName]['key'], // crm key equivalent
+				'value' => $answervalue
+			);
+		}
+		else{
+			$answergroup = json_decode(urldecode($inputValue), true);
+			$answervalue = array();
+			foreach($answergroup as $ans) {
+				array_push($answervalue, (!isset($matches[$inputName]['matches'][$ans]['label']) ? $defaultValue : $matches[$inputName]['matches'][$ans]['label']));
+			}
+
+			return array(
+				'key' => $matches[$inputName]['label'],
+				'value' => implode(', ', $answergroup)
 			);
 		}
 	}

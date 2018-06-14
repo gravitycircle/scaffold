@@ -39,7 +39,7 @@ if(isset($_GET['key']) && degenerate($_GET['key'])){
 		header('Content-type: application/json');
 		echo json_encode(array(
 			'success' => false,
-			'debug' => 'Testing: This is a test crm acceptor.'
+			'debug' => $result
 		));
 	}
 }

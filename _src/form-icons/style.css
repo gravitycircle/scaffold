@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'form-icons';
-  src:  url('fonts/form-icons.eot?kju944');
-  src:  url('fonts/form-icons.eot?kju944#iefix') format('embedded-opentype'),
-    url('fonts/form-icons.ttf?kju944') format('truetype'),
-    url('fonts/form-icons.woff?kju944') format('woff'),
-    url('fonts/form-icons.svg?kju944#form-icons') format('svg');
+  src:  url('fonts/form-icons.eot?lk4z8d');
+  src:  url('fonts/form-icons.eot?lk4z8d#iefix') format('embedded-opentype'),
+    url('fonts/form-icons.ttf?lk4z8d') format('truetype'),
+    url('fonts/form-icons.woff?lk4z8d') format('woff'),
+    url('fonts/form-icons.svg?lk4z8d#form-icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,11 +24,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.form-right:before {
-  content: "\e90d";
-}
-.form-left:before {
-  content: "\e90e";
+.form-search:before {
+  content: "\e900";
 }
 .form-down-light:before {
   content: "\e901";
@@ -36,25 +33,33 @@
 .form-menu-light:before {
   content: "\e902";
 }
-.form-search:before {
-  content: "\e900";
-}
-.form-down-solid:before {
-  content: "\e906";
+.form-menu:before {
+  content: "\e903";
 }
 .form-close:before {
   content: "\e904";
 }
-.form-down:before {
-  content: "\e907";
-}
 .form-close-light:before {
   content: "\e905";
 }
-.form-menu:before {
-  content: "\e903";
+.form-down-solid:before {
+  content: "\e906";
+}
+.form-down:before {
+  content: "\e907";
 }
 .form-checked:before {
   content: "\e908";
 }
-
+.form-right:before {
+  content: "\e90d";
+}
+.form-left:before {
+  content: "\e90e";
+}
+.form-radio-checked:before {
+  content: "\ea54";
+}
+.form-radio-unchecked:before {
+  content: "\ea56";
+}

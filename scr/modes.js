@@ -3,6 +3,7 @@
 	var mode = angular.module("modes", []);
 
 	mode.factory('submission', ['constants', 'fetch',function(constants, fetch){
+		var resetTrigger = false;
 		return{
 			data : {},
 			required: [],
@@ -49,6 +50,8 @@
 						d.data[i] = '';
 					}
 				}
+
+				resetTrigger = true;
 			},
 			verify: function(data, pass, fail, error) {
 				fetch.post(constants.base+'php/verify.php', {
@@ -70,6 +73,15 @@
 						error(response);
 					}
 				});
+			},
+			for_reset: function() {
+				if(!resetTrigger) {
+					return resetTrigger;
+				}
+				else{
+					resetTrigger = false;
+					return true;
+				}
 			}
 		};
 	}]);
@@ -106,6 +118,9 @@
 					}
 					else if($scope.field.type == 'dropdown'){
 						compose = '<dropdown-field class="rendering"></dropdown-field>';
+					}
+					else if($scope.field.type == 'multiple'){
+						compose = '<multiple-field class="rendering"></multiple-field>';
 					}
 					else if($scope.field.type == 'checkbox'){
 						compose = '<checkbox-field class="rendering"></checkbox-field>';
@@ -393,6 +408,173 @@
 			}
 		};
 	}]);
+
+	mode.directive('multipleField', ['$sce', 'submission', 'constants', function($sce, submission, constants){
+		return {
+			restrict: 'E',
+			template: constants.templates.fields.multiple,
+			scope:{
+
+			},
+			replace: true,
+			link: function(scope, element, attrs){
+
+			},
+			controller: function($scope, $element, $attrs){
+				var inc;
+				$scope.$on('destroy', function(){
+					clearInterval($scope.timer);
+				});
+				$scope.timer = null;
+				$scope.render = $scope.$parent.field;
+				$scope.render.idname = $scope.render.id.replace('[', '-').replace(']', '');
+
+				$scope.answers = {};
+
+				for(inc in $scope.render.values) {
+					$scope.answers[$scope.render.values[inc].value] = false;
+				}
+
+
+
+				if($scope.$parent.field.require){
+					$scope.mrk = '*';
+				}
+				else{
+					$scope.mrk = '';
+				}
+
+
+				$scope.timer = setInterval(function(){
+					if(submission.for_reset()) {
+						$scope.toggle(true);
+						for(inc in $scope.render.values) {
+							$scope.answers[$scope.render.values[inc].value] = false;
+						}
+
+						if($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+	 						$scope.$apply();
+	 					}
+					}
+				}, 10);
+
+				var open;
+				$scope.toggle = function(open){
+					$('.options-container').css({
+						'height' : 0
+					});
+
+					$('.cell').removeClass('opened');
+
+					if(typeof open != 'boolean') {
+						if($($element).find('.options-container').height() > 2){
+							open = true;
+						}
+						else{
+							open = false;
+						}	
+					}
+
+
+					var multiplier = $($element).find('.options').height();
+					if(!open){
+						var newheight = 0;
+						var opts = {};
+
+						if($($element).find('.options').length > 5) {
+							opts = {
+								'height' : (5 * multiplier)+'px'
+							};
+						}
+						else{
+							opts = {
+								'height' : (($($element).find('.options').length * multiplier) + 2)+'px'
+							};
+						}
+
+						$($element).find('.cell').addClass('opened');
+						$($element).find('.options-container').css(opts);
+						
+					}
+					else{
+						$($element).find('.cell').removeClass('opened');
+						$($element).find('.options-container').css({
+							'height' : 0
+						});
+					}
+				};
+
+				$scope.choose = function(e, choice, html){
+					e.stopPropagation();
+					$('.field-handler').removeClass('red');
+					
+					//submission.set($scope.render.id, encodeURIComponent(choice), $scope.render.require, $scope.render.type);
+
+					
+
+
+					// form-radio-unchecked
+					// form-radio-checked
+					// var test = $scope.answer.indexOf(choice);
+					// if(test < 0) {
+					// 	$('#'+choice).find('.selector').removeClass('form-radio-unchecked');
+					// 	$('#'+choice).find('.selector').addClass('form-radio-checked');	
+					// }
+
+					if(!$scope.answers[choice]) {
+						$('#'+choice).find('.selector').removeClass('form-radio-unchecked');
+						$('#'+choice).find('.selector').addClass('form-radio-checked');
+
+						$scope.answers[choice] = true;
+					}
+					else{
+						$('#'+choice).find('.selector').removeClass('form-radio-checked');
+						$('#'+choice).find('.selector').addClass('form-radio-unchecked');
+
+						$scope.answers[choice] = false;
+					}
+
+					var ready_for_submission = [];
+
+					for(var i in $scope.answers) {
+						if($scope.answers[i]) {
+							ready_for_submission.push(i);
+						}
+					}
+
+					if(ready_for_submission.length < 1) {
+						ready_for_submission = false;
+					}
+
+					submission.set($scope.render.id, encodeURIComponent(JSON.stringify(ready_for_submission)), $scope.render.require, $scope.render.type);
+
+					if($($element).find('.input-error').length > 0){
+						$($element).find('.input-error').removeClass('input-error');
+					}
+
+					if($('body').find('.input-error').length < 1){
+						$('body').find('.error-msg').removeClass('shown');
+					}
+				};
+
+				$scope.sanitize = function(html) {
+					return $sce.trustAsHtml(html);
+				};
+
+				$scope.sanitize_number = function(chk) {
+					var arr = [];
+					
+					for(var d in chk) {
+						if(chk[d]) {
+							arr.push('1');
+						}
+					}
+
+					return $sce.trustAsHtml(arr.length + ' ' + (arr.length == 1 ? $scope.render.particle.singular : $scope.render.particle.plural));
+				};
+			}
+		};
+	}]);
 	
 	mode.directive('submitField', ['$sce', 'submission', 'deliver', 'crm', 'constants', 'modal', 'browser', function($sce, submission, deliver, crm, constants, modal, browser){
 		return{
@@ -422,8 +604,10 @@
 										submission.reset();
 										$('input').val('');
 										$('textarea').val('');
-										$('.selected').text('');
+										$('.sing-selected').text('');
 										$('.check').removeClass('check');
+										$('.mult-selected').addClass('form-radio-unchecked');
+										$('.mult-selected').removeClass('form-radio-checked');
 										$($element).find('a').text($scope.render.label);
 										$($element).find('a').css({
 											'pointer-events' : ''
@@ -435,8 +619,10 @@
 										submission.reset();
 										$('input').val('');
 										$('textarea').val('');
-										$('.selected').text('');
+										$('.sing-selected').text('');
 										$('.check').removeClass('check');
+										$('.mult-selected').addClass('form-radio-unchecked');
+										$('.mult-selected').removeClass('form-radio-checked');
 										browser.debug.err(response.debug);
 										$($element).find('a').text($scope.render.label);
 										$($element).find('a').css({
@@ -451,8 +637,10 @@
 									submission.reset();
 									$('input').val('');
 									$('textarea').val('');
-									$('.selected').text('');
+									$('.sing-selected').text('');
 									$('.check').removeClass('check');
+									$('.mult-selected').addClass('form-radio-unchecked');
+										$('.mult-selected').removeClass('form-radio-checked');
 									browser.debug.err('Connectivity: Cannot reach server.');
 									$($element).find('a').text($scope.render.label);
 									$($element).find('a').css({
@@ -463,13 +651,16 @@
 						}
 						else{
 							deliver.crm('test', submission.data, function(response){
+								console.log(response);
 								if(response.success) {
 									modal.dialogue($scope.render.prompts.success.title, $scope.render.prompts.success.message, false, function(){
 										submission.reset();
 										$('input').val('');
 										$('textarea').val('');
-										$('.selected').text('');
+										$('.sing-selected').text('');
 										$('.check').removeClass('check');
+										$('.mult-selected').addClass('form-radio-unchecked');
+										$('.mult-selected').removeClass('form-radio-checked');
 										$($element).find('a').text($scope.render.label);
 										$($element).find('a').css({
 											'pointer-events' : ''
@@ -481,8 +672,10 @@
 										submission.reset();
 										$('input').val('');
 										$('textarea').val('');
-										$('.selected').text('');
+										$('.sing-selected').text('');
 										$('.check').removeClass('check');
+										$('.mult-selected').addClass('form-radio-unchecked');
+										$('.mult-selected').removeClass('form-radio-checked');
 										browser.debug.err(response.debug);
 										$($element).find('a').text($scope.render.label);
 										$($element).find('a').css({
@@ -497,8 +690,10 @@
 									submission.reset();
 									$('input').val('');
 									$('textarea').val('');
-									$('.selected').text('');
+									$('.sing-selected').text('');
 									$('.check').removeClass('check');
+									$('.mult-selected').addClass('form-radio-unchecked');
+									$('.mult-selected').removeClass('form-radio-checked');
 									browser.debug.err('Connectivity: Cannot reach server.');
 									$($element).find('a').text($scope.render.label);
 									$($element).find('a').css({

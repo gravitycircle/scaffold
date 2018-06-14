@@ -2,7 +2,7 @@
 	<div class="container grid">
 		<div class="row">
 			<div class="col-xs-12" style="text-align: center;">
-				--Silence is golden--
+				<field ng-attr-target="fields" ng-attr-index="{{$index}}" ng-repeat="x in data.home.content.fields track by $index"></field>
 			</div>
 		</div>
 	</div>

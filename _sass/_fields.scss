@@ -8,6 +8,7 @@
 				display: table-row;
 
 				label{
+					text-align: left;
 					display: table-cell;
 					white-space: nowrap;
 					@include type($labelFamily, $labelType);
@@ -50,6 +51,7 @@
 				display: block;
 
 				label{
+					text-align: left;
 					display: block;
 					@include type($labelFamily, $labelType);
 					color: $fg;
@@ -84,6 +86,7 @@
 			display: block;
 
 			label{
+				text-align: left;
 				display: block;
 				@include type($labelFamily, $labelType);
 				color: $fg;
@@ -240,6 +243,159 @@
 				.choices{
 					.selected{
 						z-index: 3;
+					}
+
+					.options-container{
+						border: 1px solid $fg;
+						z-index: 3;
+					}
+				}
+			}
+		}
+	}
+}
+
+@mixin multipleField ($gap: fsize(0.8), $maxheight: false, $fg: $black, $bg: $white, $downarrow: "\e907", $closeindicator: "\e904", $iconFamily: 'form-icons', $labelFamily: 'sans', $labelType: 'body', $textFamily: 'sans', $textType: 'body', $layout: 'table') {
+	@if $layout == 'table' {
+		@include min(4) {
+			width: 100%;
+			display: table;
+		}
+		@include max(3) {
+			display: block;
+		}
+	}
+	@else if $layout == 'block' {
+		display: block;
+	}
+
+	.field-handler{
+		@if $layout == 'table' {
+			@include min(4) {
+				display: table-row;
+			}
+			@include max(3) {
+				display: block;
+			}
+		}
+		@else if $layout == 'block' {
+			display: block;
+		}
+
+		label{
+			@if $layout == 'table' {
+				@include min(4) {
+					display: table-cell;
+					white-space: nowrap;
+					padding-right: $gap;
+				}
+				@include max(3) {
+					display: block;
+				}
+			}
+			@else if $layout == 'block' {
+				display: block;
+			}
+			@include type($labelFamily, $labelType);
+			color: $fg;
+			&.input-error{
+				color: $error;
+			}
+		}
+
+		.cell{
+			@if $layout == 'table' {
+				@include min(4) {
+					display: table-cell;
+				}
+			}
+
+			width: 100%;
+			@include type($textFamily, $textType);
+			position: relative;
+			.multiple-box{
+				width: 100%;
+				height: 100%;
+				position: relative;
+
+
+				.choices{
+					position: relative;
+					&::before{
+						content: '•';
+						opacity: 0;
+					}
+					
+					.selected{
+						@include type($textFamily, $textType);
+						padding-right: $gap * 1.5;
+						padding-left: $gap / 2;
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						color: $fg;
+						text-align: left;
+
+						&::after{
+							position: absolute;
+							content: $downarrow;
+							font-family: $iconFamily;
+							display: block;
+							position: absolute;
+							right: $gap/4;
+							top: 50%;
+							font-size: $gap * 0.75;
+							@include reposition(0, -50%);
+						}
+					}
+					
+					.options-container {
+						@include prefix(user-select, none);
+						color: $fg;
+						position: absolute;
+						border: 1px solid $bg;
+						border-top: 1px solid $fg;
+						top: 100%;
+						left: 0;
+						width: 100%;
+						height: 0;
+						@include transition(all);
+						@include duration(0.6s);
+						@include timing(snap);
+						overflow: hidden;
+						background: $bg;
+						.options{
+							position: relative;
+							text-align: left;
+							@include transition(all);
+							@include duration(0.6s);
+							@include timing(snap);
+							@include type($textFamily, $textType);
+							padding-right: $gap / 2;
+							padding-left: $gap / 2;
+
+							&:hover{
+								@content;
+							}
+
+							.selector{
+								padding-right: 5px;
+							}
+						}
+					}
+				}
+			}
+
+			&.opened{
+				.choices{
+					.selected{
+						z-index: 3;
+
+						&::after{
+							content: $closeindicator;
+						}
 					}
 
 					.options-container{
