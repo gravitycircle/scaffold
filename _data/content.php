@@ -235,7 +235,7 @@ function get_fields($match) {
 				);
 			}
 
-			else if($field['type'] == 'checkbox') {
+			if($field['type'] == 'checkbox') {
 				$built['value'] = $field['set']['key'];
 			}
 
