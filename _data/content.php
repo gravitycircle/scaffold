@@ -92,6 +92,15 @@ function get_fields($match) {
 			'label' => 'Lasso Field',
 			'id' => 'field-id',
 			'type' => 'text',
+			'verify' => 'phone',
+			'require' => true
+		),
+		array(
+			'key' => 'Questions[85248]',
+			'label' => 'Lasso Field',
+			'id' => 'field-id',
+			'type' => 'text',
+			'verify' => 'min/5',
 			'require' => false
 		),
 		array(
@@ -99,6 +108,7 @@ function get_fields($match) {
 			'label' => 'Lasso Paragraph',
 			'id' => 'field-id-2',
 			'type' => 'paragraph',
+			'verify' => 'max/100',
 			'require' => true
 		),
 		array(
@@ -205,6 +215,10 @@ function get_fields($match) {
 
 			if($field['type'] != 'submit') {
 				$built['require'] = $field['require'];
+			}
+
+			if($field['type'] == 'text') {
+				$built['verify'] = $field['verify'];	
 			}
 
 			if($field['type'] == 'dropdown'){

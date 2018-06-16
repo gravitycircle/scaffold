@@ -2,6 +2,7 @@
 include_once('../config.php');
 include_once('keygen.php');
 include_once('../_data/content.php');
+include_once('text-verification.php');
 if(isset($_GET['key']) && degenerate($_GET['key'])) {
 	if(isset($_GET['verify'])){
 		$input = json_decode(file_get_contents("php://input"), true);
@@ -10,7 +11,10 @@ if(isset($_GET['key']) && degenerate($_GET['key'])) {
 
 		foreach($input as $k => $v) {
 			if($v === false){
-				array_push($fail, $k);
+				array_push($fail, array(
+					'id' => $k,
+					'error' => 'This field is required.'
+				));
 			}
 			else{
 				foreach($fields as $field){
@@ -18,8 +22,14 @@ if(isset($_GET['key']) && degenerate($_GET['key'])) {
 						if($field['type'] == 'email') {
 							if(!filter_var($v, FILTER_VALIDATE_EMAIL)) {
 								//not an email
-								array_push($fail, $k);
+								array_push($fail, array(
+									'id' => $k,
+									'error' => 'Invalid email format.'
+								));
 							}
+						}
+						else if($field['type'] == 'text') {
+							
 						}
 						break;
 					}
