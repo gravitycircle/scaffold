@@ -749,7 +749,7 @@
 
 					}, function(failed){
 						for(var i in failed) {
-							$('#'+failed[i]).find('label').addClass('input-error');
+							$('#'+failed[i].id).find('label').addClass('input-error');
 						}
 						modal.dialogue($scope.render.prompts.verify_error.title, $scope.render.prompts.verify_error.message);
 					}, function(resp){

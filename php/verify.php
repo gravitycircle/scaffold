@@ -19,17 +19,20 @@ if(isset($_GET['key']) && degenerate($_GET['key'])) {
 			else{
 				foreach($fields as $field){
 					if($field['id'] == $k){
-						if($field['type'] == 'email') {
-							if(!filter_var($v, FILTER_VALIDATE_EMAIL)) {
-								//not an email
+						if($field['type'] == 'email' || $field['type'] == 'text') {
+							if($field['type'] == 'email') {
+								$res = verify_text_entry($v, 'email');
+							}
+							else{
+								$res = verify_text_entry($v, $field['verify']);
+							}
+
+							if($res != 'ok') {
 								array_push($fail, array(
 									'id' => $k,
-									'error' => 'Invalid email format.'
+									'error' => $res
 								));
 							}
-						}
-						else if($field['type'] == 'text') {
-							
 						}
 						break;
 					}
