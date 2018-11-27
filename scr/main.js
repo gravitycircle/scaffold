@@ -105,7 +105,6 @@
 					$scope.fields = content.home.content.fields;
 					continueEvent();
 				};
-
 			}
 		};
 	}]);

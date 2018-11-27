@@ -51,8 +51,18 @@ use MatthiasMullie\Minify;
 
 
 function _build($scripts, $styles){
-$request = str_replace(BASE, "", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+//isolate query string
+$qstring = explode('?', SSL."$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+$query = array();
+$request = str_replace(BASE, "", array_shift($qstring));
+if(sizeof($qstring) >= 1) {
+	foreach	(explode('&',$qstring[0]) as $q) {
+		$qstr = explode('=', $q);
+		$query[$qstr[0]] = $qstr[1];
+	}
+}
 
+$query = json_encode($query);
 
 if($request == 'config.js' || $request == 'config.debug.js'){
 	$filearr = array();
