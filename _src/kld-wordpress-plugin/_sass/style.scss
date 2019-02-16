@@ -1,0 +1,357 @@
+@import 'mixins';
+@import 'vars';
+
+
+p.instruction{
+	color: $gray;
+	font-style: italic;
+}
+
+.options-general-php, .options-reading-php{
+	.img-field{
+		display: block;
+		.image-container{
+			display: block;
+			margin-bottom: 20px;
+			background: $gray;
+			padding: 5px;
+			border-radius: 5px;
+			&::before{
+				content: '';
+				display: block;
+			}
+
+			img{
+				display: block;
+				max-width: 100%;
+			}
+		}
+
+		.button{
+			cursor: pointer;
+			display: inline-block;
+		}
+	}
+
+	#website-logo{
+		.image-container{
+			&::after{
+				content: '';
+				display: block;
+			}
+		}
+	}
+}
+
+@include max(2) {
+	.tablet_up{
+		display: none;
+	}
+}
+
+@include min(3) {
+	.phone_only{
+		display: none;
+	}
+}
+
+#nav-sorter{
+	.for-sorter{
+		width: 220px;
+		height: 140px;
+		padding: 5px 10px;
+		border: 1px solid #ccc;
+		box-sizing: border-box;
+	}
+
+	.title{
+		background: $accent;
+		color: $white;
+		line-height: 40px;
+		text-align: center;
+		width: 220px;
+		border: 1px solid $accent;
+		box-sizing: border-box;
+
+		&.l-t{
+			background: $gray;
+			border: 1px solid $gray;
+		}
+	}
+
+	.page-handle{
+		display: block;
+		line-height: 20px;
+		height: 30px;
+		padding: 5px;
+		background: #ccc;
+		margin: 5px 0;
+		box-sizing: border-box;
+		border-radius: 5px;
+		width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		.dashicons{
+			vertical-align: middle;
+			font-size: 20px;
+			height: auto;
+			padding-right: 4px;
+			width: auto;
+			@include reposition(0, -2px);
+			cursor: move;
+		}
+	}
+
+	@include min(3) {
+		width: 880px;
+		position: relative;
+		padding-top: 40px;
+		&::after{
+			content: '';
+			display: block;
+			clear: both;
+		}
+
+		.title{
+			position: absolute;
+			top: 0;
+			&.l-t{
+				left: 0;
+			}
+
+			&.m-t{
+				left: 37.5%;
+				@include reposition(-50%, 0);
+				border-left-color: $white;
+				border-right-color: $white;
+			}
+
+			&.r-t{
+				left: 62.5%;
+				@include reposition(-50%, 0);
+				border-left-color: $white;
+				border-right-color: $white;
+			}
+
+			&.rr-t{
+				right: 0;
+			}
+		}
+
+		.for-sorter{
+			box-sizing: border-box;
+			float: left;
+		}
+
+		.options-avail, .l-t{
+			border-right: none;
+		}
+
+		.sort-left{
+			overflow-y: auto;
+		}
+
+		.sort-right, .r-t, .sort-register, .rr-t{
+			border-left: none;
+		}
+	}
+
+	@include max(2) {
+		.sort-left{
+			overflow-y: scroll;
+		}
+	}
+}
+
+.iconed i {
+	display: inline-block;
+	vertical-align: middle;
+	padding-right: 5px;
+	font-size: 21px;
+	margin-top: -3px;
+}
+
+.linx{
+	@include clearFix();
+	.back-link{
+		float: left;
+		display: block;
+	}
+
+	.next-link{
+		float: right;
+		display: block;
+	}
+}
+
+.sentry{
+	h3, h4{
+		margin: 0;
+	}
+
+	h3{
+		padding-bottom: 10px;
+	}
+
+	padding: 20px 12px;
+
+	&:nth-child(even) {
+		background: rgba(0,0,0,0.05);
+	}
+}
+
+.single-entry{
+	.inside{
+		padding-left: 0;
+		padding-right: 0;
+		padding-bottom: 0;
+	}
+
+	.single-action{
+		@include clearFix();
+		padding: 12px;
+
+		a{
+			float: right;
+		}
+	}
+}
+
+.custom-repeater-options{
+	border-collapse: collapse;
+	td{
+		padding: 5px;
+		&.hdg{
+			padding: 5px 8px;
+		}
+		&.left{
+			vertical-align: middle;
+			width: 50%;
+		}
+
+		&.right{
+			vertical-align: middle;
+			width: 50%;
+		}
+	}
+}
+
+.removal-button{
+	position: relative;
+	padding-left: 25px !important;
+	span.dashicons{
+		position: absolute;
+		display: block;
+		top: 50%;
+		left: 5px;
+		@include reposition(0, -50%);
+	}
+
+	&.not-active{
+		opacity: 0;
+		pointer-events: none;
+	}
+}
+
+.kld-dash-input{
+	&.dashicon-pris{
+		display: none;
+	}
+	.handle{
+		@include min(3) {
+			position: relative;
+
+			padding-left: 210px;
+		}
+		.image{
+			@include max(2) {
+				position: relative;
+			}
+
+			@include min(3) {
+				position: absolute;
+				top: 50%;
+				left: 0;
+				@include reposition(0, -50%);
+			}
+			
+			.span-preview{
+				padding: 5px;
+				border: 1px solid #ccc;
+				width: 200px;
+				height: 200px;
+
+				font-size: 180px;
+
+				@include max(2) {
+					width: 150px;
+					height: 150px;
+
+					font-size: 112px;
+				}
+				position: relative;
+				box-sizing: border-box;
+
+				.dashicon-preview{
+					width: auto;
+					height: auto;
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					@include reposition(-50%, -50%);
+					font-size: 150px;
+
+					@include max(2) {
+						font-size: 100px;
+					}
+				}
+			}
+
+			.instruction{
+				@include min(3) {
+					width: 200px;
+				}
+			}
+		}
+
+		.input{
+			position: relative;
+			@include min(3) {
+				padding-left: 20px;
+
+				&::before{
+					content: '';
+					position: absolute;
+					left: 10px;
+					top: 0;
+					height: 100%;
+					width: 1px;
+					background: #ccc;
+				}
+			}
+			.dashicon-box{
+				max-width: 920px;
+				.choice{
+					@include transition(all);
+					@include timing(snap);
+					@include duration(0.6s);
+					padding: 5px;
+					margin: 5px;
+					cursor: pointer;
+					border-radius: 3px;
+
+					&:hover{
+						background: #ccc;
+					}
+
+					&.selected{
+						background: #0073aa;
+						color: $white;
+					}
+				}
+			}
+		}
+	}
+}
