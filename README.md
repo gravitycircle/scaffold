@@ -64,7 +64,7 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
 - Delete all extra themes / plugins. We're departing from those.
 
 ## Alright Sparky!
-- The correct API's must be placed within the database. To do this, log into Wordpress by going into `_bin/wp-admin` on your browser.
+- The correct Google Cloud Platform API must be placed in the database. To do this, log into Wordpress by going into `_bin/wp-admin` on your browser.
 - On the left hand panel, look for *Settings > General*
 - Scroll down to the bottom and add an API Key named `Google Cloud Platform` and a matching API key to the right. Save.
 - Documentation is still in the works.
