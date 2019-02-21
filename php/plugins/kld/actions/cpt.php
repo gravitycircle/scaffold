@@ -59,6 +59,12 @@ function create_post_type()
 				else{
 					$slug = $pt['slug'][kld_greek_alpha($it)];
 				}
+
+				$rw = $pt['rewrite'];
+				if($pt['rewrite'] == '') {
+					$rw = $slug;
+				}
+
 				register_post_type($slug, array(	
 					'label' => $pt['label']['plural'],
 					'description' => 'Past, Present, Future '.$pt['label']['plural'],
@@ -78,7 +84,7 @@ function create_post_type()
 						'read_private_posts' => kld_analyzecap('read_private_posts', $pt['capability'])
 					),
 					'hierarchical' => $pt['hierarchical'],
-					'rewrite' => array('slug' => $slug),
+					'rewrite' => array('slug' => $rw),
 					'query_var' => true,
 					'menu_position' => $pt['position'],
 					'supports' => array('title'),

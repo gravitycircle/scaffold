@@ -185,7 +185,6 @@ function print_options_field($args) {
 	if(isset($args['width']) && is_numeric($args['width'])){
 		$sts = ' style="width: '.$args['width'].'em"';
 	}
-
 	echo '<select id="'.$args['id'].'" name="'.$args['option'].'"'.$sts.'>';
 
 	foreach($args['choices'] as $option) {
@@ -219,7 +218,7 @@ function register_general_settings_fields(){
 
 	add_settings_section(
 		'api_keys',
-		'API Keys',
+		'API Keys & Others',
 		'settings_empty',
 		'general'
 	);
@@ -283,6 +282,32 @@ function register_general_settings_fields(){
 		'tooltip' => 'API Keys for integration',
 		'button' => 'Add API Key'
 	));
+
+	$pagelist = get_posts(array(
+		'posts_per_page' => -1,
+		'post_type' => 'page'
+	));
+
+	$allp = array();
+
+
+	foreach($pagelist as $p) {
+		if($p->ID != get_option('page_on_front') && $p->ID != get_option('page_for_posts')) {
+			array_push($allp, array(
+				'value' => $p->ID,
+				'label' => $p->post_title
+			));
+		}
+	}
+
+	register_setting('general', 'page_for_lost', 'esc_attr');
+	add_settings_field('page_for_lost', '<label for="lostpage">'.__('Page Displayed when Lost' , 'Page Displayed when Lost' ).'</label>' , 'print_options_field', 'general', 'api_keys',array(
+		'option' => 'page_for_lost',
+		'id' => 'lostpage',
+		'width' => 60,
+		'tooltip' => 'The page that is seen when a user enters a URL that does not exist.',
+		'choices' => $allp
+	));
 	//------SEO DEFAULTS
 
 	register_setting('general', 'seo_name', 'esc_attr');
@@ -323,50 +348,7 @@ function register_general_settings_fields(){
 
 
 	//========== READING
-	add_settings_section(
-		'footer_top',
-		'Footer – Top Section',
-		'settings_empty',
-		'reading'
-	);
-
-	add_settings_section(
-		'footer_details',
-		'Footer – Details',
-		'settings_empty',
-		'reading'
-	);
 	
-	register_setting('reading', 'footer_caption', 'esc_attr');
-	register_setting('reading', 'footer_subtext', 'esc_attr');
-	add_settings_field('footer_title', '<label for="footer-head">'.__('Footer Captions' , 'footer_title' ).'</label>' , 'print_text_field', 'reading', 'footer_top', array(
-		array(
-			'option' => 'footer_caption',
-			'id' => 'footer-head',
-			'width' => 22,
-			'tooltip' => 'The large type text that appears as the heading in the footer section of every page.',
-			'placeholder' => get_bloginfo('name'),
-			'label' => 'Caption Title'
-		),
-		array(
-			'option' => 'footer_subtext',
-			'id' => 'footer-head-subtext',
-			'width' => 28,
-			'tooltip' => 'The subtext that appears underneath the title.',
-			'label' => 'Caption Subtext'
-		)
-	));
-
-	register_setting('reading', 'footer_link_text', 'esc_attr');
-	add_settings_field('footer_linx', '<label for="f-ltxt">'.__('Footer Link Text' , 'footer_linx' ).'</label>' , 'print_text_field', 'reading', 'footer_top', array(
-		array(
-			'option' => 'footer_link_text',
-			'id' => 'f-ltxt',
-			'width' => 22,
-			'tooltip' => 'The text that appears on the link found on the footer.',
-			'placeholder' => 'Register',
-		)
-	));
 
 	$psts = get_posts(array(
 		'posts_per_page' => -1,

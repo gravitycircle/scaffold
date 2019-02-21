@@ -48,6 +48,14 @@ function main($json = true) {
 		));
 		array_push($indices, get_option('page_on_front'));
 	}
+	
+	array_push($output['nav'], array(
+		'name' => 'Lost',
+		'path' => 'lost',
+		'visible' => false,
+		'directive' => ng_template(get_option('page_for_lost'))
+	));
+
 	$contentinfo = build_content($indices);	
 
 	$output['preload'] = $contentinfo['preload'];

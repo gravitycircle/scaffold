@@ -439,6 +439,12 @@ class REST_output {
 				$title = get_field('seo-title', $this->postDetails->ID).$site;
 			}
 		}
+		else if($this->postDetails->ID == get_option('page_for_lost')) {
+			$title = 'Page Not Found'.$site;
+			if(get_field('seo-title', $this->postDetails->ID)) {
+				$title = get_field('seo-title', $this->postDetails->ID).$site;
+			}
+		}
 		else{
 			$title = $this->postDetails->post_title.$site;
 
@@ -456,6 +462,9 @@ class REST_output {
 		//build url
 		if(get_option('page_on_front') == $this->postDetails->ID) {
 			$url = $this->baseurl;
+		}
+		else if($this->postDetails->ID == get_option('page_for_lost')) {
+			$url = $this->baseurl.'lost';
 		}
 		else{
 			$url = $this->baseurl.$this->postDetails->post_name;
@@ -572,6 +581,9 @@ class REST_output {
 		else{			
 			if($this->postDetails->ID == get_option('page_on_front')) {
 				return 'home';
+			}
+			else if($this->postDetails->ID == get_option('page_for_lost')) {
+				return 'lost';
 			}
 			else{
 				return $this->postDetails->post_name;

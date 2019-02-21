@@ -207,10 +207,26 @@ $styles: array - style urls
 	$search_engine = _isEngine($_SERVER["HTTP_USER_AGENT"]);
 	$gen_data = main(false);
 	
+// build metadata
 	if($uridata[0] == '') {
 		$metadata_full = $gen_data['contents']['home']['metadata'];
 	}
 	else{
+		$alltypes = get_post_types(array(
+			'public' => true,
+			'_builtin' => false
+		), 'objects');
+
+		$cpts = array(
+			'post' => 'post'
+		);
+
+		foreach($alltypes as $at) {
+			if($at->name != 'forms' ){
+				$cpts[$at->name] = $at->rewrite['slug'];
+			}
+		}
+
 		if($uridata[0] == 'debug') {
 			if(!isset($uridata[1])){
 				$target = 'home';
@@ -228,8 +244,63 @@ $styles: array - style urls
 			$target = $uridata[0];
 		}
 		if(!isset($gen_data['contents'][$target])){
-			$metadata_full = $gen_data['contents']['lost']['metadata'];
+			//if page dont exist, resolve cpt
 
+			$urlparts = explode('/', rtrim($request, '/'));
+			$b = false;
+			foreach($cpts as $k=>$rw) {
+				if($urlparts[0] == $rw) {
+					// post_name__in
+					if(sizeof($urlparts) > 1) {
+						$allposts = get_posts(array(
+							'post_type' => $k,
+							'post_name__in' => $urlparts[2]
+						));
+
+						if(!(!$allposts || sizeof($allposts) < 1)) {
+							foreach($allposts as $p) {
+								$thep = new REST_output($p->ID, 'meta');
+
+								$metadata_full = $thep->toObject();
+								$b = true;
+								break;
+							}
+						}
+					}
+					else {
+						$pt_obj = get_post_type_object($k);
+						$thumbnail = wp_get_attachment_image_src(get_option('site_icon_og'), 'full');
+						$metadata_full = array(
+							'title' => $pt_obj->label.' &lsaquo; '.get_bloginfo('name'),
+							'description' => $pt_obj->description,
+							'og' => array(
+								'type' => 'article',
+								'title' => $pt_obj->label.' &lsaquo; '.get_bloginfo('name'),
+								'description' => $pt_obj->description,
+								'site_name' => get_bloginfo('name'),
+								'url' => BASE,
+								'image' => $thumbnail[0],
+								'image:width' => $thumbnail[1],
+								'image:height' =>$thumbnail[2]
+							),
+							'tw' => array(
+								'card' => 'summary_large_image',
+								'title' => $pt_obj->label.' &lsaquo; '.get_bloginfo('name'),
+								'image' => $thumbnail[0],
+								'width' => $thumbnail[1],
+								'height' => $thumbnail[2],
+								'description' => $pt_obj->description
+							)
+						);
+						$b = true;
+					}
+					break;
+				}
+			}
+
+			if(!$b) {
+				$metadata_full = $gen_data['contents']['lost']['metadata'];
+			}
 		}
 		else{
 			$metadata_full = $gen_data['contents'][$target]['metadata'];
