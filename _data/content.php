@@ -1,6 +1,4 @@
 <?php
-include_once('directives.php');
-
 function get_lasso() {
 	return array(
 		'ProjectID' => '',
@@ -23,184 +21,111 @@ function get_configs() {
 	);
 }
 
-function build_content($sitename){
-	$site = ' &lsaquo; '.$sitename;
-
+function build_content($data){
 	$output = array(
-		'config' => get_configs(),
-		'home' => array(
-			'metadata' => array(
-				'title' => 'Home'.$site,
-				'description' => 'Home',
-				'og' => array(
-					'type' => 'article',
-					'title' => 'Home'.$site,
-					'description' => 'Home',
-					'site_name' => 'Scaffolding',
-					'url' => BASE,
-					'image' => BASE.'img/non-render/og-logo.jpg',
-					'image:width' => 1200,
-					'image:height' => 764
-				),
-				'tw' => array(
-					'card' => 'summary_large_image',
-					'title' => 'Home'.$site,
-					'image' => BASE.'img/non-render/og-logo.jpg',
-					'width' => 1200,
-					'height' => 764,
-					'description' => 'Home'
-				)
-			),
-			'content' => array(
-				'fields' => get_fields(false)
-			)
-		),
-		'lost' => array(
-			'metadata' => array(
-				'title' => 'HTTP 404 Error: Page Not Found'.$site,
-				'description' => 'HTTP 404 Error: Page Not Found',
-				'og' => array(
-					'type' => 'article',
-					'title' => 'HTTP 404 Error: Page Not Found'.$site,
-					'description' => 'HTTP 404 Error: Page Not Found',
-					'site_name' => 'Scaffolding',
-					'url' => BASE,
-					'image' => BASE.'img/non-render/og-logo.jpg',
-					'image:width' => 1200,
-					'image:height' => 764
-				),
-				'tw' => array(
-					'card' => 'summary_large_image',
-					'title' => 'HTTP 404 Error: Page Not Found'.$site,
-					'image' => BASE.'img/non-render/og-logo.jpg',
-					'width' => 1200,
-					'height' => 764,
-					'description' => 'HTTP 404 Error: Page Not Found'
-				)
-			),
-		)
+		'config' => get_configs()
 	);
 
-	return $output;
+	$preload = array();
+
+	foreach($data as $d) {
+		$x = new REST_output($d, true);
+		$output[$x->__toString()] = $x->toObject();
+
+		foreach($x->toPreload() as $pl) {
+			array_push($preload, $pl);
+		}
+	}
+
+	return array(
+		'content' => $output,
+		'preload' => array_unique($preload)
+	);
 }
 
-function get_fields($match) {
+function ng_get_fields($postid, $match) {
 	//---BUILD FIELDS HERE
-	$fields = array(
-		array(
-			'key' => 'Questions[85248]',
-			'label' => 'Lasso Field',
-			'id' => 'field-id',
-			'type' => 'text',
-			'verify' => 'phone',
-			'require' => true
+	if(get_page_template_slug($postid) != '') {
+		return array();
+	}
+
+	$fields = array();
+
+	$farray = get_field('fields', $postid);
+	foreach($farray as $fin => $f) {
+		$field_data = array(
+			'pid' => 'page-'.$postid,
+			'id' => 'field-'.$postid.'-'.$fin,
+			'label' => $f['label'],
+			'require' => $f['require'],
+			'key' => 'field-'.$fin
+		);
+
+		switch($f['type']) {
+			case 'text':
+				$field_data['type'] = 'text';
+				$field_data['verify'] = $f['filter'];
+			break;
+
+			case 'par':
+				$field_data['type'] = 'paragraph';
+				$field_data['verify'] = 'max/9999';
+			break;
+
+			case 'menu':
+				$field_data['type'] = $f['radio'] ? 'radio' : 'dropdown';
+				$field_data['values'] = array();
+				foreach($f['values'] as $ind => $choice) {
+					array_push($field_data['values'], array(
+						'key' => 'value-set-'.$ind,
+						'name' => $choice['label'],
+						'value' => $choice['value']
+					));
+				}
+			break;
+
+			case 'checkbox':
+				$field_data['label'] = $f['copy_text'];
+				$field_data['type'] = 'checkbox';
+				$field_data['set'] = array(
+					'label' => $f['value'],
+					'value' => 'yes',
+					'key' => 1,
+					'no' => 'No'
+				);
+			break;
+		}
+
+		array_push($fields, $field_data);
+	}
+
+
+	$rarray = get_field('responses', $postid);
+	array_push($fields, array(
+		'pid' => 'page-'.$postid,
+		'label' => get_field('submit', $postid),
+		'type' => 'submit',
+		'id' => 'field-'.$postid.'-'.sizeof($fields),
+		'receiver' => array('Administrator', get_field('receiver', $postid)),
+		'defaults' => array(
+			'disclaimer' =>  $rarray['disclaimer'],
+			'empty' => 'Unspecified'
 		),
-		array(
-			'key' => 'Questions[85248]',
-			'label' => 'Lasso Field',
-			'id' => 'field-id',
-			'type' => 'text',
-			'verify' => 'min/5',
-			'require' => false
-		),
-		array(
-			'key' => 'Questions[69592]',
-			'label' => 'Lasso Paragraph',
-			'id' => 'field-id-2',
-			'type' => 'paragraph',
-			'verify' => 'max/100',
-			'require' => true
-		),
-		array(
-			'key' => 'Questions[15434]',
-			'label' => 'Dropdown',
-			'id' => 'dd-sample',
-			'type' => 'dropdown',
-			'require' => true,
-			'values' => array(
-				array(
-					'key' => 'value-set-1',
-					'name' => 'Value Set 1',
-					'value' => '00001'
-				),
-				array(
-					'key' => 'value-set-2',
-					'name' => 'Value Set 2',
-					'value' => '00002'
-				)
-			)
-		),
-		array(
-			'key' => 'Questions[15432]',
-			'label' => 'Multiple',
-			'id' => 'ms-sample',
-			'type' => 'multiple',
-			'particle' => array(
-				'Choice',
-				'Choices'
+		'prompts' => array(
+			'success' => array(
+				'title' => 'Registration Complete',
+				'message' => $rarray['success']
 			),
-			'require' => true,
-			'values' => array(
-				array(
-					'key' => 'value-set-1',
-					'name' => 'Value Set 1',
-					'value' => '00001'
-				),
-				array(
-					'key' => 'value-set-2',
-					'name' => 'Value Set 2',
-					'value' => '00002'
-				),
-				array(
-					'key' => 'value-set-3',
-					'name' => 'Value Set 3',
-					'value' => '00003'
-				),
-				array(
-					'key' => 'value-set-4',
-					'name' => 'Value Set 4',
-					'value' => '00004'
-				)
-			)
-		),
-		array(
-			'key' => 'Questions[41415]',
-			'label' => 'Checkbox',
-			'id' => 'cb-sample',
-			'type' => 'checkbox',
-			'require' => true,
-			'set' => array(
-				'label' => 'Nice Value',
-				'value' => '00003',
-				'key' => 'post-value',
-				'no' => 'Negative Answer'
-			)
-		),
-		array(
-			'label' => 'Test',
-			'type' => 'submit',
-			'id' => 'test-submitter',
-			'receiver' => array('Administrator', 'richard.y.ong@outlook.com'),
-			'defaults' => array(
-				'disclaimer' => 'This email is intended only for the person(s) named in the message header. Unless otherwise indicated, it contains information that is confidential, privileged and/or exempt from disclosure under applicable law. If you have received this message in error, please notify the sender of the error and delete the message. Thank you.',
-				'empty' => 'Unspecified'
+			'verify_error' => array(
+				'title' => 'Submission Failed',
+				'message' => $rarray['failed']
 			),
-			'prompts' => array(
-				'success' => array(
-					'title' => 'Registration Complete',
-					'message' => 'We appreciate you contacting us. You are now added to our mailing list and will now be among the first ones to receive updates. Thank you for your interest.'
-				),
-				'verify_error' => array(
-					'title' => 'Submission Failed',
-					'message' => 'Unfortunately, your submission was not completed due to some missing or incorrect information. Please fill in all fields that are marked with an asterisk (*) correctly. The fields that need editing are highlighted in red.'
-				),
-				'submit_error' => array(
-					'title' => 'Submission Failed',
-					'message' => 'There was a connection issue and we cannot connect to the submission system. You may come back and try again on a later date if you wish to try again. We apologize for the inconvenience.'
-				)
+			'submit_error' => array(
+				'title' => 'Submission Failed',
+				'message' => $rarray['technical']
 			)
 		)
-	);
+	));
 	//----
 
 	$build = array();
@@ -208,6 +133,7 @@ function get_fields($match) {
 	if(!$match) {
 		foreach($fields as $field) {
 			$built = array(
+				'pid' => $field['pid'],
 				'label' => $field['label'],
 				'id' => $field['id'],
 				'type' => $field['type'],
@@ -327,8 +253,8 @@ function get_fields($match) {
 	return $build;
 }
 
-function get_match($inputName, $inputValue, $defaultValue, $crm) {
-	$matches = get_fields(true);
+function ng_get_match($postid, $inputName, $inputValue, $defaultValue, $crm) {
+	$matches = ng_get_fields($postid, true);
 
 	if($matches[$inputName]['type'] == 'dropdown') {
 		if($crm) {

@@ -1,0 +1,1164 @@
+[
+    {
+        "key": "group_5c58f88c9cbfd",
+        "title": "Custom Post Types",
+        "fields": [
+            {
+                "key": "field_5c58fc71d28d9",
+                "label": "Post Type",
+                "name": "post-type",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_5c58fcfbd28de",
+                "min": 0,
+                "max": 0,
+                "layout": "block",
+                "button_label": "Create Post Type",
+                "sub_fields": [
+                    {
+                        "key": "field_5c5ccdd8f0efe",
+                        "label": "Post Type Details",
+                        "name": "",
+                        "type": "tab",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "placement": "top",
+                        "endpoint": 0
+                    },
+                    {
+                        "key": "field_5c5e11926281a",
+                        "label": "Slug",
+                        "name": "slug",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5c64a2e8f769f",
+                        "label": "URL Base",
+                        "name": "rewrite",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5c58fcfbd28de",
+                        "label": "Icon",
+                        "name": "dashicon",
+                        "type": "kld_dashicon",
+                        "instructions": "Sets the icon for this post type on the menu.",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "font_size": 14
+                    },
+                    {
+                        "key": "field_5c58fc80d28da",
+                        "label": "Label",
+                        "name": "label",
+                        "type": "group",
+                        "instructions": "Sets the name for this post type.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "layout": "table",
+                        "sub_fields": [
+                            {
+                                "key": "field_5c58fcb0d28db",
+                                "label": "Singular",
+                                "name": "singular",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_5c58fcb8d28dc",
+                                "label": "Plural",
+                                "name": "plural",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_5c5cd49fc1d74",
+                                "label": "Menu Name",
+                                "name": "menu",
+                                "type": "text",
+                                "instructions": "Defaults to \"Plural\" if left blank.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            }
+                        ]
+                    },
+                    {
+                        "key": "field_5c58fec1d28e2",
+                        "label": "Hierarchical",
+                        "name": "hierarchical",
+                        "type": "true_false",
+                        "instructions": "Can have sub-posts.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "message": "",
+                        "default_value": 0,
+                        "ui": 1,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    },
+                    {
+                        "key": "field_5c58fccad28dd",
+                        "label": "Visibility",
+                        "name": "public",
+                        "type": "true_false",
+                        "instructions": "Sets visibility for this post.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "message": "",
+                        "default_value": 1,
+                        "ui": 1,
+                        "ui_on_text": "Visible",
+                        "ui_off_text": "Private"
+                    },
+                    {
+                        "key": "field_5c58fd0dd28df",
+                        "label": "User Acess",
+                        "name": "capability",
+                        "type": "repeater",
+                        "instructions": "Sets role types that can access this post type.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "collapsed": "field_5c58fd47d28e0",
+                        "min": 1,
+                        "max": 0,
+                        "layout": "table",
+                        "button_label": "Add Access",
+                        "sub_fields": [
+                            {
+                                "key": "field_5c58fd47d28e0",
+                                "label": "Capability",
+                                "name": "capability",
+                                "type": "select",
+                                "instructions": "Sets the capability for role assignment. Setting a value to \"All Activities\" will be overridden by every existing capability type set before or after this.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "all": "All Activities",
+                                    "edit_post": "Edit Entries",
+                                    "read_post": "Read Entries",
+                                    "delete_post": "Delete Entries",
+                                    "delete_posts": "Delete Multiple Entries",
+                                    "edit_posts": "Edit Multiple Entries",
+                                    "edit_others_posts": "Edit Submitted Entries",
+                                    "publish_posts": "Publish Entries",
+                                    "read_private_posts": "Read Private Entries"
+                                },
+                                "default_value": [],
+                                "allow_null": 0,
+                                "multiple": 0,
+                                "ui": 0,
+                                "return_format": "value",
+                                "ajax": 0,
+                                "placeholder": ""
+                            },
+                            {
+                                "key": "field_5c58fe16d28e1",
+                                "label": "User Type",
+                                "name": "role",
+                                "type": "select",
+                                "instructions": "Sets the user type for this capability.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "moderate_comments": "Client",
+                                    "create_users": "Administrator",
+                                    "setup_network": "Webmaster"
+                                },
+                                "default_value": [],
+                                "allow_null": 0,
+                                "multiple": 0,
+                                "ui": 0,
+                                "return_format": "value",
+                                "ajax": 0,
+                                "placeholder": ""
+                            }
+                        ]
+                    },
+                    {
+                        "key": "field_5c58fedad28e3",
+                        "label": "Menu Position",
+                        "name": "position",
+                        "type": "number",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": 9,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "options_page",
+                    "operator": "==",
+                    "value": "cpt"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": ""
+    },
+    {
+        "key": "group_5c64a3e539103",
+        "title": "Navigation",
+        "fields": [
+            {
+                "key": "field_5c64a3e99588e",
+                "label": "Site Navigation",
+                "name": "site_navigation",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_5c64a4069588f",
+                "min": 0,
+                "max": 0,
+                "layout": "block",
+                "button_label": "Add Page",
+                "sub_fields": [
+                    {
+                        "key": "field_5c64a4069588f",
+                        "label": "Target",
+                        "name": "target",
+                        "type": "post_object",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "post_type": [
+                            "page"
+                        ],
+                        "taxonomy": "",
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "return_format": "object",
+                        "ui": 1
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "options_page",
+                    "operator": "==",
+                    "value": "cpt"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "side",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": ""
+    },
+    {
+        "key": "group_5c06eb56d24c1",
+        "title": "Visibility and Meta Tags",
+        "fields": [
+            {
+                "key": "field_5c06eb5f920b5",
+                "label": "Title",
+                "name": "seo-title",
+                "type": "text",
+                "instructions": "Fill this in if you wish to replace the page title. Otherwise it will use the auto-generated title on what is filled in the \"title\" input bar on the top of this page.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5c06ebbf920b6",
+                "label": "Description",
+                "name": "seo-description",
+                "type": "textarea",
+                "instructions": "The description for this page to be seen by search engines. Defaults to website tagline if not filled in.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "maxlength": "",
+                "rows": "",
+                "new_lines": ""
+            },
+            {
+                "key": "field_5c06ebde920b7",
+                "label": "Thumbnail",
+                "name": "seo-thumbnail",
+                "type": "image",
+                "instructions": "The image that appears when you share this page across social media websites. Leaving this blank will default to the one specified under Settings > General. Recommended size 1200x630 or greater with same proportion.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "id",
+                "preview_size": "full",
+                "library": "all",
+                "min_width": 1200,
+                "min_height": 630,
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "!=",
+                    "value": "post"
+                }
+            ],
+            [
+                {
+                    "param": "post_type",
+                    "operator": "!=",
+                    "value": "page"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "side",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": ""
+    },
+    {
+        "key": "group_5c5cd11d4dc8c",
+        "title": "Custom Taxonomies",
+        "fields": [
+            {
+                "key": "field_5c5cd4c329892",
+                "label": "Taxonomy",
+                "name": "taxonomy",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_5c5cd54c29898",
+                "min": 0,
+                "max": 0,
+                "layout": "block",
+                "button_label": "Assign New Taxonomy",
+                "sub_fields": [
+                    {
+                        "key": "field_5c5cd56229899",
+                        "label": "General Details",
+                        "name": "",
+                        "type": "tab",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "placement": "top",
+                        "endpoint": 0
+                    },
+                    {
+                        "key": "field_5c5cd54c29898",
+                        "label": "Slug",
+                        "name": "rewrite",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5c5cd4e329894",
+                        "label": "Labels",
+                        "name": "labels",
+                        "type": "group",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "layout": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5c5cd50429895",
+                                "label": "Singular",
+                                "name": "singular",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_5c5cd50c29896",
+                                "label": "Plural",
+                                "name": "plural",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_5c5cd51329897",
+                                "label": "Menu",
+                                "name": "menu",
+                                "type": "text",
+                                "instructions": "Defaults to \"Plural\" if left blank.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            }
+                        ]
+                    },
+                    {
+                        "key": "field_5c5cd4d029893",
+                        "label": "Target(s)",
+                        "name": "target",
+                        "type": "repeater",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "collapsed": "",
+                        "min": 1,
+                        "max": 0,
+                        "layout": "block",
+                        "button_label": "Add Target",
+                        "sub_fields": [
+                            {
+                                "key": "field_5c5e173596cca",
+                                "label": "Post Type",
+                                "name": "type",
+                                "type": "kld_post_type",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "font_size": 14
+                            }
+                        ]
+                    },
+                    {
+                        "key": "field_5c5cd5792989a",
+                        "label": "Data Handling",
+                        "name": "",
+                        "type": "tab",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "placement": "top",
+                        "endpoint": 0
+                    },
+                    {
+                        "key": "field_5c5cd6002989b",
+                        "label": "Hierarchy",
+                        "name": "hierarchical",
+                        "type": "true_false",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "message": "",
+                        "default_value": 1,
+                        "ui": 1,
+                        "ui_on_text": "Vertical (Category)",
+                        "ui_off_text": "Lateral (Post Tag)"
+                    },
+                    {
+                        "key": "field_5c5cd62c2989c",
+                        "label": "Edit Post Window",
+                        "name": "show_ui",
+                        "type": "true_false",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "message": "",
+                        "default_value": 1,
+                        "ui": 1,
+                        "ui_on_text": "Show in Edit Window",
+                        "ui_off_text": "Hide from Edit Screen"
+                    },
+                    {
+                        "key": "field_5c5cd6792989d",
+                        "label": "Post List Window",
+                        "name": "show_admin_column",
+                        "type": "true_false",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "message": "",
+                        "default_value": 1,
+                        "ui": 1,
+                        "ui_on_text": "Shown in Post Listing",
+                        "ui_off_text": "Hidden in Post Lists"
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "options_page",
+                    "operator": "==",
+                    "value": "cpt"
+                }
+            ]
+        ],
+        "menu_order": 1,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": ""
+    },
+    {
+        "key": "group_5c5e22f758544",
+        "title": "Feature Overrides",
+        "fields": [
+            {
+                "key": "field_5c5e23064b336",
+                "label": "Menu",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_5c5e23214b337",
+                "label": "Hide Menu Items",
+                "name": "hide_menu",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_5c5e232d4b338",
+                "min": 0,
+                "max": 0,
+                "layout": "table",
+                "button_label": "Hide a Menu Item",
+                "sub_fields": [
+                    {
+                        "key": "field_5c5e232d4b338",
+                        "label": "Menu Slug",
+                        "name": "menu_slug",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5c5e23814b339",
+                        "label": "Hidden From",
+                        "name": "hidden_from",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "everyone": "Everyone",
+                            "setup_network": "Client",
+                            "create_users": "Other Users"
+                        },
+                        "default_value": [],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    }
+                ]
+            },
+            {
+                "key": "field_5c5e2418a3996",
+                "label": "Submenu",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_5c5e245aa3998",
+                "label": "Hide Submenu Items",
+                "name": "hide_submenu",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_5c5e232d4b338",
+                "min": 0,
+                "max": 0,
+                "layout": "table",
+                "button_label": "Hide a Menu Item",
+                "sub_fields": [
+                    {
+                        "key": "field_5c5e245aa3999",
+                        "label": "Menu Slug",
+                        "name": "menu_slug",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5c5e2470a399b",
+                        "label": "Submenu Slug",
+                        "name": "submenu_slug",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5c5e245aa399a",
+                        "label": "Hidden From",
+                        "name": "hidden_from",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "everyone": "Everyone",
+                            "setup_network": "Client",
+                            "create_users": "Other Users"
+                        },
+                        "default_value": [],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    }
+                ]
+            },
+            {
+                "key": "field_5c5e248ea399c",
+                "label": "Dashboard",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_5c5e2552a39a3",
+                "label": "Wordpress.com Blog",
+                "name": "side-core-dashboard_primary",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Visible",
+                "ui_off_text": "Hidden"
+            },
+            {
+                "key": "field_5c5e249ea399d",
+                "label": "Quick Draft",
+                "name": "side-core-dashboard_quick_press",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Visible",
+                "ui_off_text": "Hidden"
+            },
+            {
+                "key": "field_5c5e24dca399f",
+                "label": "At a Glance",
+                "name": "normal-core-dashboard_right_now",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Shown",
+                "ui_off_text": "Hidden"
+            },
+            {
+                "key": "field_5c5e31ca58d38",
+                "label": "Activity",
+                "name": "normal-core-dashboard_activity",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Visible",
+                "ui_off_text": "Hidden"
+            },
+            {
+                "key": "field_5c5e2508a39a1",
+                "label": "Recent Drafts",
+                "name": "normal-core-dashboard_recent_drafts",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Visible",
+                "ui_off_text": "Hidden"
+            },
+            {
+                "key": "field_5c5e251ca39a2",
+                "label": "Recent Comments",
+                "name": "normal-core-dashboard_recent_comments",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Visible",
+                "ui_off_text": "Hidden"
+            },
+            {
+                "key": "field_5c5e259a72775",
+                "label": "Features and Metaboxes",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_5c5e25a872776",
+                "label": "Hide Default Post Features",
+                "name": "remove-post-features",
+                "type": "checkbox",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "sp-thumbnail": "Featured Image",
+                    "sp-author": "Author Field",
+                    "sp-excerpt": "Excerpt Field",
+                    "sp-trackbacks": "Trackbacks Meta Box",
+                    "sp-custom-fields": "Custom Field Values",
+                    "sp-revisions": "Revisions",
+                    "sp-post-attributes": "Post Attributes",
+                    "sp-comments": "Comments",
+                    "sp-discussion": "Discussion Area",
+                    "mb-formatdiv": "Post Formats",
+                    "mb-categorydiv": "Post Categories",
+                    "mb-tagsdiv-post_tag": "Post Tags"
+                },
+                "allow_custom": 0,
+                "default_value": [],
+                "layout": "vertical",
+                "toggle": 1,
+                "return_format": "value",
+                "save_custom": 0
+            },
+            {
+                "key": "field_5c5e27d172779",
+                "label": "Hide Default Page Features",
+                "name": "remove-page-features",
+                "type": "checkbox",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "sp-thumbnail": "Featured Image",
+                    "sp-author": "Author Field",
+                    "sp-trackbacks": "Trackbacks",
+                    "sp-custom-fields": "Custom Field Values",
+                    "sp-revisions": "Revisions",
+                    "sp-page-attributes": "Page Attributes",
+                    "sp-comments": "Comments",
+                    "sp-discussion": "Discussion Area",
+                    "sp-editor": "Default Text Editor"
+                },
+                "allow_custom": 0,
+                "default_value": [],
+                "layout": "vertical",
+                "toggle": 1,
+                "return_format": "value",
+                "save_custom": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "options_page",
+                    "operator": "==",
+                    "value": "cpt"
+                }
+            ]
+        ],
+        "menu_order": 2,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": ""
+    }
+]

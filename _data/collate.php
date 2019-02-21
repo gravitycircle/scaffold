@@ -1,23 +1,61 @@
 <?php
-include_once('collect.php');
 include_once('content.php');
 include_once(DOCROOT.'/php/keygen.php');
+include_once(DOCROOT.'/_bin/wp-load.php');
+include_once(DOCROOT.'/_data/directives.php');
+
 function main($json = true) {
 
 	$output = array();
 	
-	$output['nav'] = array(
-		array(
-			'name' => 'Home',
-			'path' => ''
-		)
-	);
+// other-pages
 
-	$output['preload'] = scan_imgs();
+	$nav = get_field('site_navigation', 'option');
+	
+	$output['nav'] = array();
+
+	$indices = array();
+
+	if($nav != false && sizeof($nav) > 0) {
+		foreach($nav as $n) {
+			if(get_option('page_on_front') == $n['target']->ID) {
+				array_push($output['nav'], array(
+					'name' => 'Home',
+					'path' => '',
+					'visible' => $n['visible'],
+					'directive' => ng_template(get_option('page_on_front'))
+				));
+				array_push($indices, $n['target']->ID);
+			}
+			else{
+				array_push($output['nav'], array(
+					'name' => $n['target']->post_title,
+					'path' => $n['target']->post_name,
+					'visible' => $n['visible'],
+					'directive' => ng_template(get_option('page_on_front'))
+				));
+				array_push($indices, $n['target']->ID);
+			}
+		}
+	}
+
+	if(sizeof($output['nav']) < 1) {
+		array_push($output['nav'], array(
+			'name' => 'Home',
+			'path' => '',
+			'visible' => false,
+			'directive' => ng_template(get_option('page_on_front'))
+		));
+		array_push($indices, get_option('page_on_front'));
+	}
+	$contentinfo = build_content($indices);	
+
+	$output['preload'] = $contentinfo['preload'];
 	$output['on_init'] = array(
 
 	); // pre-preloaded images
-	$output['contents'] = build_content('Angular Based Scaffolding & Bootstrap');
+	$output['contents'] = $contentinfo['content'];
+
 	if($json) {
 		return json_encode($output);
 	}

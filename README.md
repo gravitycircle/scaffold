@@ -1,4 +1,6 @@
-# ![---](http://angular.richardbryanong.com/img/favico.png) Angular: Site Scaffolding & Bootstrap v0.6 (Stable)
+ ![---](http://richardbryanong.com/public/shortcut-icon.png) 
+
+#Angular: Site Scaffolding & Bootstrap v0.7 (WP-unstable)
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
@@ -8,7 +10,9 @@ This is the starting point of every new site I create using a combination of the
 *   **Preprocessors**
     *   Compass (requires Ruby and gem installation)
     *   SASS (requires Ruby and gem installation)
-    *   PHP v5.6.11 (requires running on a server. Preferrably Apache 2.0)
+    *   PHP v7 or higher (requires running on a server. Preferrably Apache 2.0)
+*	**Content Management**
+	*	Wordpress - Customized wp-config.php & config.php
 *   **Markup and Styling**
     *   HTML 5
     *   CSS 3
@@ -23,13 +27,6 @@ This is only the introduction page. The installation file for this scaffolding s
 
 **Past Changes:**
 
- - Refactored php/mailer.php file to accept and verify forms. Made to be reusable.
- - Refactored the 'lasso' directive under config.js. Made to be, again, reusable.
- - Refactored the form field directives for easy scripting, main.php will also be refactored.
- - _seo/ folder updated for easy metadata coding.
- - Deployed for live testing on test server for CORS - related adjustments.
-
-**Framework Changes:**
  - Refactored _data structure into a more staggered non-CMS data management system.
  - JS files are all minified into 3 files: library.js, config.js and script.js. These files do not exist, they are made on the fly.
  - Note: Need to further optimize minification.
@@ -38,9 +35,43 @@ This is only the introduction page. The installation file for this scaffolding s
  - Removed unecessary Boostrap CSS code. Kept the base grid the same.
  - Converted all Bootstrap CSS into self-contained in '.grid' elements.
 
+**Framework Changes:**
+
+ - It's finally here: WordPress Integration. Setup instructions are further down in this document.
+ - Modified Breakpoint System to include orientations, original orientation mixin still present.
+ - Google Map fully integrated
+ - Emailer system will still be standalone, plugin emailer will be removed.
+ - SEO fully integrated in /php/server.php
+
 **Future Update Notes:**
 
- - Fix WordPress integration - This still has to go through a lot of adjustments in order to work. WP has to have a REST API - based theme or at least the REST API Plugin to work.
- - Integrate Google Map integration into new directive in order to specify stylers, markers and behavioral attributes.
+ - Streamline setup, currently very clunky. Utilize Grunt / Composer or other automation applications to do this.
+ - Build modular page navigation system and sub-navigation for reusability.
+ - Build CSS Component for WordPress integration as well as customised ".css" files.
 
 #### ~Happy coding!
+
+---
+
+##Setup Instructions
+- Download & Extract Wordpress from [wordpress.org](https://wordpress.org "Blog Tool, Publishing Platform, and CMS &mdash; WordPress") into `_bin/` folder
+- Create "media" Folder inside `_bin/`
+- Install WordPress normally
+- Add in `include_once('../setup.php');` in `wp-config.php` right after `define('DB_COLLATE', '');`.
+- Copy in the theme in its respective folder (`_bin/wp-content/themes/`). The default theme is found in `_src/wordpress/themes`
+- Activate the theme and all newly installed plugins.
+- Update everything from the WordPress admin.
+- Delete all extra themes / plugins. We're departing from those.
+
+##Allright Sparky!
+- The correct API's must be placed within the database. To do this, log into Wordpress by going into `_bin/wp-admin` on your browser.
+- On the left hand panel, look for *Settings > General*
+- Scroll down to the bottom and add an API Key named `Google Cloud Platform` and a matching API key to the right. Save.
+- Documentation is still in the works.
+- **Note:** Make sure to set your home page displays with the correct info under *General Settings > Reading*
+   - Create a new blank page, so you can get this setting saved.
+   - Set the *Your Homepage Displays* option to *A Static Page*
+   - Define pages on the 2 options presented. Use the blank page for either the home page or the posts page.
+- That's it for now.
+
+#### ~Stay Tuned!

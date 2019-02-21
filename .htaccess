@@ -5,7 +5,7 @@ AddEncoding gzip svgz
 RewriteEngine On
 
  # Don't rewrite files or directories
-# RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-f
  
 RewriteRule ^.*$ ./index.php
