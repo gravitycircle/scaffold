@@ -17,6 +17,9 @@ This is the starting point of every new site I create using a combination of the
 *   **Markup and Styling**
     *   HTML 5
     *   CSS 3
+*   **Wordpress Plugin Dependencies**
+    *   Advanced Custom Fields Pro - You'll need a licence key for this.
+    *   WP-DB Migrate
 
 Please make sure your config.php is set up to the right Base address by changing the BASE and CANONICAL constants. You'll know that you've set it correctly if you see a red logo on the top of this page after a refresh. Currently the constants are set to adapt to the URLs of your files based on where the active Apache directory is.
 
@@ -64,7 +67,7 @@ This is only the introduction page. The installation file for this scaffolding s
 - Update everything from the WordPress admin.
 - Delete all extra themes / plugins. We're departing from those.
 
-## Allright Sparky!
+## Alright Sparky!
 - The correct API's must be placed within the database. To do this, log into Wordpress by going into `_bin/wp-admin` on your browser.
 - On the left hand panel, look for *Settings > General*
 - Scroll down to the bottom and add an API Key named `Google Cloud Platform` and a matching API key to the right. Save.
