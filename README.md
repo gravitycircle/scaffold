@@ -1,6 +1,7 @@
+
  ![---](http://richardbryanong.com/public/shortcut-icon.png) 
 
-#Angular: Site Scaffolding & Bootstrap v0.7 (WP-unstable)
+# Angular: Site Scaffolding & Bootstrap v0.7 (WP-unstable)
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
@@ -11,8 +12,8 @@ This is the starting point of every new site I create using a combination of the
     *   Compass (requires Ruby and gem installation)
     *   SASS (requires Ruby and gem installation)
     *   PHP v7 or higher (requires running on a server. Preferrably Apache 2.0)
-*	**Content Management**
-	*	Wordpress - Customized wp-config.php & config.php
+* **Content Management**
+  * Wordpress - Customized wp-config.php & config.php
 *   **Markup and Styling**
     *   HTML 5
     *   CSS 3
@@ -53,7 +54,7 @@ This is only the introduction page. The installation file for this scaffolding s
 
 ---
 
-##Setup Instructions
+## Setup Instructions
 - Download & Extract Wordpress from [wordpress.org](https://wordpress.org "Blog Tool, Publishing Platform, and CMS &mdash; WordPress") into `_bin/` folder
 - Create "media" Folder inside `_bin/`
 - Install WordPress normally
@@ -63,7 +64,7 @@ This is only the introduction page. The installation file for this scaffolding s
 - Update everything from the WordPress admin.
 - Delete all extra themes / plugins. We're departing from those.
 
-##Allright Sparky!
+## Allright Sparky!
 - The correct API's must be placed within the database. To do this, log into Wordpress by going into `_bin/wp-admin` on your browser.
 - On the left hand panel, look for *Settings > General*
 - Scroll down to the bottom and add an API Key named `Google Cloud Platform` and a matching API key to the right. Save.
