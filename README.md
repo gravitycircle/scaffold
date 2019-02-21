@@ -23,11 +23,7 @@ This is the starting point of every new site I create using a combination of the
 
 Please make sure your config.php is set up to the right Base address by changing the BASE and CANONICAL constants. You'll know that you've set it correctly if you see a red logo on the top of this page after a refresh. Currently the constants are set to adapt to the URLs of your files based on where the active Apache directory is.
 
-Also note that BASE refers to the base URL of the site itself. CANONICAL refers to the base URL of any API endpoint you will be using that runs alongside this application.
-
-SEO has been set up. Under the __seo_ folder, the _index.php_ file has an _seo function. Utilize that for your SEO needs. _$page_ would be the last part of the url to track. There is no deep linking available yet.
-
-This is only the introduction page. The installation file for this scaffolding setup has not yet been configured and I'm not too sure if it'll work out of the box since the framework stack is still in active development. To start working with the stack anyway, please rename the 'index.php file' into something different and rename the _index.php file to index.php.
+Also note that BASE refers to the base URL of the site itself. CANONICAL refers to the base URL of any API endpoint you will be using that runs alongside this application. *(Side Note: CANONICAL will be phased out next version.)*
 
 **Past Changes:**
 
