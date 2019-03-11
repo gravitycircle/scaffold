@@ -249,31 +249,6 @@ function register_general_settings_fields(){
 		)
 	));
 
-	register_setting('general', 'logo_svg', 'esc_attr');
-	register_setting('general', 'logo_png', 'esc_attr');
-	add_settings_field('site_logo', '<label for="favLogo">'.__('Website Logo' , 'site_logo' ).'</label>' , 'print_image_field', 'general', 'logo_identity_section', array(
-		array(
-			'option' => 'logo_svg',
-			'id' => 'favLogo',
-			'alt' => 'Vector Icon',
-			'button' => '[act] Vector Icon',
-			'width' => 400,
-			'height' => 113,
-			'tooltip' => 'This attribute sets the logo found on the navigation bar. (Modern Browsers).',
-			'file_types' => array('image/svg+xml', 'application/svg+xml')
-		),
-		array(
-			'option' => 'logo_png',
-			'id' => 'favLogo-png',
-			'alt' => 'PNG Icon',
-			'button' => '[act] PNG Icon',
-			'width' => 400,
-			'height' => 113,
-			'tooltip' => 'This attribute sets the logo found on the navigation bar. (Older Browsers).',
-			'file_types' => array('image/png')
-		)
-	));
-
 	register_setting('general', 'api-keys', 'esc_attr');
 	add_settings_field('site-keys', '<label for="sitename-mapi">'.__('API Key List' , 'API Key List' ).'</label>' , 'print_text_repeater', 'general', 'api_keys',array(
 		'option' => 'api-keys',
@@ -344,83 +319,6 @@ function register_general_settings_fields(){
 			'tooltip' => 'This attribute sets the icon or thumbnail of this website when shared across various social media platforms and/or websites. For best results, upload aa JPG / PNG image with 1200px width and 630px height.',
 			'file_types' => array('image/png', 'image/jpg', 'image/jpeg')
 		),
-	));
-
-
-	//========== READING
-	
-
-	$psts = get_posts(array(
-		'posts_per_page' => -1,
-		'post_type' => 'page',
-		'order' => 'ASC',
-		'orderby' => 'title'
-	));
-
-	$link_choices = array(
-		array(
-			'value' => '---',
-			'label' => 'Disable Link'
-		)
-	);
-
-	foreach($psts as $plst) {
-		array_push($link_choices, array(
-			'value' => $plst->ID,
-			'label' => $plst->post_title
-		));
-	}
-
-	register_setting('reading', 'footer_link_target', 'esc_attr');
-	add_settings_field('footer_link_url', '<label for="f-lurl">'.__('Footer Link Target' , 'footer_link_url' ).'</label>' , 'print_options_field', 'reading', 'footer_top', array(
-		'option' => 'footer_link_target',
-		'id' => 'f-lurl',
-		'width' => 22,
-		'tooltip' => 'The page this link points to.',
-		'choices' => $link_choices
-	));
-
-	//----
-	register_setting('general', 'footer_entity_name', 'esc_attr');
-	add_settings_field('entity_name', '<label for="sitename-head">'.__('Entity Name' , 'entity_name' ).'</label>' , 'print_text_field', 'reading', 'footer_details', array(
-		array(
-			'option' => 'footer_entity_name',
-			'id' => 'entity_name',
-			'width' => 22,
-			'tooltip' => 'The text that appears as the entity name in the footer of every page.',
-			'placeholder' => get_bloginfo('name')
-		)
-	));
-
-	register_setting('reading', 'footer_text_block_l', 'esc_attr');
-	add_settings_field('c_details_l', '<label for="textblock_l">'.__('Text Block (Left)' , 'textblock_l' ).'</label>' , 'print_par_field', 'reading', 'footer_details', array(
-		'option' => 'footer_text_block_l',
-		'id' => 'textblock_l',
-		'width' => 22,
-		'height' => 4,
-		'resize' => false,
-		'tooltip' => 'The text that appears under the entity name in the footer (Left).'
-	));
-
-	register_setting('reading', 'footer_text_block_r', 'esc_attr');
-	add_settings_field('c_details_r', '<label for="textblock_r">'.__('Text Block (Right)' , 'textblock_r' ).'</label>' , 'print_par_field', 'reading', 'footer_details', array(
-		'option' => 'footer_text_block_r',
-		'id' => 'textblock_r',
-		'width' => 22,
-		'height' => 4,
-		'resize' => false,
-		'tooltip' => 'The text that appears under the entity name in the footer (Right).'
-	));
-
-	register_setting('reading', 'footer_copyline', 'esc_attr');
-	add_settings_field('copyline', '<label for="sitename-head">'.__('Entity Name' , 'copyline' ).'</label>' , 'print_text_field', 'reading', 'footer_details', array(
-		array(
-			'option' => 'footer_copyline',
-			'id' => 'copyline',
-			'width' => 28,
-			'tooltip' => 'The text that appears as the copy line in the footer of every page. Enclose the starting<br>year with a \'y\' and brackets to automatically update the year via the framework.<br>Example: &copy;[y2016] Company Name.',
-			'placeholder' => '&copy;'.date('Y').' '.get_bloginfo('name').'. All Rights Reserved.'
-		)
 	));
 }
 

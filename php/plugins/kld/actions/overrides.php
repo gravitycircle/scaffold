@@ -1,4 +1,25 @@
 <?php
+add_filter( 'wp_check_filetype_and_ext', function($data, $file, $filename, $mimes) {
+
+  global $wp_version;
+  if ( $wp_version !== '4.7.1' ) {
+     return $data;
+  }
+
+  $filetype = wp_check_filetype( $filename, $mimes );
+
+  return [
+      'ext'             => $filetype['ext'],
+      'type'            => $filetype['type'],
+      'proper_filename' => $data['proper_filename']
+  ];
+
+}, 10, 4 );
+
+function fix_svg() {
+ 
+}
+
 function set_mimes($mime_types){
 	//Creating a new array will reset the allowed filetypes
 	$mime_types['svg'] = 'image/svg+xml';
@@ -6,13 +27,12 @@ function set_mimes($mime_types){
 }
 
 
+
 // Remove default image sizes here. 
 function disable_wp_image_resizer( $sizes ) {
-	unset( $sizes['small']); // 150px
-	unset( $sizes['thumbnail']); // 150px
-	unset( $sizes['medium']); // 300px
-	unset( $sizes['large']); // 1024px
-	unset( $sizes['medium_large']); // 768px
+	foreach($sizes as $s => $v) {
+		unset( $sizes[$s]); // 150px
+	}
 	return $sizes;
 }
 

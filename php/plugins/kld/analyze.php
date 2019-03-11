@@ -6,6 +6,7 @@ class REST_output {
 	private $seo = array('page', 'post');
 	private $full = false;
 	private $preload = array();
+	private $initload = array();
 
 	public function __construct($postID, $full = false) {
 		$post = get_post($postID);
@@ -37,27 +38,51 @@ class REST_output {
 				$ret = array();
 				foreach($object['value'] as $v) {
 					array_push($ret, wp_get_attachment_url($v['id']));
-					array_push($this->preload, wp_get_attachment_url($v['id']));
+					
+
+					if(strpos($object['name'], 'loading-')) {
+						array_push($this->initload, wp_get_attachment_url($v['id']));
+					}
+					else {
+						array_push($this->preload, wp_get_attachment_url($v['id']));
+					}
 				}
 				return $ret;
 			break;
 			case 'image':
-				if(is_array($object['value'])) {
-					$img = wp_get_attachment_image_src($object['value']['id']);
+				if(!(!$object['value'])) {
+
+					if(is_array($object['value'])) {
+						$img = wp_get_attachment_image_src($object['value']['id'], 'full');
+					}
+					else {
+						$img = wp_get_attachment_image_src($object['value'], 'full');
+					}
+
+
+					if(strpos($object['name'], 'loading-') !== false) {
+
+						array_push($this->initload, $img[0]);
+					}
+					else {
+						array_push($this->preload, $img[0]);	
+					}
+
+					
+
+					return array(
+						'url' => $img[0],
+						'dimensions' => array(
+							'width' => $img[1],
+							'height' => $img[2]
+						)
+					);
 				}
-				else {
-					$img = wp_get_attachment_image_src($object['value']);
+				else{
+					return false;
 				}
 
-				array_push($this->preload, $img[0]);
-
-				return array(
-					'url' => $img[0],
-					'dimensions' => array(
-						'width' => $img[1],
-						'height' => $img[2]
-					)
-				);
+				
 			break;
 			case 'true_false': 
 				if(!$object['value']) {
@@ -163,7 +188,10 @@ class REST_output {
 						}
 					}
 
-					array_push($ret, $valuebuild);
+					array_push($ret, array(
+						'component' => $thevalueset['acf_fc_layout'],
+						'values' => $valuebuild
+					));
 				}
 
 				return $ret;
@@ -213,7 +241,12 @@ class REST_output {
 				$ext = array_pop(explode('.', $url));
 
 				if(in_array($ext, array('jpg', 'jpeg', 'gif', 'bmp', 'png', 'svg'))) {
-					array_push($this->preload, $url);
+					if(strpos($object['name'], 'loading-')) {
+						array_push($this->initload, $url);
+					}
+					else {
+						array_push($this->preload, $url);
+					}
 				}
 
 				return $url;
@@ -255,9 +288,15 @@ class REST_output {
 					}
 
 					if($id->post_type == 'forms') {
+						$recap = array(
+							'key' => get_field('recap-key', $id->ID),
+							'fail-message' => get_field('recap-fail', $id->ID)
+						);
 						return array(
+							'recaptcha' =>$recap,
 							'fields' => ng_get_fields($id->ID, false),
-							'title' => $id->post_title
+							'title' => $id->post_title,
+							'id' => $id->ID
 						);
 					}
 					else{
@@ -344,30 +383,35 @@ class REST_output {
 				}
 			break;
 			case 'vector_image':
-				$vset = explode('-', $object['value']);
+				if($object['value'] !== false && $object['value'] != '') {
+					$vset = explode('-', $object['value']);
 
-				$raster_base = wp_get_attachment_image_src($vset[0]);
-				if(isset($_GET['svg']) && $_GET['svg'] == 'true') {
-					array_push(wp_get_attachment_url($vset[1]));
-
-					return array(
-						'url' => wp_get_attachment_url($vset[1]),
-						'dimensions' => array(
-							'width' => $raster_base[1],
-							'height' => $raster_base[2]
-						)
-					);
+					$raster_base = wp_get_attachment_image_src($vset[0], 'full');
+					if(isset($_GET['svg']) && $_GET['svg'] == 'true') {
+						return array(
+							'url' => wp_get_attachment_url($vset[1]),
+							'dimensions' => array(
+								'width' => $raster_base[1],
+								'height' => $raster_base[2]
+							)
+						);
+					}
+					else{
+						return array(
+							'url' => $raster_base[0],
+							'dimensions' => array(
+								'width' => $raster_base[1],
+								'height' => $raster_base[2]
+							)
+						);
+					}
 				}
-				else{
-					array_push(wp_get_attachment_url($raster_base[0]));
-					return array(
-						'url' => $raster_base[0],
-						'dimensions' => array(
-							'width' => $raster_base[1],
-							'height' => $raster_base[2]
-						)
-					);
+				else {
+					return false;
 				}
+			break;
+			case 'number':
+				return floatval($object['value']);
 			break;
 			//==================================
 			case 'text':
@@ -375,13 +419,11 @@ class REST_output {
 			case 'link';
 			case 'button_group':
 			case 'checkbox':
+			case 'color_picker':
 				return $object['value'];
 			break;
 			default:
-				return array(
-					'v' => $object['value'],
-					't' => $object['type']
-				);
+				return $object['value'];
 			break;
 		}
 	}
@@ -596,7 +638,11 @@ class REST_output {
 	}
 
 	public function toPreload() {
-		return $this->preload;
+		return array_values(array_unique($this->preload));
+	}
+
+	public function toInit() {
+		return array_values(array_unique($this->initload));
 	}
 };
 ?>

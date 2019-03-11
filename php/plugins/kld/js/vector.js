@@ -53,7 +53,7 @@
 				$(btn).attr('data-id', attachment.id);
 				$(btn).css({
 					'background-image' : 'url('+attachment.url+')',
-					'background-color' : '#ffffff'
+					'background-color' : '#fafafa'
 				})
 
 				var dr = $(parent).find('.s-raster').attr('data-id');

@@ -156,24 +156,16 @@ class vctr_acf_field_vector_image extends acf_field {
 
 		$kclass = '';
 
-		if($field['prefix'] == 'acf') {
+		if(!strpos($field['prefix'], 'acfcloneindex')) {
 			$kclass = ' kld-vector-raster-preloaded';
 		}
 		else{
 			$kclass = $field['value'] == '' ? ' kld-vector-raster-model' : ' kld-vector-raster-preloaded';
 		}
-		
 
 		?>
 		<div class="kld-vector-raster-input<?=$kclass?>">
 			<input type="hidden" name="<?php echo esc_attr($field['name']) ?>" value="<?php echo esc_attr($field['value']) ?>" />
-			<?php
-			if($field['instructions'] != '') {
-				?>
-				<p class="instruction"><?=$field['instructions']?></p>
-				<?php
-			}
-			?>
 			<table style="width: 100%; max-width: 800px;">
 				<tr>
 					<td>
@@ -204,12 +196,12 @@ class vctr_acf_field_vector_image extends acf_field {
 						?>
 						<td class="imgs">
 							<div class="img-field-container raster-upload dashicons dashicons-format-image">
-								<div class="sizer s-raster" data-title="Upload a Raster File" data-type="image/png" data-id="<?=$fv[0]?>" style="background-image: url('<?=wp_get_attachment_url($fv[0])?>'); background-color: #fff;" title="Set an Image"></div>
+								<div class="sizer s-raster" data-title="Upload a Raster File" data-type="image/png" data-id="<?=$fv[0]?>" style="background-image: url('<?=wp_get_attachment_url($fv[0])?>'); background-color: #fafafa;" title="Set an Image"></div>
 							</div>
 						</td>
 						<td class="imgs">
 							<div class="img-field-container vector-upload dashicons dashicons-format-image">
-								<div class="sizer s-vector" data-title="Upload a Vector File" data-type="image/svg+xml" data-id="<?=$fv[1]?>" style="background-image: url('<?=wp_get_attachment_url($fv[1])?>'); background-color: #fff;" title="Set an Image"></div>
+								<div class="sizer s-vector" data-title="Upload a Vector File" data-type="image/svg+xml" data-id="<?=$fv[1]?>" style="background-image: url('<?=wp_get_attachment_url($fv[1])?>'); background-color: #fafafa;" title="Set an Image"></div>
 							</div>
 						</td>
 						<?php

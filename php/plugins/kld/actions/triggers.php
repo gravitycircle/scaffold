@@ -1,6 +1,7 @@
 <?php
 //actions/overrides.php
 add_filter('upload_mimes', 'set_mimes', 1, 1);
+add_action( 'admin_head', 'fix_svg' );
 add_filter( 'intermediate_image_sizes_advanced', 'disable_wp_image_resizer' );
 add_filter( 'enter_title_here', 'title_changer');
 add_filter( 'page_row_actions', 'rd_duplicate_post_link', 10, 2 );

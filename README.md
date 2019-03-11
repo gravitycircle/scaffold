@@ -1,7 +1,7 @@
 
  ![---](http://richardbryanong.com/public/shortcut-icon.png) 
 
-# Angular: Site Scaffolding & Bootstrap v0.7 (WP-unstable)
+# Angular: Site Scaffolding & Bootstrap v0.75 (WP-unstable)
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
@@ -34,14 +34,17 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
  - Increased number of breakpoints from 4 to 7. Created min/max mixins for sizes, and orientation mixin for orientation.
  - Removed unecessary Boostrap CSS code. Kept the base grid the same.
  - Converted all Bootstrap CSS into self-contained in '.grid' elements.
-
-**Framework Changes:**
-
  - It's finally here: WordPress Integration. Setup instructions are further down in this document.
  - Modified Breakpoint System to include orientations, original orientation mixin still present.
  - Google Map fully integrated
  - Emailer system will still be standalone, plugin emailer will be removed.
  - SEO fully integrated in /php/server.php
+
+**Framework Changes:**
+
+ - Moved theme directory structure into plugin folder.
+ - Added a function where images/media that has a "loading-" prefix tacked on their names will preload the file before loading the actual site.
+ - Added and integrated Global Navmenus, submenus still in testing phases.
 
 **Future Update Notes:**
 

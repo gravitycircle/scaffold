@@ -21,9 +21,8 @@ _bin/wp-settings.php
 _bin/wp-signup.php
 _bin/wp-trackback.php
 _bin/xmlrpc.php
-php/plugins/classic-editor/*
-php/plugins/wp-migrate-db/*
-php/plugins/advanced-custom-fields-pro/*
+php/plugins/*
+!php/plugins/kld/
 .DS_Store
 .DS_Store? 
 .Spotlight-V100 
