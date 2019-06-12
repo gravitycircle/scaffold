@@ -16,7 +16,44 @@
 				}
 			return e.stack.toString().split(/\r\n|\n/);
 		};
+
+		function componentToHex(c) {
+			var hex = c.toString(16);
+			return hex.length == 1 ? "0" + hex : hex;
+		}
 		return {
+			colorconvert: function(r, g, b) {
+				if(typeof g == 'undefined' && typeof b == 'undefined') {
+					// Hex to rgb
+					var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+
+					var hex = r.replace(shorthandRegex, function(m, r, g, b) {
+						return r + r + g + g + b + b;
+					});
+
+					var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+					return result ? {
+						r: parseInt(result[1], 16),
+						g: parseInt(result[2], 16),
+						b: parseInt(result[3], 16)
+					} : null;
+				}
+				else if(!isNaN(r) && !isNaN(g) && !isNaN(b)) {
+					//rgb to hex
+					return "#" + ((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1);
+				}
+				else{
+					return false;
+				}
+			},
+			nl2br: function(str){
+				if (typeof str === 'undefined' || str === null) {
+					return '';
+				}
+
+				var breakTag = (typeof is_xhtml === 'undefined' || is_xhtml) ? '<br />' : '<br>';
+				return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+			},
 			detect: function(){
 				var userAgent = $window.navigator.userAgent;
 

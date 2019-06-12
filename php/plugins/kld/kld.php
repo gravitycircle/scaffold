@@ -10,7 +10,8 @@ Author URI: http://kevinlouisdesign.com
 function fm_this_plugin() {
 	return plugin_dir_url(__FILE__);
 }
-include_once('acf-modifications/custom-types/acf-code-field/acf-code-field.php');
+
+register_theme_directory( dirname( __FILE__ ) . '/themes' );
 include_once('acf-modifications/custom-types/post-type/acf-kld-post-type.php');
 include_once('acf-modifications/custom-types/dashicon/acf-kld-dashicon.php');
 include_once('acf-modifications/custom-types/vector-image/acf-vector-image.php');

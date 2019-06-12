@@ -2077,5 +2077,218 @@ acf_add_local_field_group(array(
 	'description' => '',
 ));
 
+acf_add_local_field_group(array(
+	'key' => 'group_5c78b3c7b749a',
+	'title' => 'Recaptcha',
+	'fields' => array(
+		array(
+			'key' => 'field_5c78b63dc3a28',
+			'label' => 'Site Key',
+			'name' => 'recap-key',
+			'type' => 'text',
+			'instructions' => 'The key given by the recaptcha account.',
+			'required' => 1,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_5cace0f3fcac7',
+			'label' => 'ReCaptcha&trade; Secret',
+			'name' => 'recap-secret',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 1,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_5c78b65ac3a29',
+			'label' => 'Test Failure Response',
+			'name' => 'recap-fail',
+			'type' => 'textarea',
+			'instructions' => 'The response the user gets when s/he fails a Recaptcha test.',
+			'required' => 1,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'maxlength' => '',
+			'rows' => '',
+			'new_lines' => '',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'forms',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'side',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_5ce86269a19d0',
+	'title' => 'Pre-Initalize',
+	'fields' => array(
+		array(
+			'key' => 'field_5ce8627238213',
+			'label' => 'Preloaded Images',
+			'name' => 'image-preload',
+			'type' => 'repeater',
+			'instructions' => 'These images will be preloaded before the initial loading sequence begins. If any image or image composite in this list is not used by any of the content on the site, it will not be loaded at all.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'collapsed' => 'field_5ce862c638214',
+			'min' => 0,
+			'max' => 0,
+			'layout' => 'row',
+			'button_label' => 'Add Image',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_5ce862c638214',
+					'label' => 'Type',
+					'name' => 'type',
+					'type' => 'select',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'choices' => array(
+						'image' => 'Image File',
+						'vector' => 'Vector Composite',
+					),
+					'default_value' => array(
+					),
+					'allow_null' => 0,
+					'multiple' => 0,
+					'ui' => 0,
+					'return_format' => 'value',
+					'ajax' => 0,
+					'placeholder' => '',
+				),
+				array(
+					'key' => 'field_5ce8634038215',
+					'label' => 'Image File',
+					'name' => 'image',
+					'type' => 'image',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5ce862c638214',
+								'operator' => '==',
+								'value' => 'image',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'return_format' => 'array',
+					'preview_size' => 'medium',
+					'library' => 'all',
+					'min_width' => '',
+					'min_height' => '',
+					'min_size' => '',
+					'max_width' => '',
+					'max_height' => '',
+					'max_size' => '',
+					'mime_types' => 'jpg, png, jpeg, bmp, gif',
+				),
+				array(
+					'key' => 'field_5ce863d938216',
+					'label' => 'Image Files',
+					'name' => 'composite',
+					'type' => 'vector_image',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5ce862c638214',
+								'operator' => '==',
+								'value' => 'vector',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'raster_instructions' => '',
+					'vector_instructions' => '',
+					'font_size' => 14,
+				),
+			),
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'options_page',
+				'operator' => '==',
+				'value' => 'cpt',
+			),
+		),
+	),
+	'menu_order' => 5,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+endif;
 endif;
 ?>

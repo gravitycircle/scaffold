@@ -149,8 +149,13 @@ else if ($request == 'library.js') {
 	$shrink = new Minify\JS($js);
 	$js = $shrink->minify();
 	$time_end = microtime(true); 
-	
+	$seconds_to_cache = 2592000;
+	$ts = gmdate("D, d M Y H:i:s", time() + $seconds_to_cache) . " GMT";
+
 	header("Content-type: text/javascript");
+	header("Expires: $ts");
+	header("Pragma: cache");
+	header("Cache-Control: max-age=$seconds_to_cache");
 	echo '/* BUILD: '.($time_end - $time_start).' */'."\r\n\r\n";
 	echo $js;
 }
@@ -183,6 +188,13 @@ else if ($request == 'script.js'){
 	$time_end = microtime(true); 
 	
 	header("Content-type: text/javascript");
+	$seconds_to_cache = 2592000;
+	$ts = gmdate("D, d M Y H:i:s", time() + $seconds_to_cache) . " GMT";
+	
+	header("Content-type: text/javascript");
+	header("Expires: $ts");
+	header("Pragma: cache");
+	header("Cache-Control: max-age=$seconds_to_cache");
 	echo '/* BUILD: '.($time_end - $time_start).' */'."\r\n\r\n";
 	echo $js;
 }
@@ -243,6 +255,9 @@ $styles: array - style urls
 		else{
 			$target = $uridata[0];
 		}
+
+
+
 		if(!isset($gen_data['contents'][$target])){
 			//if page dont exist, resolve cpt
 
@@ -298,12 +313,20 @@ $styles: array - style urls
 				}
 			}
 
+
+
 			if(!$b) {
 				$metadata_full = $gen_data['contents']['lost']['metadata'];
+
+				// print_r($gen_data);
+			}
+			else{
+
 			}
 		}
 		else{
 			$metadata_full = $gen_data['contents'][$target]['metadata'];
+
 		}
 	}
 
@@ -315,8 +338,8 @@ $styles: array - style urls
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<meta name="theme-color" content="#ffffff">
-	<link rel="icon" sizes="192x192" type="image/png" href="<?=BASE?>img/shortcut-icon.png" />
-	<link rel="shortcut icon" href="<?=BASE?>img/shortcut-icon.ico" type="image/vnd.microsoft.icon" />
+	<link rel="icon" sizes="192x192" type="image/png" href="<?=wp_get_attachment_url(get_option('site_icon_png'))?>" />
+	<link rel="shortcut icon" href="<?=wp_get_attachment_url(get_option('site_icon_ico'))?>" type="image/vnd.microsoft.icon" />
 	<title><?=$metadata_full['title']?></title>
 	<meta name="description" content="<?=descriptionGenerator($metadata_full['description'])?>"/>
 <?php
@@ -363,17 +386,44 @@ if(!$search_engine){
 <?php
 	}
 	foreach($scripts['externals'] as $library) {
+		if(sizeof($library['attributes']) > 0) {
+			$attrrender = array('');
+			foreach($library['attributes'] as $ind => $rattr) {
+				if($rattr != null) {
+					array_push($attrrender, $ind.'="'.$rattr.'"');
+				}
+				else{
+					array_push($attrrender, $ind);
+				}
+			}
+		}
+		else{
+			$attrrender = array();
+		}
+
+
 		if($library['predeployed']){
 ?>
-	<script type="text/javascript" src="<?=$library['src']?>"></script>
+	<script type="text/javascript" src="<?=$library['src']?>"<?=implode(' ', $attrrender)?>></script>
 <?php
 		}
 		else{
 			if(!DEBUG_MODE){
 ?>
-	<script type="text/javascript" src="<?=$library['src']?>"></script>
+	<script type="text/javascript" src="<?=$library['src']?>"<?=implode(' ', $attrrender)?>></script>
 <?php
 			}
+		}
+	}
+
+?>
+	<link rel="stylesheet" href="<?=BASE?>css/style.css" />
+<?php
+	if(sizeof($styles) > 0 ){
+		foreach($styles as $im) {
+?>
+	<link rel="stylesheet" href="<?=$im?>" />
+<?php
 		}
 	}
 
@@ -395,20 +445,10 @@ if(!$search_engine){
 <?php
 	}
 ?>
-	<link rel="stylesheet" href="<?=BASE?>css/style.css" />
-<?php
-	if(sizeof($styles) > 0 ){
-		foreach($styles as $im) {
-?>
-	<link rel="stylesheet" href="<?=$im?>" />
-<?php
-		}
-	}
-?>
 	<base href="<?=BASE?>"><?php
 }
 ?></head>
-<body></body>
+<body data-preload="<?=$target == '' ? 'home' : $target?>"></body>
 </html>
 <?php
 echo ob_get_clean();

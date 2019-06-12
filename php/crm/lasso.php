@@ -1,6 +1,7 @@
 <?php
 include_once('../../config.php');
 include_once('../keygen.php');
+include_once('../../_data/fields.php');
 include_once('../../_data/content.php');
 if(isset($_GET['key']) && degenerate($_GET['key'])) {
 	if(isset($_GET['send'])) {

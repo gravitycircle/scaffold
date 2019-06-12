@@ -26,7 +26,7 @@ function script_queue($hook) {
 		else{
 			$pg = $post->post_type;
 		}
-		if($pg == 'page' || $pg == 'post') {
+		if($pg == 'page' || $pg == 'post' || $pg == 'floorplan') {
 			wp_register_script('page-ops', fm_this_plugin().'js/post-page-options.js', array('fm-library'), '0.1');
 			wp_enqueue_script('page-ops');
 		}

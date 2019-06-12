@@ -1,4 +1,23 @@
 <?php
+function kld_pre_initialize() {
+	$initurls = array();
+	$imgs = get_field('image-preload', 'option');
+	
+	if(is_array($imgs)) {
+		foreach($imgs as $i) {
+			if($i['type'] == 'image') {
+				array_push($initurls, wp_get_attachment_url($i['image']['id']));
+			}
+			else if($i['type'] == 'vector') {
+				$x = explode('-', $i['composite']);
+				array_push($initurls, wp_get_attachment_url($x[0]));
+				array_push($initurls, wp_get_attachment_url($x[1]));
+			}
+		}
+	}
+
+	return $initurls;
+}
 class REST_output {
 	private $postDetails;
 	private $output = array();
@@ -7,7 +26,8 @@ class REST_output {
 	private $full = false;
 	private $preload = array();
 	private $initload = array();
-
+	private $initcheck = false;
+	
 	public function __construct($postID, $full = false) {
 		$post = get_post($postID);
 
@@ -26,7 +46,7 @@ class REST_output {
 			if(!(!$full)) {
 				$this->full = $full;
 			}
-
+			$this->initcheck = kld_pre_initialize();
 			$this->build();
 		}
 	}
@@ -38,9 +58,8 @@ class REST_output {
 				$ret = array();
 				foreach($object['value'] as $v) {
 					array_push($ret, wp_get_attachment_url($v['id']));
-					
 
-					if(strpos($object['name'], 'loading-')) {
+					if(in_array(wp_get_attachment_url($v['id']), $this->initcheck)) {
 						array_push($this->initload, wp_get_attachment_url($v['id']));
 					}
 					else {
@@ -59,13 +78,11 @@ class REST_output {
 						$img = wp_get_attachment_image_src($object['value'], 'full');
 					}
 
-
-					if(strpos($object['name'], 'loading-') !== false) {
-
+					if(in_array($img[0], $this->initcheck)) {
 						array_push($this->initload, $img[0]);
 					}
 					else {
-						array_push($this->preload, $img[0]);	
+						array_push($this->preload, $img[0]);
 					}
 
 					
@@ -174,24 +191,26 @@ class REST_output {
 
 				$ret = array();
 				//build actual data
-				foreach($object['value'] as $thevalueset) {
-					$valuebuild = array();
-					$submodel = $model[$thevalueset['acf_fc_layout']];
-					foreach($thevalueset as $valueindex => $valueproper) {
-						if($valueindex != 'acf_fc_layout') {
-							$valuebuild[$valueindex] = $this->analyzeType(array(
-								'type' => $submodel[$valueindex]['type'],
-								'value' => $valueproper,
-								'sub_fields' => $submodel[$valueindex]['subfields'],
-								'layouts' => $submodel[$valueindex]['layout']
-							));
+				if(!(!$object['value']) && sizeof($object['value']) > 0) {
+					foreach($object['value'] as $thevalueset) {
+						$valuebuild = array();
+						$submodel = $model[$thevalueset['acf_fc_layout']];
+						foreach($thevalueset as $valueindex => $valueproper) {
+							if($valueindex != 'acf_fc_layout') {
+								$valuebuild[$valueindex] = $this->analyzeType(array(
+									'type' => $submodel[$valueindex]['type'],
+									'value' => $valueproper,
+									'sub_fields' => $submodel[$valueindex]['subfields'],
+									'layouts' => $submodel[$valueindex]['layout']
+								));
+							}
 						}
-					}
 
-					array_push($ret, array(
-						'component' => $thevalueset['acf_fc_layout'],
-						'values' => $valuebuild
-					));
+						array_push($ret, array(
+							'component' => $thevalueset['acf_fc_layout'],
+							'values' => $valuebuild
+						));
+					}
 				}
 
 				return $ret;
@@ -241,7 +260,7 @@ class REST_output {
 				$ext = array_pop(explode('.', $url));
 
 				if(in_array($ext, array('jpg', 'jpeg', 'gif', 'bmp', 'png', 'svg'))) {
-					if(strpos($object['name'], 'loading-')) {
+					if(in_array($url, $this->initcheck)) {
 						array_push($this->initload, $url);
 					}
 					else {
@@ -388,6 +407,14 @@ class REST_output {
 
 					$raster_base = wp_get_attachment_image_src($vset[0], 'full');
 					if(isset($_GET['svg']) && $_GET['svg'] == 'true') {
+
+						if(in_array(wp_get_attachment_url($vset[1]), $this->initcheck)) {
+							array_push($this->initload, wp_get_attachment_url($vset[1]));
+						}
+						else {
+							array_push($this->preload, wp_get_attachment_url($vset[1]));
+						}
+
 						return array(
 							'url' => wp_get_attachment_url($vset[1]),
 							'dimensions' => array(
@@ -395,8 +422,16 @@ class REST_output {
 								'height' => $raster_base[2]
 							)
 						);
+
 					}
 					else{
+						if(in_array($raster_base[0], $this->initcheck)) {
+							array_push($this->initload, $raster_base[0]);
+						}
+						else {
+							array_push($this->preload, $raster_base[0]);
+						}
+
 						return array(
 							'url' => $raster_base[0],
 							'dimensions' => array(
@@ -461,7 +496,7 @@ class REST_output {
 	
 	private function build() {
 		//build seo
-		$site = ' &lsaquo; '.get_bloginfo('name');
+		$site = ' &lsaquo; '.get_bloginfo('name').' – '.get_bloginfo('description');
 		$sitename = get_bloginfo('name');
 		if(get_option('seo_name') != '') {
 			$site = ' &lsaquo; '.get_option('seo_name');
@@ -643,6 +678,10 @@ class REST_output {
 
 	public function toInit() {
 		return array_values(array_unique($this->initload));
+	}
+
+	public function checkInit(){
+		return $this->initcheck;
 	}
 };
 ?>

@@ -1,4 +1,5 @@
 <?php
+include_once('fields.php');
 include_once('content.php');
 include_once(DOCROOT.'/php/keygen.php');
 include_once(DOCROOT.'/_bin/wp-load.php');
@@ -59,9 +60,7 @@ function main($json = true) {
 	$contentinfo = build_content($indices);	
 
 	$output['preload'] = $contentinfo['preload'];
-	$output['on_init'] = array(
-
-	); // pre-preloaded images
+	$output['on_init'] = $contentinfo['init']; // pre-preloaded images
 	$output['contents'] = $contentinfo['content'];
 
 	if($json) {

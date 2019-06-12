@@ -37,10 +37,14 @@ function disable_wp_image_resizer( $sizes ) {
 }
 
 function kld_admin_sandbox(){
-	echo '<pre>';
-	$x = new REST_output(187, true);
-	print_r($x->toObject());
-	echo '</pre>';
+	if(file_exists(str_replace('/_bin', '', get_home_path()).'sandbox.php')) {
+		include_once(str_replace('/_bin', '', get_home_path()).'config.php');
+		include_once(str_replace('/_bin', '', get_home_path()).'_data/collate.php');
+		include_once(str_replace('/_bin', '', get_home_path()).'sandbox.php');
+	}
+	else{
+		'Sandboxing on this installation is disabled.';
+	}
 }
  
 function customize_menus(){
@@ -285,87 +289,48 @@ function ng_form_responses() {
 		update_option('catalogue-'.$post->ID, serialize(array()));
 	}
 
-	$catalogue = get_option('catalogue-'.$post->ID);
-	if(!is_array($catalogue)) {
-		$catalogue = unserialize($catalogue);
-	}
-	$catalogue = array_reverse($catalogue);
-	if(sizeof($catalogue) < 1) {
-		?>
-		<p>No responses recorded locally as of <?=date('F, Y', strtotime('now'))?>.</p>
-		<?php
-	} 
-	else{
-		$in_view = null;
-		$for_dl = array();
-		foreach($catalogue as $i => $x) {
-			if($i == 0) {
-				$xval = get_option($x);
+	
+	$catalogue = unserialize(get_option('catalogue-'.$post->ID));
 
-				if(!is_array($xval)) {
-					$xarray = unserialize($xval);
-				}
-				else{
-					$xarray = $xval;
-				}
-
-				$in_view = array(
-					'name' => $x,
-					'data' => get_option($x) == '' ? array() : array_reverse($xarray)
-				);
-			}
+	$in_view = null;
+	$for_dl = array();
+	foreach($catalogue as $i => $x) {
+		if($i == 0) {
+			$in_view = array(
+				'name' => $x,
+				'data' => get_option($x) == '' ? array() : array_reverse(unserialize(get_option($x)))
+			);
+		}
+		else{
 			array_push($for_dl, $x);
 		}
-
-		
-		//responses-199-2019-02
-		$general = explode('-', $in_view['name']);
-		?>
-		<p>
-			<strong>Responses for the month of <?=date('F, Y', strtotime($general[2].'-'.$general[3].'-01'));?></strong>
-		</p>
-		<hr>
-		<?php
-		if(!(!$in_view['data'] || sizeof($in_view['data']) < 1)) {
-			foreach($in_view['data'] as $indx => $response) {
-				?>
-				<div class="response-handle" style="padding: 1em 0;">
-					<div class="response-title" style="line-height: 40px; border-bottom: 1px solid #ccc; padding-left: 5px; padding-right: 5px; font-weight: bold;">Received: <?=$response['received']?></div>
-					<table style="width: 100%;" cellpadding="0" cellspacing="0">
-						<?php
-						foreach($response['data'] as $sindx => $kvpair) {
-							?>
-							<tr style="background: #<?=$sindx % 2 == 0 ? 'efefef' : 'ffffff'?>;">
-								<td style="font-weight: bold; padding: 10px;"><?=$kvpair['heading']?>:</td>
-								<td style="padding: 10px;"><?=$kvpair['value']?></td>
-							</tr>
-							<?php
-						}
+	}
+	//responses-199-2019-02
+	$general = explode('-', $in_view['name']);
+	?>
+	<p>
+		<strong>Responses for the month of <?=date('F, Y', strtotime($general[2].'-'.$general[3].'-01'));?></strong>
+	</p>
+	<hr>
+	<?php
+	if(!(!$in_view['data'] || sizeof($in_view['data']) < 1)) {
+		foreach($in_view['data'] as $indx => $response) {
+			?>
+			<div class="response-handle" style="padding: 1em 0;">
+				<div class="response-title" style="line-height: 40px; border-bottom: 1px solid #ccc; padding-left: 5px; padding-right: 5px; font-weight: bold;">Received: <?=$response['received']?></div>
+				<table style="width: 100%;" cellpadding="0" cellspacing="0">
+					<?php
+					foreach($response['data'] as $sindx => $kvpair) {
 						?>
-					</table>
-				</div>
-				<?php
-			}
-		}
-
-		if(sizeof($for_dl) > 0) {
-			?>
-			<hr>
-			<p>
-				<strong>Download older responses:</strong>
-			</p>
-			<p class="instruction">
-				Click on the links below if you wish to download a .csv spreadsheet of the locally tracked responses for the month indicated on the download buttons.
-			</p>
-			<?php
-			foreach($for_dl as $l) {
-				$name = explode('-', $l);
-
-				?>
-				<a href="<?=get_bloginfo('url')?>/responses.php?recorded=<?=urlencode($l)?>" target="_blank" class="button" style="margin: 7px;"><?=date('F, Y', strtotime($name[2].'-'.$name[3].'-01'))?></a>
-				<?php
-			}
-			?>
+						<tr style="background: #<?=$sindx % 2 == 0 ? 'efefef' : 'ffffff'?>;">
+							<td style="font-weight: bold; padding: 10px;"><?=$kvpair['heading']?>:</td>
+							<td style="padding: 10px;"><?=$kvpair['value']?></td>
+						</tr>
+						<?php
+					}
+					?>
+				</table>
+			</div>
 			<?php
 		}
 	}
