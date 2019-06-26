@@ -88,23 +88,55 @@
 				data : '@'
 			},
 			link: function(scope, element, attrs){
+				features.run();
 				sources.get(function(content){
 					//post-load
-					
+					setTimeout(function(){
+						scope.done();
+					}, 600);
 				}, function(content, event_trigger){
 					//pre-load
-					scope.initiate(content.contents,event_trigger);
+					scope.initiate(content,event_trigger);
 				}, function(progress){
 					//while
 				});
 
 			},
 			controller: function($scope, $element, $attrs){
+				$scope.pagescope = $scope.$new();
 				$scope.initiate = function(content, continueEvent){
-					$scope.data = content;
-					$scope.fields = content.home.content.fields;
+					$scope.data = content.contents;
+					if($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+ 						$scope.$apply();
+ 					}
+ 					
+ 					//renderd
 					continueEvent();
 				};
+
+
+				$scope.done = function() {
+					$('#loading').transition({
+						'opacity' : 0,
+						'y' : '-40px',
+						'x' : '-50%'
+					}, 600, function(){
+						$('#loading').remove();
+					});
+
+					$('#content').transition({
+						'opacity' : 1
+					}, 600, function(){
+						$('#content').css({
+							'pointer-events' : 'auto'
+						});
+					});
+				};
+
+
+				$scope.s = function(html) {
+					return $sce.trustAsHtml(html);
+				}
 			}
 		};
 	}]);

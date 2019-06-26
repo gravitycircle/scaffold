@@ -125,6 +125,9 @@ cfg.factory('sources', ['$sce', 'fetch', 'preloader', 'constants', 'browser', 'f
 			return fetched.contents.globals[what];
 		},
 		grab: function(what) {
+			if(typeof fetched.contents == 'undefined' || typeof fetched.contents[what] == 'undefined') {
+				return false;
+			}
 			return fetched.contents[what];
 		},
 		get: function(action, before, whilest, specifics){

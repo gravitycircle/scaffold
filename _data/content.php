@@ -10,15 +10,17 @@ function get_lasso() {
 function get_configs() {
 	return array(
 		'smtp' => array(
-			'user' => false,
-			'pass' => false,
-			'host' => false,
-			'port' => false
+			'user' => 'no.reply@auberryliving.com',
+			'pass' => 'H=pQZ*TC#!?o',
+			'host' => 'mail.auberryliving.com',
+			'port' => 465
 		),
 		'sitename' => get_bloginfo('name'),
-		'api' => array(
-
-		)
+		'base' => BASE,
+		'logo' => get_field('main-logo', 'option'),
+		'backdrop' => get_field('loading-bg', 'option'),
+		'complete' => get_field('loading-complete', 'option'),
+		'ornament' => isset($_GET['svg']) && $_GET['svg'] == 'true' ? BASE.'img/svg/ornament.svg' : BASE.'img/png/ornament.png'
 	);
 }
 

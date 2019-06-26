@@ -7,8 +7,8 @@
 		var closeBoxes = {};
 		return{
 			data : {},
-			required: [],
-			set : function(name, value, require, type){
+			required: {},
+			set : function(formid, name, value, require, type){
 				if(type != 'submit') {
 					var d = this;
 					var r = false;
@@ -17,13 +17,13 @@
 					}
 
 					if(r && value === ''){
-						d.data[name] = false;
+						d.data[formid][name] = false;
 					}else{
-						d.data[name] = value;
+						d.data[formid][name] = value;
 					}
 				}
 			},
-			register : function(name, require, type){
+			register : function(formid, name, require, type){
 				if(type != 'submit') {
 					var d = this;
 					var r = false;
@@ -32,81 +32,95 @@
 						r = true;
 					}
 
+					if(typeof d.required[formid] == 'undefined') {
+						d.required[formid] = [];
+					}
+
+					if(typeof d.data[formid] == 'undefined') {
+						d.data[formid] = {};
+					}
+
+					if(typeof closeBoxes[formid] == 'undefined') {
+						closeBoxes[formid] = {};
+					}
+
+					if(typeof resetTrigger[formid] == 'undefined') {
+						resetTrigger[formid] = {};
+					}
+
 					if(r){
-						d.data[name] = false;
-						d.required.push(name);
+						d.data[formid][name] = false;
+
+						d.required[formid].push(name);
 					}else{
-						d.data[name] = '';
+						d.data[formid][name] = '';
 					}
 
 
 					if(type == 'dropdown' || type == 'multiple') {
 						if(type == 'multiple') {
-							resetTrigger[name] = false;
+							resetTrigger[formid][name] = false;
 						}
 
-						closeBoxes[name] = false;
+						closeBoxes[formid][name] = false;
 					}
 				}
 			},
-			reset : function(){
+			reset : function(formid){
 				var d = this;
-				for(var i in d.data){
+				for(var i in d.data[formid]){
 
-					if(d.required.indexOf(i) >= 0){
-						d.data[i] = false;
+					if(d.required[formid].indexOf(i) >= 0){
+						d.data[formid][i] = false;
 					}
 					else{
-						d.data[i] = '';
+						d.data[formid][i] = '';
 					}
 				}
 
-				for(var g in resetTrigger) {
-					resetTrigger[g] = true;
+				for(var g in resetTrigger[formid]) {
+					resetTrigger[formid][g] = true;
 				}
 			},
-			close_dropdown : function(){
-				for(var g in closeBoxes) {
-					closeBoxes[g] = true;
-				}
-			},
-			verify: function(data, pass, fail, error) {
+			verify: function(page, cap, data, pass, fail, error) {
 				fetch.post(constants.base+'php/verify.php', {
-					'verify' : 1
+					'page' : page,
+					'verify' : cap
 				}, data, function(response){
-					if(response.data.length < 1) {
+					// console.log(response);
+					if(response.data.errors.length < 1) {
 						if(typeof pass == 'function') {
-							pass();
+							pass(response.data.action);
 						}
 					}
 					else{
 						if(typeof fail == 'function') {
-							fail(response.data);
+							fail(response.data.errors);
 						}
 					}
 
 				}, function(response){
+					// console.log(response);
 					if(typeof error == 'function') {
 						error(response);
 					}
 				});
 			},
-			for_reset: function(name) {
-
-				if(!resetTrigger[name]) {
-					return resetTrigger[name];
+			for_reset: function(formid, name) {
+				if(!resetTrigger[formid][name]) {
+					return resetTrigger[formid][name];
 				}
 				else{
-					resetTrigger[name] = false;
+					resetTrigger[formid][name] = false;
 					return true;
 				}
 			},
-			dropdown_close: function(name) {
-				if(!closeBoxes[name]) {
-					return closeBoxes[name];
+			dropdown_close: function(formid, name) {
+				if(!closeBoxes[formid][name]) {
+					return closeBoxes[formid][name];
 				}
 				else{
-					closeBoxes[name] = false;
+					closeBoxes[formid][name] = false;
 					return true;
 				}
 			}
@@ -135,28 +149,33 @@
 				var g = null;
 				$scope.initialize = function(){
 					$scope.field = $scope.$parent[$attrs.target][$attrs.index];
-					submission.register($scope.field.id, $scope.field.require, $scope.field.type);
+
+					//split up id and assign.
+					var idarr = $scope.field.id.split('-');
+
+					submission.register(idarr[1], $scope.field.id, $scope.field.require, $scope.field.type);
+					
 					var compose;
 					if($scope.field.type == 'text' || $scope.field.type == 'email'){
-						compose = '<text-field class="rendering"></text-field>';
+						compose = '<text-field page="'+idarr[1]+'" class="rendering"></text-field>';
 					}
 					else if($scope.field.type == 'email'){
-						compose = '<email-field class="rendering"></email-field>';
+						compose = '<email-field page="'+idarr[1]+'" class="rendering"></email-field>';
 					}
 					else if($scope.field.type == 'dropdown'){
-						compose = '<dropdown-field class="rendering"></dropdown-field>';
+						compose = '<dropdown-field page="'+idarr[1]+'" class="rendering"></dropdown-field>';
 					}
 					else if($scope.field.type == 'multiple'){
-						compose = '<multiple-field class="rendering"></multiple-field>';
+						compose = '<multiple-field page="'+idarr[1]+'" class="rendering"></multiple-field>';
 					}
 					else if($scope.field.type == 'checkbox'){
-						compose = '<checkbox-field class="rendering"></checkbox-field>';
+						compose = '<checkbox-field page="'+idarr[1]+'" class="rendering"></checkbox-field>';
 					}
 					else if($scope.field.type == 'paragraph'){
-						compose = '<paragraph-field class="rendering"></paragraph-field>';
+						compose = '<paragraph-field page="'+idarr[1]+'" class="rendering"></paragraph-field>';
 					}
 					else if($scope.field.type == 'submit'){
-						compose = '<submit-field class="rendering"></submit-field>';
+						compose = '<submit-field page="'+idarr[1]+'" class="rendering"></submit-field>';
 					}
 
 					$($element).append(compose);
@@ -195,15 +214,15 @@
 					$($element).find('label').removeClass('input-error');
 					if(!$($element).hasClass('check')){
 						$($element).addClass('check');
-						submission.set($scope.render.id, $scope.$parent.field.value, $scope.render.require, $scope.render.type);
+						submission.set($attrs.page, $scope.render.id, $scope.$parent.field.value, $scope.render.require, $scope.render.type);
 					}
 					else{
 						$($element).removeClass('check');
 						if($scope.$parent.require) {
-							submission.set($scope.render.id, false, $scope.render.require, $scope.render.type);
+							submission.set($attrs.page, $scope.render.id, false, $scope.render.require, $scope.render.type);
 						}
 						else {
-							submission.set($scope.render.id, '', $scope.render.require, $scope.render.type);
+							submission.set($attrs.page, $scope.render.id, '', $scope.render.require, $scope.render.type);
 						}
 					}
 				};
@@ -239,7 +258,7 @@
 
 				$scope.typing = function(){
 					$('.field-handler').removeClass('red');
-					submission.set($scope.render.id, $($element).find('input').val(), $scope.render.require, $scope.render.type);
+					submission.set($attrs.page, $scope.render.id, $($element).find('input').val(), $scope.render.require, $scope.render.type);
 					if($($element).find('.input-error').length > 0){
 						$($element).find('.input-error').removeClass('input-error');
 					}
@@ -280,7 +299,7 @@
 
 				$scope.typing = function(){
 					$('.field-handler').removeClass('red');
-					submission.set($scope.render.id, $($element).find('input').val(), $scope.render.require, $scope.render.type);
+					submission.set($attrs.page, $scope.render.id, $($element).find('input').val(), $scope.render.require, $scope.render.type);
 					if($($element).find('.input-error').length > 0){
 						$($element).find('.input-error').removeClass('input-error');
 					}
@@ -318,7 +337,7 @@
 				}
 
 				$scope.typing = function(){
-					submission.set($scope.render.id, $($element).find('textarea').val(), $scope.render.require, $scope.render.type);
+					submission.set($attrs.page, $scope.render.id, $($element).find('textarea').val(), $scope.render.require, $scope.render.type);
 
 					$($element).find('textarea').scrollTop(0);
 
@@ -379,7 +398,7 @@
 				}
 
 				$scope.timer = setInterval(function(){
-					if(submission.dropdown_close($scope.render.id)) {
+					if(submission.dropdown_close($attrs.page, $scope.render.id)) {
 						$scope.toggle(true);
 					}
 				}, 10);
@@ -431,7 +450,7 @@
 				$scope.choose = function(choice, html){
 					$('.field-handler').removeClass('red');
 					$($element).find('.selected').html(html);
-					submission.set($scope.render.id, encodeURIComponent(choice), $scope.render.require, $scope.render.type);
+					submission.set($attrs.page, $scope.render.id, encodeURIComponent(choice), $scope.render.require, $scope.render.type);
 
 					if($($element).find('.input-error').length > 0){
 						$($element).find('.input-error').removeClass('input-error');
@@ -486,7 +505,7 @@
 
 
 				$scope.timer = setInterval(function(){
-					if(submission.for_reset($scope.render.id)) {
+					if(submission.for_reset($attrs.page, $scope.render.id)) {
 						$scope.toggle(true);
 						for(inc in $scope.render.values) {
 							$scope.answers[$scope.render.values[inc].value] = false;
@@ -497,7 +516,7 @@
 	 					}
 					}
 
-					if(submission.dropdown_close($scope.render.id)) {
+					if(submission.dropdown_close($attrs.page, $scope.render.id)) {
 						$scope.toggle(true);
 					}
 				}, 10);
@@ -552,7 +571,7 @@
 					e.stopPropagation();
 					$('.field-handler').removeClass('red');
 					
-					//submission.set($scope.render.id, encodeURIComponent(choice), $scope.render.require, $scope.render.type);
+					//submission.set($attrs.page, $scope.render.id, encodeURIComponent(choice), $scope.render.require, $scope.render.type);
 
 					
 
@@ -590,7 +609,7 @@
 						ready_for_submission = false;
 					}
 
-					submission.set($scope.render.id, encodeURIComponent(JSON.stringify(ready_for_submission)), $scope.render.require, $scope.render.type);
+					submission.set($attrs.page, $scope.render.id, encodeURIComponent(JSON.stringify(ready_for_submission)), $scope.render.require, $scope.render.type);
 
 					if($($element).find('.input-error').length > 0){
 						$($element).find('.input-error').removeClass('input-error');
@@ -631,21 +650,28 @@
 			controller: function($scope, $element, $attrs){
 				//do submission here
 				$scope.render = $scope.$parent.field;
+				$scope.recaptcha = $scope.render.recaptcha;
+				$scope.sitekey = $scope.recaptcha.key;
 
-				$scope.exec = function(forMail){
-					submission.verify(submission.data, function(){
-						//passed
+				$scope.exec = function(){
+					submission.verify($attrs.page, $scope.recaptcha, submission.data[$attrs.page], function(r){
+
 						$($element).find('a').text('Please Wait');
 						$($element).find('a').css({
 							'pointer-events' : 'none'
 						});
 
-						if(forMail) {
-							var smtpData = constants.retrieve('smtp');
-							deliver.email(['Registration Data', smtpData.user], ['Registration Data', smtpData.user], $scope.render.receiver, 'Registration Successful', submission.data, $scope.render.defaults.empty, $scope.render.defaults.disclaimer, function(response){
-								if(response.success) {
+						// console.log(r);
+
+						
+						deliver.crm('main', submission.data[$attrs.page], function(response){
+							// console.log(response);
+							if(response.success) {
+								// console.log(response);
+								if(!r) {
 									modal.dialogue($scope.render.prompts.success.title, $scope.render.prompts.success.message, false, function(){
 										submission.reset();
+										grecaptcha.reset();
 										$('input').val('');
 										$('textarea').val('');
 										$('.sing-selected').text('');
@@ -659,103 +685,78 @@
 									});
 								}
 								else{
-									modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
-										submission.reset();
-										$('input').val('');
-										$('textarea').val('');
-										$('.sing-selected').text('');
-										$('.check').removeClass('check');
-										$('.mult-selected').addClass('form-radio-unchecked');
-										$('.mult-selected').removeClass('form-radio-checked');
-										browser.debug.err(response.debug);
-										$($element).find('a').text($scope.render.label);
-										$($element).find('a').css({
-											'pointer-events' : ''
-										});
-									});
-									
+									window.location = r;
 								}
-
-							}, function(){
+							}
+							else{
 								modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
 									submission.reset();
+									grecaptcha.reset();
 									$('input').val('');
 									$('textarea').val('');
 									$('.sing-selected').text('');
 									$('.check').removeClass('check');
 									$('.mult-selected').addClass('form-radio-unchecked');
 									$('.mult-selected').removeClass('form-radio-checked');
-									browser.debug.err('Connectivity: Cannot reach server.');
+									//browser.debug.err(response.debug);
 									$($element).find('a').text($scope.render.label);
 									$($element).find('a').css({
 										'pointer-events' : ''
 									});
+								});
+								
+							}
+						}, function(errors){
+							//fail
+							modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
+								submission.reset();
+								$('input').val('');
+								$('textarea').val('');
+								$('.sing-selected').text('');
+								$('.check').removeClass('check');
+								$('.mult-selected').addClass('form-radio-unchecked');
+								$('.mult-selected').removeClass('form-radio-checked');
+								//browser.debug.err('Connectivity: Cannot reach server.');
+								$($element).find('a').text($scope.render.label);
+								$($element).find('a').css({
+									'pointer-events' : ''
 								});
 							});
-						}
-						else{
-							deliver.crm('test', submission.data, function(response){
-								// console.log(response);
-								if(response.success) {
-									modal.dialogue($scope.render.prompts.success.title, $scope.render.prompts.success.message, false, function(){
-										submission.reset();
-										$('input').val('');
-										$('textarea').val('');
-										$('.sing-selected').text('');
-										$('.check').removeClass('check');
-										$('.mult-selected').addClass('form-radio-unchecked');
-										$('.mult-selected').removeClass('form-radio-checked');
-										$($element).find('a').text($scope.render.label);
-										$($element).find('a').css({
-											'pointer-events' : ''
-										});
-									});
-								}
-								else{
-									modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
-										submission.reset();
-										$('input').val('');
-										$('textarea').val('');
-										$('.sing-selected').text('');
-										$('.check').removeClass('check');
-										$('.mult-selected').addClass('form-radio-unchecked');
-										$('.mult-selected').removeClass('form-radio-checked');
-										//browser.debug.err(response.debug);
-										$($element).find('a').text($scope.render.label);
-										$($element).find('a').css({
-											'pointer-events' : ''
-										});
-									});
-									
-								}
-							}, function(){
-								//fail
-								modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
-									submission.reset();
-									$('input').val('');
-									$('textarea').val('');
-									$('.sing-selected').text('');
-									$('.check').removeClass('check');
-									$('.mult-selected').addClass('form-radio-unchecked');
-									$('.mult-selected').removeClass('form-radio-checked');
-									//browser.debug.err('Connectivity: Cannot reach server.');
-									$($element).find('a').text($scope.render.label);
-									$($element).find('a').css({
-										'pointer-events' : ''
-									});
-								});
-							}, 1);
-						}
+						}, $attrs.page);
 
 					}, function(failed){
+
 						for(var i in failed) {
 							$('#'+failed[i].id).find('label').addClass('input-error');
 						}
-						modal.dialogue($scope.render.prompts.verify_error.title, $scope.render.prompts.verify_error.message);
+						grecaptcha.reset();
+						if(failed[0].id == 'captcha-error') {
+							modal.dialogue(failed[0].error, $scope.recaptcha['fail-message']);
+						}
+						else{
+							modal.dialogue($scope.render.prompts.verify_error.title, $scope.render.prompts.verify_error.message);	
+						}
+						
 					}, function(resp){
 
 					});
 				};
+
+				// $scope.exec = function() {
+				// 	console.log(submission.data);
+				// };
+
+				
+
+				setTimeout(function(){
+					$scope.capfield = grecaptcha.render( 'g-recaptcha', {
+						'sitekey' : $scope.sitekey,  // required
+						'theme' : 'light',  // optional
+						'callback': function(gresponse){
+							$scope.recaptcha = gresponse;
+						}
+					});
+				}, 1);
 
 				$scope.sanitize = function(html) {
 					return $sce.trustAsHtml(html);

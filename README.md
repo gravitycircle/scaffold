@@ -61,7 +61,6 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
 - Create "media" Folder inside `_bin/`
 - Install WordPress normally
 - Add in `include_once(str_replace('/_bin', '', dirname(__FILE__)).'/setup.php');` in `wp-config.php` right after `define('DB_COLLATE', '');`.
-- Copy in the theme in its respective folder (`_bin/wp-content/themes/`). The default theme is found in `_src/wordpress/themes`
 - Activate the theme and all newly installed plugins.
 - Update everything from the WordPress admin.
 - Delete all extra themes / plugins. We're departing from those.

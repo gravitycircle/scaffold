@@ -8,6 +8,8 @@ function ng_get_fields($postid, $match) {
 	$fields = array();
 
 	$farray = get_field('fields', $postid);
+
+	
 	foreach($farray as $fin => $f) {
 		$field_data = array(
 			'pid' => 'page-'.$postid,
@@ -139,6 +141,10 @@ function ng_get_fields($postid, $match) {
 				$built['receiver'] = $field['receiver'];
 				$built['prompts'] = $field['prompts'];
 				$built['defaults'] = $field['defaults'];
+				$built['recaptcha'] = array(
+					'key' => get_field('recap-key', $postid),
+					'fail-message' => get_field('recap-fail', $postid)
+				);
 			}
 
 			array_push($build, $built);
