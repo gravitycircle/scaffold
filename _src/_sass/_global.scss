@@ -1,60 +1,7 @@
 html{
 	body{
 		#wrapper{
-			text-align: left;
-			.button{
-				color: #000 !important;
-			}
-			.text-container, .email-container{
-				padding: 20px 0;
-				@include inputField(fsize(0.8), $black, $white, 'sans', 'body', 'sans', 'body', 'block') {
-					border: none;
-					border-bottom: 1px solid $black;
-				}
-			}
-			.dropdown-container{
-				padding: 20px 0;
-				@include dropdownField(fsize(0.8), false, $black, $white, "\e907", 'form-icons', 'sans', 'body', 'sans', 'body', 'table') {
-					background: $accent;
-					color: $white;
-					cursor: pointer;
-				}
-			}
-
-			.multiple-container{
-				padding: 20px 0;
-				@include multipleField(fsize(0.8), false, $black, $white, "\e907", "\e904", 'form-icons', 'sans', 'body', 'sans', 'body', 'table') {
-					background: $accent;
-					color: $white;
-					cursor: pointer;
-				}
-			}
-
-			.checkbox-container{
-				padding: 20px 0;
-				@include checkboxField(fsize(0.8), $black, $white, "\e908", 'form-icons', 'sans', 'body', 'switch');
-			}
-
-			.paragraph-container{
-				padding: 20px 0;
-				@include paragraphField($black, $white, fsize(0.8), 2, 3, 'sans', 'body', 'sans-serif', 'body', true) {
-					#field-id-2{
-						.paragraph-sizer{
-							textarea{
-								text-indent: 180px;
-							}
-						}
-					}
-				}
-			}
-
-			.submit-container{
-				padding: 20px 0;
-				@include submitField(fsize(2), $black, $white, 'sans', 'body') {
-					background: $black;
-					color: $white;
-				}
-			}
+			
 		}
 	}
 }

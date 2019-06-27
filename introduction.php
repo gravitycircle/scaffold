@@ -1,60 +1,102 @@
 <?php
 include_once('config.php');
+if(file_exists (DOCROOT.'/_bin/wp-config.php')) {
+	ob_start();
+?>
+
+				<div class="title">
+					Installation Exists
+				</div>
+				<div class="copy">
+					<p>
+						There seems to be an installation already setup for this instance. It is recommended that this file be deleted in order to preserve website security.
+					</p>
+				</div>
+			<?php
+	$rendered = ob_get_clean();
+}
+else if(!file_exists (DOCROOT.'/_bin/wp-load.php')) {
+	ob_start();
+?>
+
+				<div class="title">
+					Pre-Setup Installation
+				</div>
+				<div class="copy">
+					<p>
+						Welcome to the getting started step of setting up this platform. This is an attempt to automate the setup process to be as streamlined as possible.
+					</p>
+					<p>
+						Through this step we aim to create the necessary folders, download the WordPress&trade; installation, unzip the archive and move on the WordPress setup proper.
+					</p>
+					<p>
+						If you wish to go through the setup process manually, please refer to the <a href="https://github.com/gravitycircle/scaffold" target="_blank">github page</a> for this framework for more information.
+					</p>
+					<p style="text-align: center; padding-top: 1em;">
+						<span id="begin" class="cta" d-target="<?=BASE?>">Start the Process</span>
+					</p>
+				</div>
+			<?php
+	$rendered = ob_get_clean();
+}
+else{
+	ob_start();
+?>
+
+				<div class="title">
+					Pre-Setup Complete
+				</div>
+				<div class="copy">
+					<p>The next step from this point forward is to setup WordPress&trade;. Do not forget to do the following after your Wordpress installation is complete:</p>
+					<ul>
+						<li>Download all the necessary plugins. You may use the plugins folder located at <span class="code">php/plugins</span> to manually install the plugins listed below:</strong>
+							<ul>
+								<li><a href="https://wordpress.org/plugins/advanced-custom-fields/">Advanced Custom Fields</a></li>
+								<li><a href="https://wordpress.org/plugins/classic-editor/">Classic Editor</a></li>
+								<li><a href="https://wordpress.org/plugins/wp-migrate-db/">WP Migrate DB</a></li>
+							</ul>
+						</li>
+						<li>Add in <span class="code">include_once(str_replace('/_bin', '', dirname(__FILE__)).'/setup.php');</span> in <span class="code">wp-config.php</span> right after <span class="code">define('DB_COLLATE', '');</span>.</li>
+						<li>If you haven't already, install the plugins listed above via the WordPress admin panel: <span class="code">Plugins > Add New</span></li>
+						<li>Activate the theme and all newly installed plugins.</li>
+						<li>Update everything from the WordPress admin.</li>
+						<li>Delete all extra themes / plugins. We're departing from those.</li>
+					</ul>
+					<p style="text-align: center; padding-top: 1em;">
+						<a href="<?=BASE?>_bin" target="_blank" class="cta">Proceed to WordPress&trade; Setup</a>
+					</p>
+				</div>
+			<?php
+	$rendered = ob_get_clean();
+}
+
+
+
 ?>
 <!DOCTYPE html>
-<html lang="en" ng-app="main">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>Angular: Site Scaffolding & Bootstrap</title>
-	<link rel="shortcut icon" href="img/favico.ico" type="image/vnd.microsoft.icon" />
-	<link rel="icon" type="image/png" href="img/favico.png" />
-	<link rel="stylesheet" href="css/style.css" />
+	<title>Site Scaffolding & Bootstrap - Setup</title>
+	<link rel="shortcut icon" href="img/shortcut-icon.ico" type="image/vnd.microsoft.icon" />
+	<link rel="icon" type="image/png" href="img/shortcut-icon.png" />
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,500,600&display=swap" rel="stylesheet">
+<?php
+	if(!file_exists ( DOCROOT.'/_bin/wp-config.php')) {
+	?>
+	<script type="text/javascript" src="<?=BASE?>lib/jquery.js"></script>
+	<script type="text/javascript" src="<?=BASE?>_src/setup/run.js"></script>
+	<?php
+	}
+?>
+	<link rel="stylesheet" href="css/intro.css" />
 	<base href="<?=BASE?>">
 </head>
 <body>
-	<div id="wrapper">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<h1 style="border-bottom: 1px solid #ccc; padding-bottom: 20px"><img src="img/favico.png" alt="---"> Angular: Site Scaffolding & Bootstrap v0.5</h1>
-					<p>This is the starting point of every new site you'll create using a combination of the following frameworks:</p>
-					<ul>
-						<li>
-							<strong>Javascript</strong>
-							<ul>
-								<li>AngularJS v1.3.15</li>
-								<li>jQuery v2.1.3</li>
-							</ul>
-						</li>
-						<li>
-							<strong>Preprocessors</strong>
-							<ul>
-								<li>Compass (requires Ruby and gem installation)</li>
-								<li>SASS (requires Ruby and gem installation)</li>
-								<li>PHP v5.6.11 (requires running on a server. Preferrably Apache 2.0)</li>
-							</ul>
-						</li>
-						<li>
-							<strong>Markup and Styling</strong>
-							<ul>
-								<li>HTML 5</li>
-								<li>CSS</li>
-							</ul>
-						</li>
-					</ul>
-					<p>Please make sure your config.php is set up to the right Base address by changing the BASE and CANONICAL constants. You'll know that you've set it correctly if you see a red logo on the top of this page after a refresh. Currently the constants are set to:</p>
-					<ul>
-						<li><strong>BASE: </strong><?=BASE?></li>
-						<li><strong>CANONICAL: </strong><?=CANONICAL?></li>
-					</ul>
-					<p>Also note that BASE refers to the base URL of the site itself. CANONICAL refers to the base URL of any API endpoint you will be using that runs alongside this application.</p>
-					<p>SEO has been set up. Under the <em>_seo</em> folder, the <i>index.php</i> file has an _seo function. Utilize that for your SEO needs. <i>$page</i> would be the last part of the url to track. There is no deep linking available yet.</p>
-					<p>This is only the introduction page. The installation file for this scaffolding setup has not yet been configured since the framework stack is still in active development. To start working with the stack anyway, please rename this file into something different and rename the _index.php file to index.php. </p>
-
-					<h4 style="border-top: 1px solid #ccc; padding-top: 20px;">~ Happy Coding!</h4>
-				</div>
-			</div>
+	<div id="setup">
+		<div class="content-area">
+			<div class="content-rendered"><?=$rendered?></div>
 		</div>
 	</div>
 </body>

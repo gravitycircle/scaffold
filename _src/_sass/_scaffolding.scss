@@ -16,7 +16,7 @@ body {
 	left: 0;
 	overflow: hidden;
 
-	#wrapper{
+	#wrapper, #setup{
 		position: absolute;
 		@include dimensions(100%);
 		top: 0;

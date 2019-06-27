@@ -1,0 +1,112 @@
+$font_base: 62.5%;
+$font_multiplier: 1rem;
+$white: #ffffff;
+$accent: #d14744;
+$black: #999;
+@function fsize($num) {
+	@return $num * $font_multiplier;
+}
+@mixin type($fam: 'sans', $typ: 'body') {
+	@if $fam == 'sans' {
+		font-family: 'Montserrat', sans-serif;
+		@if $typ == 'body' {
+			font-weight: 300;
+			font-size: fsize(1.4);
+			line-height: 2.4;
+			letter-spacing: 0.08em;
+		}
+		@else if $typ == 'head' {
+			font-weight: 600;
+			font-size: fsize(3);
+			line-height: 1.4;
+			text-transform: uppercase;
+			letter-spacing: 0.100em;
+		}
+		@else if $typ == 'cta' {
+			font-weight: 600;
+			font-size: fsize(1.6);
+			line-height: 1.4;
+			text-transform: uppercase;
+			letter-spacing: 0.100em;
+		}
+	}
+}
+@import 'base';
+@import 'scaffolding';
+
+html{
+	body{
+		#setup{
+			background: #ccc;
+
+			.content-area{
+				color: $black;
+				width: 100%;
+				position: absolute;
+				top: 50%;
+				left: 0;
+				@include reposition(0, -50%);
+				padding: 15px;
+
+				.content-rendered{
+					background: $white;
+					width: 100%;
+					max-width: 800px;
+					padding: 15px;
+					border-radius: 5px;
+					margin-left: auto;
+					margin-right: auto;
+					box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+					.title{
+						color: $accent;
+						text-align: center;
+						@include type('sans', 'head');
+
+					}
+
+					a{
+						color: $black;
+						font-weight: 600;
+						&:hover{
+							color: $accent;
+						}
+					}
+
+					.code{
+						font-family: 'Courier New', 'Courier', monospace;
+						display: inline-block;
+						background: rgba(0,0,0,0.05);
+						font-weight: 500;
+						padding: 0 10px;
+						border-radius: 5px;
+						line-height: 1.5;
+						vertical-align: middle;
+						font-weight: 500;
+						color: $accent;
+					}
+
+					.cta{
+						@include transition(background, color);
+						@include timing(snap);
+						@include duration(0.6s);
+						display: inline-block;
+						background: $accent;
+						color: $white;
+						padding: 0.6em 1.4em;
+						@include type('sans', 'cta');
+						border-radius: 5px;
+						border: 1px solid $accent;
+						cursor: pointer;
+						@include prefix(user-select, none);
+
+						&:hover{
+							color: $accent;
+							background: transparent;
+						}
+					}
+				}
+			}
+		}
+	}
+}
