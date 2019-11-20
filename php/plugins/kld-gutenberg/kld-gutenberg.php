@@ -7,6 +7,8 @@ Version: 1.0
 Author URI: http://kevinlouisdesign.com
 */
 
+
+
 function gb_this_plugin($http = true) {
 	if($http) {
 		return plugin_dir_url(__FILE__);
@@ -15,6 +17,13 @@ function gb_this_plugin($http = true) {
 		return plugin_dir_path(__FILE__);
 	}
 }
+
+function gscript_queue($hook) {
+	wp_register_style('guten-styles', gb_this_plugin().'css/main.css', false, '1.0.0' );
+	wp_enqueue_style('guten-styles');
+}
+
+add_action( 'admin_enqueue_scripts', 'gscript_queue' );
 
 function kld_rename_default( $translation, $text, $domain ) {
     if ( $text == 'Default Template' ) {

@@ -1,0 +1,9 @@
+@import 'base';
+@import 'animation';
+@import 'fevars';
+@import 'type';
+@import 'gscaffolding';
+
+.edit-post-settings-sidebar__panel-block .acf-block-component {
+	display: none;
+}
