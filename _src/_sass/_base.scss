@@ -231,6 +231,18 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 	}
 }
 
+@mixin aspectratio($minmax, $ratio) {
+	@media screen and ($minmax+'-aspect-ratio': $ratio) {
+		@content;
+	}
+}
+
+@mixin orientation($o) {
+	@media screen and (orientation: $orientation) {
+		@content;
+	}
+}
+
 @mixin hide($bp...) {
 	@each $break in $bp{
 		@if $break > 0 and $break < 8 {

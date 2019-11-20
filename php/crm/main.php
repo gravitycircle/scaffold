@@ -5,17 +5,43 @@ include_once(DOCROOT.'/_data/collate.php');
 include_once('../mail-template.php');
 if(isset($_GET['key']) && degenerate($_GET['key'])){
 	if(isset($_GET['send'])){
+		$echo = array(
+			'wordpress' => array(
+				'success' => '',
+				'debug' => ''
+			),
+			'smtp' => array(
+				'success' => '',
+				'debug' => ''
+			),
+			'lasso' => array(
+				'success' => '',
+				'debug' => ''
+			)
+		);
+
+//===== BUILD DATA ==============================================================================================
+		$mkid = explode('-', $_GET['send']);
+
 		$input = json_decode(file_get_contents("php://input"), true);
 
-		$final = array();
+		$final = array(
+			'ProjectID' => get_field('ProjectID', $mkid[0]),
+			'ClientID' => get_field('ClientID', $mkid[0]),
+			'LassoUID' => get_field('LassoUID', $mkid[0]),
+			'domainAccountId' => get_field('domainAccountId', $mkid[0]),
+			'guid' => $mkid[1]
+		);
+
+
 		$internal = array();
 		foreach($input as $id => $va) {
-			$match = ng_get_match($_GET['send'], $id, $va, '', true);
+			$match = ng_get_match($mkid[0], $id, $va, '', true);
 			$final[$match['key']] = $match['value'];
 
-			$match2 = ng_get_match($_GET['send'], $id, $va, '', false);
+			$match2 = ng_get_match($mkid[0], $id, $va, '', false);
 
-			$internal[intval(str_replace('field-'.$_GET['send'].'-', '', $id))] = array(
+			$internal[intval(str_replace('field-'.$mkid[0].'-', '', $id))] = array(
 				'heading' => $match2['key'],
 				'value' => $match2['value']
 			);
@@ -23,7 +49,10 @@ if(isset($_GET['key']) && degenerate($_GET['key'])){
 
 		ksort($internal);
 		$internal = array_values($internal);
-		$form = get_post($_GET['send']);
+//===== END BUILD DATA ==========================================================================================
+
+//===== WP RECORD ===============================================================================================
+		$form = get_post($mkid[0]);
 
 		$tz = get_option('timezone_string');
 		$timestamp = time();
@@ -57,7 +86,36 @@ if(isset($_GET['key']) && degenerate($_GET['key'])){
 			'data' => $internal
 		));
 
-		update_option($opt, serialize($earlier_responses));
+		$resultarray = array();
+
+		foreach ($final as $key => $val) {
+			$keyParts = preg_split('/[\[\]]+/', $key, -1, PREG_SPLIT_NO_EMPTY);
+
+			$ref = &$resultarray;
+
+			while ($keyParts) {
+				$part = array_shift($keyParts);
+
+				if (!isset($ref[$part])) {
+					$ref[$part] = array();
+				}
+
+				$ref = &$ref[$part];
+			}
+
+			$ref = $val;
+		}
+
+		$qstring = http_build_query($resultarray);
+
+		$wprecorded = update_option($opt, serialize($earlier_responses));
+
+		$echo['wordpress']['success'] = $wprecorded;
+		$echo['wordpress']['debug'] = $wprecorded ? 'ok.' : 'Recording failed.';
+
+//===== END WP RECORD ===========================================================================================
+
+//===== SEND AS EMAIL ===========================================================================================
 		$receive = get_field('receiver', $form->ID);
 		if($receive != '') {
 			//build template
@@ -80,16 +138,12 @@ if(isset($_GET['key']) && degenerate($_GET['key'])){
 				array_push($headers, 'From: '.$form->post_title.' <site@vendaliving.com>');
 
 				if(!wp_mail( $receive, 'Form Submission: '.$form->post_title, $r['disclaimer'], $template->render(false), $headers)){
-					echo json_encode(array(
-						'success' => false,
-						'debug' => 'Mail Function: Send failed.'
-					));
+					$echo['smtp']['success'] = false;
+					$echo['smtp']['debug'] = 'wp_mail function failed.';
 				}
 				else{
-					echo json_encode(array(
-						'success' => true,
-						'debug' => 'Mail Function: ok.'
-					));
+					$echo['smtp']['success'] = true;
+					$echo['smtp']['debug'] = 'wp_mail ok.';
 				}
 			}
 			else{
@@ -126,40 +180,79 @@ if(isset($_GET['key']) && degenerate($_GET['key'])){
 					$mail->MsgHTML($template->render(true));
 					$mail->Send();
 					
-					header('Cache-Control: no-cache, must-revalidate');
-					header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
-					header('Content-type: application/json');
-					echo json_encode(array(
-						'success' => true,
-						'debug' => 'Mailer: ok.'
-					));
+					
+					$echo['smtp']['success'] = true;
+					$echo['smtp']['debug'] = 'Mailer: ok.';
 				} catch (phpmailerException $e) {
 					//echo $e->errorMessage(); //Pretty error messages from PHPMailer
-					header('Cache-Control: no-cache, must-revalidate');
-					header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
-					header('Content-type: application/json');
-					echo json_encode(array(
-						'success' => false,
-						'debug' => 'Mailer: '.$e->errorMessage()
-					));
+					
+					$echo['smtp']['success'] = false;
+					$echo['smtp']['debug'] = 'Mailer: '.$e->errorMessage();
 				} catch (Exception $e) {
 					//echo $e->getMessage(); //Boring error messages from anything else!
-					header('Cache-Control: no-cache, must-revalidate');
-					header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
-					header('Content-type: application/json');
-					echo json_encode(array(
-						'success' => false,
-						'debug' => 'PHP: '.$e->getMessage()
-					));
+					$echo['smtp']['success'] = false;
+					$echo['smtp']['debug'] = 'PHP: '.$e->getMessage();
 				}
 			}
 		}
-		else{
-			echo json_encode(array(
-				'success' => true,
-				'debug' => 'WordPress Recording: ok.'
-			));
+		else {
+			$echo['smtp']['success'] = false;
+			$echo['smtp']['debug'] = 'No email address provided.';
 		}
+//===== END SEND AS EMAIL =======================================================================================
+
+//===== SEND TO LASSO ===========================================================================================
+
+		// $ch = curl_init();
+
+		// $url = 'https://app.lassocrm.com/registrant_signup/';
+				
+		// curl_setopt($ch,CURLOPT_URL, $url);
+		// curl_setopt($ch,CURLOPT_POST, 1);
+		// curl_setopt($ch,CURLOPT_POSTFIELDS, $qstring);
+		// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// curl_setopt($ch, CURLOPT_VERBOSE, 1);
+
+		// $result = curl_exec($ch);
+
+		// if (curl_errno($ch)) {
+		// 	// this would be your first hint that something went wrong
+
+		// 	$echo['lasso']['success'] = false;
+		// 	$echo['lasso']['debug'] = 'Warning: '.curl_error($ch);
+		// } else {	
+		// 	// check the HTTP status code of the request
+		// 	$resultStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		// 	if (intval($resultStatus) >= 200 && intval($resultStatus) < 300) {
+		// 		// everything went better than expected
+		// 		//file_put_contents('results.html', $result);
+		// 		if(intval($resultStatus) == 200) {
+		// 			$echo['lasso']['success'] = false;
+		// 			$echo['lasso']['debug'] = 'Result 200, contact LassoCRM.';
+		// 		}
+		// 		else {
+		// 			$echo['lasso']['success'] = true;
+		// 			$echo['lasso']['debug'] = 'ok.';
+		// 		}
+ 	// 		} else {
+		// 		// the request did not complete as expected. common errors are 4xx
+		// 		// (not found, bad request, etc.) and 5xx (usually concerning
+		// 		// errors/exceptions in the remote script execution)
+		// 		$echo['lasso']['success'] = false;
+		// 		$echo['lasso']['debug'] = 'Fatal: '.$url.' -'.$resultStatusl;
+		// 	}
+		// }
+
+		// curl_close($ch);
+		
+//===== END SEND TO LASSO ========================================================================================
+		
+		header('Cache-Control: no-cache, must-revalidate');
+		header('Expires: '.date('D, d M Y H:i:s T', (strtotime('now') + 3600)));
+		header('Content-type: application/json');
+		
+		echo json_encode($echo);
 	}
 }
 ?>

@@ -5,11 +5,11 @@
 	@if $fam == 'sans' {
 		font-family: sans-serif;
 		@if $typ == 'body' {
-			font-size: fsize(0.7);
+			font-size: fsize(1.4);
 			line-height: 1.4;
 		}
 		@else if $typ == 'head' {
-			font-size: fsize(1.4);
+			font-size: fsize(2);
 			line-height: 1.4;
 			text-transform: uppercase;
 		}

@@ -36,17 +36,6 @@ function disable_wp_image_resizer( $sizes ) {
 	return $sizes;
 }
 
-function kld_admin_sandbox(){
-	if(file_exists(str_replace('/_bin', '', get_home_path()).'sandbox.php')) {
-		include_once(str_replace('/_bin', '', get_home_path()).'config.php');
-		include_once(str_replace('/_bin', '', get_home_path()).'_data/collate.php');
-		include_once(str_replace('/_bin', '', get_home_path()).'sandbox.php');
-	}
-	else{
-		'Sandboxing on this installation is disabled.';
-	}
-}
- 
 function customize_menus(){
 	$u = get_current_user_id();
 
@@ -154,10 +143,6 @@ function remove_post_taxonomies() {
 				}
 			}
 		}
-	}
-	$x = get_current_screen();
-	if($x->action != 'add') {
-		add_meta_box('form-responses', 'Form Responses', 'ng_form_responses', 'forms', 'normal', 'low');
 	}
 }
 

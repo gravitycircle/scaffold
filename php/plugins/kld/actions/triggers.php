@@ -34,4 +34,7 @@ acf_add_options_page(array(
 	'icon_url' => 'dashicons-welcome-widgets-menus'
 ));
 add_filter( 'wp_mail_content_type', 'wpdocs_set_html_mail_content_type' );
+
+//standalone
+add_filter('use_block_editor_for_post', '__return_false', 5);
 ?>

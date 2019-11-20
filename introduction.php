@@ -5,7 +5,7 @@ if(file_exists (DOCROOT.'/_bin/wp-config.php')) {
 ?>
 
 				<div class="title">
-					Installation Exists
+					Installation Complete
 				</div>
 				<div class="copy">
 					<p>
@@ -24,7 +24,7 @@ else if(!file_exists (DOCROOT.'/_bin/wp-load.php')) {
 				</div>
 				<div class="copy">
 					<p>
-						Welcome to the getting started step of setting up this platform. This is an attempt to automate the setup process to be as streamlined as possible.
+						Welcome to the ‘getting started’ step of setting up this platform. This is an attempt to automate the setup process to be as streamlined as possible.
 					</p>
 					<p>
 						Through this step we aim to create the necessary folders, download the WordPress&trade; installation, unzip the archive and move on the WordPress setup proper.

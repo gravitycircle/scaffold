@@ -23,6 +23,8 @@ _bin/wp-trackback.php
 _bin/xmlrpc.php
 php/plugins/*
 !php/plugins/kld/
+!php/plugins/kld-canvas/
+!php/plugins/kld-gutenberg/
 .DS_Store
 .DS_Store? 
 .Spotlight-V100 

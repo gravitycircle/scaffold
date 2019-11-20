@@ -742,12 +742,6 @@
 					});
 				};
 
-				// $scope.exec = function() {
-				// 	console.log(submission.data);
-				// };
-
-				
-
 				setTimeout(function(){
 					$scope.capfield = grecaptcha.render( 'g-recaptcha', {
 						'sitekey' : $scope.sitekey,  // required

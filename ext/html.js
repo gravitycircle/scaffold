@@ -99,6 +99,60 @@
 
 				return (w1 - w2);
 			},
+			delay : {
+				timeout : {
+					set: function(fn, delay) {
+						if( !window.requestAnimationFrame && !window.webkitRequestAnimationFrame && !(window.mozRequestAnimationFrame && window.mozCancelRequestAnimationFrame) && !window.oRequestAnimationFrame && !window.msRequestAnimationFrame) {
+							return window.setInterval(fn, delay);
+						}
+
+						var start = new Date().getTime(), handle = new Object();
+
+						function check() {
+							var current = new Date().getTime(), delta = current - start;
+
+							if(delta >= delay) {
+								fn.call();
+							}
+							else{
+								handle.value = requestAnimFrame(check);	
+							}
+						};
+
+						handle.value = requestAnimFrame(check);
+					},
+					clear: function(handle) {
+						window.cancelAnimationFrame ? window.cancelAnimationFrame(handle.value) :  window.webkitCancelAnimationFrame ? window.webkitCancelAnimationFrame(handle.value) :  window.webkitCancelRequestAnimationFrame ? window.webkitCancelRequestAnimationFrame(handle.value) : window.mozCancelRequestAnimationFrame ? window.mozCancelRequestAnimationFrame(handle.value) : window.oCancelRequestAnimationFrame ? window.oCancelRequestAnimationFrame(handle.value) : window.msCancelRequestAnimationFrame ? window.msCancelRequestAnimationFrame(handle.value) : window.clearTimeout(handle);
+					}
+				},
+				interval : {
+					set: function(fn, delay) {
+						if( !window.requestAnimationFrame && !window.webkitRequestAnimationFrame && !(window.mozRequestAnimationFrame && window.mozCancelRequestAnimationFrame) && !window.oRequestAnimationFrame && !window.msRequestAnimationFrame) {
+							return window.setInterval(fn, delay);
+						}
+						var start = new Date().getTime(),
+						handle = new Object();
+
+						function loop() {
+							var current = new Date().getTime(),
+							delta = current - start;
+						
+							if(delta >= delay) {
+								fn.call();
+								start = new Date().getTime();
+							}
+
+							handle.value = requestAnimFrame(loop);
+						};
+
+						handle.value = requestAnimFrame(loop);
+						return handle;
+					},
+					clear: function(handle) {
+						window.cancelAnimationFrame ? window.cancelAnimationFrame(handle.value) :  window.webkitCancelAnimationFrame ? window.webkitCancelAnimationFrame(handle.value) :  window.webkitCancelRequestAnimationFrame ? window.webkitCancelRequestAnimationFrame(handle.value) : window.mozCancelRequestAnimationFrame ? window.mozCancelRequestAnimationFrame(handle.value) : window.oCancelRequestAnimationFrame ? window.oCancelRequestAnimationFrame(handle.value) : window.msCancelRequestAnimationFrame ? window.msCancelRequestAnimationFrame(handle.value) : window.clearInterval(handle);
+					}
+				}
+			},
 			debug: {
 				log : function(){
 					if(constants.debug_mode) {
