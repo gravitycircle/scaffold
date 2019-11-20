@@ -1,20 +1,2 @@
-/*=== TYPOGRAPHY ===*/
-$font_multiplier: 1rem;
-$font_base: 62.5%;
-
-/*=== COLOR ===*/
-$white: #ffffff;
-$accent: #999999;
-$alt: #777777;
-$black: #333333;
-$error: #aa0000;
-
-
-/*=== ZOOM FACTOR ===*/
-$zf1: 0.7;
-$zf2: 0.75;
-$zf3: 0.75;
-$zf4: 0.8;
-$zf5: 0.82;
-$zf6: 1;
-$zf7: 1;
+@import 'vars';
+/* == DO OVERRIDES HERE == */
