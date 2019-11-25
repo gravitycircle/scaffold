@@ -49,8 +49,8 @@ function build_content($data){
 
 	return array(
 		'content' => $output,
-		'preload' => array_unique($preload),
-		'init' => array_unique($initd)
+		'preload' => array_values(array_unique($preload)),
+		'init' => array_values(array_unique($initd))
 	);
 }
 
