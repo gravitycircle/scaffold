@@ -56,6 +56,7 @@ function main($json = true) {
 		'visible' => false,
 		'directive' => ng_template(get_option('page_for_lost'))
 	));
+	array_push($indices, get_option('page_for_lost'));
 
 	$contentinfo = build_content($indices);	
 

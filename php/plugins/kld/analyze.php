@@ -319,10 +319,17 @@ class REST_output {
 						);
 					}
 					else{
-						$o = new REST_output($id->ID, false);
-						$o = $o->toObject();	
+						//prevents memory leaks
+						$this_slug = $id->post_name;
 
-						return $o['content'];
+						if($id->ID == get_option('page_on_front')) {
+							$this_slug = '/';
+						}
+						return array(
+							'id' => $id->ID,
+							'slug' => $this_slug,
+							'title' => $id->post_title
+						);
 					}
 					
 				}
@@ -622,8 +629,13 @@ class REST_output {
 
 		if($full != 'meta') {
 			if($this->postDetails->post_type == 'page') {
+				$this_slug = $this->postDetails->post_name;
+
+				if($this->postDetails->ID == get_option('page_on_front')) {
+					$this_slug = '/';
+				}
 				$this->output['content']['id'] = $this->postDetails->ID;
-				$this->output['content']['slug'] = $this->postDetails->post_name;
+				$this->output['content']['slug'] = $this_slug;
 				$this->output['content']['acf'] = $this->buildACFData();			
 			}
 			else{

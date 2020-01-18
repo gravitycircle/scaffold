@@ -87,6 +87,18 @@ function customize_menus(){
 	// Appearance Menu
 }
 
+function kld_admin_sandbox() {
+	$sandbox = array_shift(explode('plugins/', dirname(__FILE__))).'admin-sandbox.php';
+	if(file_exists($sandbox)) {
+		include_once($sandbox);
+	}
+	else{
+		?>
+		No sandbox file created.
+		<?php
+	}
+}
+
 function title_changer( $title ){
 	$screen = get_current_screen();
   
