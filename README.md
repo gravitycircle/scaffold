@@ -45,9 +45,11 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
  - Gutenberg blocks now included in "ACF" sub-field.
  - Form submission automation has been streamlined.
  - Integrated Google ReCaptcha into framework. V2 is currently supported, V3 -- with some edits.
+ - Various QoL updates.
 
 
 **Future Update Notes:**
+ - Update file inclusion subroutines to enable decoupled setups for the front and back end.
  - Streamline setup, currently very clunky. Utilize Grunt / Composer or other automation applications to do this.
  - Build CSS Component for WordPress integration as well as customised ".css" files.
 
