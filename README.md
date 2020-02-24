@@ -1,7 +1,7 @@
 
  ![---](http://richardbryanong.com/public/shortcut-icon.png) 
 
-# Angular: Site Scaffolding & Bootstrap v0.9 (WP-stable)
+# Angular: Site Scaffolding & Bootstrap v0.9 (WP-stable / Gutenberg Unstable)
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
