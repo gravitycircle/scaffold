@@ -74,22 +74,31 @@ if(!is_array($extfetch)) {
 }
 
 foreach($extfetch as $ext) {
-	$exbuild = array(
-		'predeployed' => $ext['properties']['predeployed'] == '' ? false : true,
-		'src' => $ext['properties']['src'],
-		'attributes' => array()
-	);
+	$availability = $ext['js-resource']['availability'];
 
-	if(is_array($ext['attributes']) && sizeof($ext['attributes']) > 0) {
-		foreach($ext['attributes'] as $exat) {
-			$attv = $exat['value'];
-			if($attv == '') {
-				$attv = null;
-			}
-			$exbuild['attributes'][$exat['key']] = $attv;
-		}
+	if(!is_array($availability)) {
+		$availability = array();
 	}
-	array_push($js['externals'], $exbuild);
+
+	if(in_array('front', $availability)) {
+		$exbuild = array(
+			'predeployed' => !in_array('production', $availability),
+			'src' => $ext['js-resource']['is-file'] ? wp_get_attachment_url($ext['js-resource']['js-script']['file']) : $ext['js-resource']['js-script']['url'],
+			'attributes' => array()
+		);
+
+		if(is_array($ext['js-attributes']) && sizeof($ext['js-attributes']) > 0) {
+			foreach($ext['js-attributes'] as $exat) {
+				$attv = $exat['value'];
+				if($attv == '') {
+					$attv = null;
+				}
+				$exbuild['attributes'][$exat['key']] = $attv;
+			}
+		}
+
+		array_push($js['externals'], $exbuild);
+	}
 }
 
 
@@ -115,7 +124,14 @@ if(!is_array($cssfetch)) {
 $css = array();
 
 foreach($cssfetch as $c) {
-	array_push($css, $c['src']);
+	if(in_array('front', $c['availability'])) {
+		if(!$c['is-file']) {
+			array_push($css, $c['css-src']['url']);
+		}
+		else {
+			array_push($css, wp_get_attachment_url($c['css-src']['file']));
+		}
+	}
 }
 
 _build($js, $css);

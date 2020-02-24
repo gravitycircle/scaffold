@@ -7,20 +7,29 @@ function get_lasso() {
 	);
 }
 
+function get_processed_vectors($vector_field) {
+	$s = explode('-', $vector_field);
+	return wp_get_attachment_url(isset($_GET['svg']) && $_GET['svg'] == 'true' ? $s[1] : $s[0]);
+}
+
 function get_configs() {
+	$x = get_post(get_option('page_on_front'));
+
+	//get form data
+	$recap = array(
+		'key' => get_field('recap-key', $id->ID),
+		'fail-message' => get_field('recap-fail', $id->ID)
+	);
+
 	return array(
 		'smtp' => array(
-			'user' => 'no.reply@auberryliving.com',
+			'user' => 'no.reply@thehillcrest.ca',
 			'pass' => 'H=pQZ*TC#!?o',
-			'host' => 'mail.auberryliving.com',
+			'host' => 'mail.thehillcrest.ca',
 			'port' => 465
 		),
 		'sitename' => get_bloginfo('name'),
-		'base' => BASE,
-		'logo' => get_field('main-logo', 'option'),
-		'backdrop' => get_field('loading-bg', 'option'),
-		'complete' => get_field('loading-complete', 'option'),
-		'ornament' => isset($_GET['svg']) && $_GET['svg'] == 'true' ? BASE.'img/svg/ornament.svg' : BASE.'img/png/ornament.png'
+		'base' => BASE
 	);
 }
 
@@ -43,8 +52,6 @@ function build_content($data){
 		foreach($x->toInit() as $pl) {
 			array_push($initd, $pl);
 		}
-
-		
 	}
 
 	return array(

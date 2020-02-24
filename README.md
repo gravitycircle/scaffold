@@ -1,7 +1,7 @@
 
  ![---](http://richardbryanong.com/public/shortcut-icon.png) 
 
-# Angular: Site Scaffolding & Bootstrap v0.8 (WP-stable)
+# Angular: Site Scaffolding & Bootstrap v0.9 (WP-stable)
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
@@ -29,11 +29,6 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
 
 **Past Changes:**
 
- - Moved theme directory structure into plugin folder.
- - Added a function where images/media that has a "loading-" prefix tacked on their names will preload the file before loading the actual site.
- - Added and integrated Global Navmenus, submenus still in testing phases.
-
-**Framework Changes:**
  - Build modular page navigation system and sub-navigation for reusability.
  - Integrated new Gutenberg functions for WordPress 5.0++
  - Added initalize function for preloading assets for a loading screen.
@@ -43,11 +38,18 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
  - Automated form submission - still unstable.
  - Fixed various issues on array management, image preloading and by-request data pull algorithms.
 
+**Framework Changes:**
+ - Gutenberg functions now in-sync with the front end data parser.
+ - Updated In-Admin Javascript integration with option to upload files.
+ - Created new default template for Gutenberg integration and other template options for non-Gutenberg pages.
+ - Gutenberg blocks now included in "ACF" sub-field.
+ - Form submission automation has been streamlined.
+ - Integrated Google ReCaptcha into framework. V2 is currently supported, V3 -- with some edits.
+
 
 **Future Update Notes:**
  - Streamline setup, currently very clunky. Utilize Grunt / Composer or other automation applications to do this.
  - Build CSS Component for WordPress integration as well as customised ".css" files.
- - Fix form submission automation.
 
 
 #### ~Happy coding!

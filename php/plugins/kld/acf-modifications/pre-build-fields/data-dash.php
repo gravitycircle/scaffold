@@ -935,6 +935,25 @@ acf_add_local_field_group(array(
 	'title' => 'Viewable Pages',
 	'fields' => array(
 		array(
+			'key' => 'field_5e225bb2d8d77',
+			'label' => 'Navigation State',
+			'name' => 'navigation_state',
+			'type' => 'true_false',
+			'instructions' => 'Sets visibility for navigation bar that links up the whole site.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '',
+			'default_value' => 0,
+			'ui' => 1,
+			'ui_on_text' => 'Hidden',
+			'ui_off_text' => 'Visible',
+		),
+		array(
 			'key' => 'field_5c64a3e99588e',
 			'label' => 'Site Navigation',
 			'name' => 'site_navigation',
@@ -1834,11 +1853,11 @@ acf_add_local_field_group(array(
 			'button_label' => 'Add External Javascript',
 			'sub_fields' => array(
 				array(
-					'key' => 'field_5c9568ecd648c',
-					'label' => 'Properties',
-					'name' => 'properties',
+					'key' => 'field_5e2780d7b751d',
+					'label' => 'Source Attributes',
+					'name' => 'js-resource',
 					'type' => 'group',
-					'instructions' => '',
+					'instructions' => 'Sets the Javascript resource to be loaded in.',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -1849,11 +1868,11 @@ acf_add_local_field_group(array(
 					'layout' => 'table',
 					'sub_fields' => array(
 						array(
-							'key' => 'field_5c9562db3c98c',
-							'label' => 'Availability',
-							'name' => 'predeployed',
+							'key' => 'field_5e277eea7460c',
+							'label' => 'Type',
+							'name' => 'is-file',
 							'type' => 'true_false',
-							'instructions' => '',
+							'instructions' => 'Sets the source type for this script. You may choose to upload a file or link the script externally via a URL.',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -1862,17 +1881,85 @@ acf_add_local_field_group(array(
 								'id' => '',
 							),
 							'message' => '',
-							'default_value' => 1,
+							'default_value' => 0,
 							'ui' => 1,
-							'ui_on_text' => 'Everywhere',
-							'ui_off_text' => 'Production',
+							'ui_on_text' => 'File',
+							'ui_off_text' => 'URL',
 						),
 						array(
-							'key' => 'field_5c95632f3c98d',
-							'label' => 'Resource URI',
-							'name' => 'src',
-							'type' => 'url',
-							'instructions' => '',
+							'key' => 'field_5e277f6e7460f',
+							'label' => 'Source',
+							'name' => 'js-script',
+							'type' => 'group',
+							'instructions' => 'The script source. Files are limited to .js files only. URLs have to be prefixed with an https:// to prevent issues with the new SSL protocols set in place by Google.',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'layout' => 'block',
+							'sub_fields' => array(
+								array(
+									'key' => 'field_5e277f307460d',
+									'label' => 'URL',
+									'name' => 'url',
+									'type' => 'url',
+									'instructions' => 'The script\'s URL.',
+									'required' => 1,
+									'conditional_logic' => array(
+										array(
+											array(
+												'field' => 'field_5e277eea7460c',
+												'operator' => '!=',
+												'value' => '1',
+											),
+										),
+									),
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
+									'default_value' => '',
+									'placeholder' => '',
+								),
+								array(
+									'key' => 'field_5e277f497460e',
+									'label' => 'File',
+									'name' => 'file',
+									'type' => 'file',
+									'instructions' => 'The script file. JS only.',
+									'required' => 1,
+									'conditional_logic' => array(
+										array(
+											array(
+												'field' => 'field_5e277eea7460c',
+												'operator' => '==',
+												'value' => '1',
+											),
+										),
+									),
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
+									'return_format' => 'id',
+									'library' => 'all',
+									'min_size' => '',
+									'max_size' => '',
+									'mime_types' => 'js',
+								),
+							),
+						),
+						array(
+							'key' => 'field_5e277e147460b',
+							'label' => 'Availability',
+							'name' => 'availability',
+							'type' => 'checkbox',
+							'instructions' => 'Determine where this script will be enqueued. Custom values equate to the hook (WordPress API) you wish to enqueue the script on.',
 							'required' => 1,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -1880,17 +1967,28 @@ acf_add_local_field_group(array(
 								'class' => '',
 								'id' => '',
 							),
-							'default_value' => '',
-							'placeholder' => '',
+							'choices' => array(
+								'front' => 'Front End',
+								'admin' => 'WordPress Admin (Global)',
+								'production' => 'Production Only',
+							),
+							'allow_custom' => 1,
+							'save_custom' => 0,
+							'default_value' => array(
+								0 => 'front',
+							),
+							'layout' => 'vertical',
+							'toggle' => 0,
+							'return_format' => 'value',
 						),
 					),
 				),
 				array(
-					'key' => 'field_5c95634d3c98e',
+					'key' => 'field_5e277d6974608',
 					'label' => 'Attributes',
-					'name' => 'attributes',
+					'name' => 'js-attributes',
 					'type' => 'repeater',
-					'instructions' => '',
+					'instructions' => 'Sets script inclusion attributes.',
 					'required' => 0,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -1898,14 +1996,14 @@ acf_add_local_field_group(array(
 						'class' => '',
 						'id' => '',
 					),
-					'collapsed' => 'field_5c9563793c98f',
+					'collapsed' => 'field_5e277df174609',
 					'min' => 0,
 					'max' => 0,
 					'layout' => 'table',
 					'button_label' => 'Add Attribute',
 					'sub_fields' => array(
 						array(
-							'key' => 'field_5c9563793c98f',
+							'key' => 'field_5e277df174609',
 							'label' => 'Key',
 							'name' => 'key',
 							'type' => 'text',
@@ -1924,11 +2022,11 @@ acf_add_local_field_group(array(
 							'maxlength' => '',
 						),
 						array(
-							'key' => 'field_5c9563853c990',
+							'key' => 'field_5e277dfc7460a',
 							'label' => 'Value',
 							'name' => 'value',
 							'type' => 'text',
-							'instructions' => 'Leave empty for \'null\' value.',
+							'instructions' => '',
 							'required' => 0,
 							'conditional_logic' => 0,
 							'wrapper' => array(
@@ -2036,15 +2134,102 @@ acf_add_local_field_group(array(
 			'collapsed' => 'field_5c95632f3c98d',
 			'min' => 0,
 			'max' => 0,
-			'layout' => 'block',
+			'layout' => 'table',
 			'button_label' => 'Add CSS',
 			'sub_fields' => array(
 				array(
-					'key' => 'field_5c9564f337a47',
-					'label' => 'Stylesheet URI',
-					'name' => 'src',
-					'type' => 'url',
-					'instructions' => '',
+					'key' => 'field_5e277eea7471c',
+					'label' => 'Type',
+					'name' => 'is-file',
+					'type' => 'true_false',
+					'instructions' => 'Sets the source type for this script. You may choose to upload a file or link the script externally via a URL.',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => '',
+					'default_value' => 0,
+					'ui' => 1,
+					'ui_on_text' => 'File',
+					'ui_off_text' => 'URL',
+				),
+				array(
+					'key' => 'field_5e277f6e7470f',
+					'label' => 'Source',
+					'name' => 'css-src',
+					'type' => 'group',
+					'instructions' => 'The script source. Files are limited to .js files only. URLs have to be prefixed with an https:// to prevent issues with the new SSL protocols set in place by Google.',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'layout' => 'block',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_5e277f307470d',
+							'label' => 'URL',
+							'name' => 'url',
+							'type' => 'url',
+							'instructions' => 'The stylesheet\'s URL.',
+							'required' => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field' => 'field_5e277eea7471c',
+										'operator' => '!=',
+										'value' => '1',
+									),
+								),
+							),
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+						),
+						array(
+							'key' => 'field_5e277f497470e',
+							'label' => 'File',
+							'name' => 'file',
+							'type' => 'file',
+							'instructions' => 'The stylesheet file. CSS only.',
+							'required' => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field' => 'field_5e277eea7471c',
+										'operator' => '==',
+										'value' => '1',
+									),
+								),
+							),
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'return_format' => 'id',
+							'library' => 'all',
+							'min_size' => '',
+							'max_size' => '',
+							'mime_types' => 'css',
+						),
+					),
+				),
+				array(
+					'key' => 'field_5e277e146460b',
+					'label' => 'Availability',
+					'name' => 'availability',
+					'type' => 'checkbox',
+					'instructions' => 'Determine where this script will be enqueued. Custom values equate to the hook (WordPress API) you wish to enqueue the script on.',
 					'required' => 1,
 					'conditional_logic' => 0,
 					'wrapper' => array(
@@ -2052,9 +2237,19 @@ acf_add_local_field_group(array(
 						'class' => '',
 						'id' => '',
 					),
-					'default_value' => '',
-					'placeholder' => '',
-				),
+					'choices' => array(
+						'front' => 'Front End',
+						'admin' => 'WordPress Admin (Global)',
+					),
+					'allow_custom' => 0,
+					'save_custom' => 0,
+					'default_value' => array(
+						0 => 'front',
+					),
+					'layout' => 'vertical',
+					'toggle' => 0,
+					'return_format' => 'value',
+				)
 			),
 		),
 	),
@@ -2157,9 +2352,6 @@ acf_add_local_field_group(array(
 	'active' => true,
 	'description' => '',
 ));
-
-
-if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
 	'key' => 'group_5ce86269a19d0',
@@ -2289,6 +2481,5 @@ acf_add_local_field_group(array(
 	'description' => '',
 ));
 
-endif;
 endif;
 ?>

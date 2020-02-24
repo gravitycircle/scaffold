@@ -331,7 +331,10 @@ class REST_output {
 							'title' => $id->post_title
 						);
 					}
-					
+				}
+				else{
+					$p = get_post($object['value']);
+					return $p->post_name;
 				}
 			break;
 			case 'relationship':
@@ -454,6 +457,27 @@ class REST_output {
 			break;
 			case 'number':
 				return floatval($object['value']);
+			break;
+			case 'textarea':
+				$text = $object['value'];
+				preg_match_all("/\[([^\]]*)\]/", $text, $matches);
+				
+				$s = $matches[0];
+				$r = array();
+
+				foreach($matches[1] as $in => $chk) {
+					if(filter_var($chk, FILTER_VALIDATE_EMAIL)) {
+						$r[$in] = '<a href="mailto: '.strtolower($chk).'">'.strtolower($chk).'</a>';
+					}
+					else if(filter_var($chk, FILTER_VALIDATE_URL)) {
+						$r[$in] = '<a href="'.strtolower($chk).'" target="_blank">'.strtolower($chk).'</a>';	
+					}
+					else{
+						$r[$in] = $chk;
+					}
+				}
+
+				return str_replace($s, $r, $text);
 			break;
 			//==================================
 			case 'text':
@@ -636,7 +660,61 @@ class REST_output {
 				}
 				$this->output['content']['id'] = $this->postDetails->ID;
 				$this->output['content']['slug'] = $this_slug;
-				$this->output['content']['acf'] = $this->buildACFData();			
+				$this->output['content']['acf'] = $this->buildACFData();
+
+				//build blocks
+				if(function_exists('kld_gb_blocks')) {
+					$blockarray = array();
+
+					$parsed_blocks = kld_gb_blocks($this->postDetails);
+					foreach($parsed_blocks as $pblockdata) {
+						$blockpr = array(
+							'directive' => $pblockdata['directive'],
+							'data' => array(),
+							// 'debug' => $pblockdata['debug']
+						);
+
+
+
+						foreach($pblockdata['data'] as $bindex => $field) {
+							if($field['type'] == 'group') {
+								// echo $bindex.' - group <br>';
+							}
+							else if($field['type'] == 'repeater') {
+								// print_r($pblockdata['debug']['_'.$bindex]);
+							}
+							else{
+								if(1 === preg_match('/^.+[_][0-9][_].+$/', $bindex)){
+								    #has numbers
+								    $toSplit = explode('_', $bindex);
+								  
+								    if(!isset($blockpr['data'][$toSplit[0]])) {
+								    	$blockpr['data'][$toSplit[0]] = array();
+								    }
+
+
+								    $blockpr['data'][$toSplit[0]][$toSplit[1]][$toSplit[2]] = $this->analyzetype($field);
+								}
+								else if (sizeof(explode('_', $bindex)) == 2) {
+									$toSplit = explode('_', $bindex);
+									
+									if(!isset($blockpr['data'][$toSplit[0]])) {
+								    	$blockpr['data'][$toSplit[0]] = array();
+								    }
+
+								    $blockpr['data'][$toSplit[0]][$toSplit[1]] = $this->analyzetype($field);
+								}
+								else{
+									$blockpr['data'][$bindex] = $this->analyzeType($field);
+								}
+							}
+						}
+
+						array_push($blockarray, $blockpr);
+					}
+
+					$this->output['content']['acf']['blocks'] = $blockarray;
+				}
 			}
 			else{
 				$cats = get_post_taxonomies($this->postDetails->ID);
@@ -659,6 +737,60 @@ class REST_output {
 				$this->output['content']['slug'] = $this->postDetails->post_name;
 				$this->output['content']['categories'] = $taxes;
 				$this->output['content']['acf'] = $this->buildACFData();
+
+				//build blocks
+				if(function_exists('kld_gb_blocks')) {
+					$blockarray = array();
+
+					$parsed_blocks = kld_gb_blocks($this->postDetails);
+					foreach($parsed_blocks as $pblockdata) {
+						$blockpr = array(
+							'directive' => $pblockdata['directive'],
+							'data' => array(),
+							// 'debug' => $pblockdata['debug']
+						);
+
+
+
+						foreach($pblockdata['data'] as $bindex => $field) {
+							if($field['type'] == 'group') {
+								// echo $bindex.' - group <br>';
+							}
+							else if($field['type'] == 'repeater') {
+								// print_r($pblockdata['debug']['_'.$bindex]);
+							}
+							else{
+								if(1 === preg_match('/^.+[_][0-9][_].+$/', $bindex)){
+								    #has numbers
+								    $toSplit = explode('_', $bindex);
+								  
+								    if(!isset($blockpr['data'][$toSplit[0]])) {
+								    	$blockpr['data'][$toSplit[0]] = array();
+								    }
+
+
+								    $blockpr['data'][$toSplit[0]][$toSplit[1]][$toSplit[2]] = $this->analyzetype($field);
+								}
+								else if (sizeof(explode('_', $bindex)) == 2) {
+									$toSplit = explode('_', $bindex);
+									
+									if(!isset($blockpr['data'][$toSplit[0]])) {
+								    	$blockpr['data'][$toSplit[0]] = array();
+								    }
+
+								    $blockpr['data'][$toSplit[0]][$toSplit[1]] = $this->analyzetype($field);
+								}
+								else{
+									$blockpr['data'][$bindex] = $this->analyzeType($field);
+								}
+							}
+						}
+
+						array_push($blockarray, $blockpr);
+					}
+
+					$this->output['content']['acf']['blocks'] = $blockarray;
+				}
 			}
 		}
 	}

@@ -7,6 +7,16 @@ Version: 1.0
 Author URI: http://kevinlouisdesign.com
 */
 
+function kld_debug_mode() {
+	if(!defined('DEBUG_MODE')) {
+		$urlParts = explode('/', str_replace(array('http://', 'https://'), array('', ''), get_bloginfo('url')));
+		return $urlParts[0] == 'local.kevinlouisdesign.com';
+	}
+	else{
+		return DEBUG_MODE;
+	}
+}
+
 function fm_this_plugin() {
 	return plugin_dir_url(__FILE__);
 }
