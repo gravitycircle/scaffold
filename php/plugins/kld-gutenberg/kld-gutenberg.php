@@ -91,6 +91,36 @@ if(class_exists('ACF')) {
 	}
 }
 
+function kld_parse_block_data($datarray) {
+	$for_processing = array();
+	foreach($datarray as $in => $d) {
+		if(substr($in, 0, 1) != '_') {
+			$acfobj = get_field_object($datarray['_'.$in]);
+			$acfobj['value'] = $d;
+			$for_processing[$in] = $acfobj;
+		}
+	}
+
+	return $for_processing;
+}
+
+function kld_gb_blocks($page) {
+	$blx = parse_blocks($page->post_content);
+	$ret = array();
+
+	foreach($blx as $b) {
+		if(!is_null($b['blockName'])) {
+
+			array_push($ret, array(
+				'directive' => str_replace('acf/', '' ,$b['blockName']),
+				'data' => kld_parse_block_data($b['attrs']['data']),
+				'debug' => $b['attrs']['data']
+			));
+		}
+	}
+
+	return $ret;
+}
 
 class blockHelper {
 	protected function fetchblockdata($post, $block_id, $preview = false) {

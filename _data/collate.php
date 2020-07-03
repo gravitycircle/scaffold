@@ -33,7 +33,7 @@ function main($json = true) {
 					'name' => $n['target']->post_title,
 					'path' => $n['target']->post_name,
 					'visible' => $n['visible'],
-					'directive' => ng_template(get_option('page_on_front'))
+					'directive' => ng_template($n['target']->ID)
 				));
 				array_push($indices, $n['target']->ID);
 			}
