@@ -84,6 +84,9 @@ if($request == 'config.js' || $request == 'config.debug.js'){
 		$filearr[$folder][$filename] = $filecontent;
 
 	}
+
+	$filearr['blocks'] = kld_gutenberg_block_templates();
+	
 	ob_start();
 	?>
 	(function() {

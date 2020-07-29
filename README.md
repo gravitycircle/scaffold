@@ -42,6 +42,8 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
  - Build CSS Component for WordPress integration as well as customised ".css" files.
  - SASS integration, grid size changes between front and back end to accommodate font size and layout consistency between Gutenberg and FE.
  - Removed style bleeding from content styles into WP Admin styles.
+ - Added Template into same file as admin block render for easy transfer.
+ - Shortcut Icon now works in Admin!
  - Updated setup instructions.
 
 **Future Update Notes:**

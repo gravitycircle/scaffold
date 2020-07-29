@@ -332,4 +332,17 @@ function ng_form_responses() {
 		}
 	}
 }
+
+//hook favico
+function kld_add_site_favicon() {
+	if(!(!get_option('site_icon_png') || !get_option('site_icon_ico'))) {
+		?>
+		<link rel="icon" sizes="192x192" type="image/png" href="<?=wp_get_attachment_url(get_option('site_icon_png'))?>" />
+		<link rel="shortcut icon" href="<?=wp_get_attachment_url(get_option('site_icon_ico'))?>" type="image/vnd.microsoft.icon" />
+		<?php
+	}
+}
+   
+add_action('login_head', 'kld_add_site_favicon');
+add_action('admin_head', 'kld_add_site_favicon');
 ?>

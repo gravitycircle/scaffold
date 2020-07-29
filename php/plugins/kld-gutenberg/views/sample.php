@@ -15,4 +15,4 @@ else{
 	$sample = new sampleBlock($post_id, $block['id']);
 }
 
-echo $sample->render_admin_block();
+echo $sample;

@@ -93,11 +93,14 @@ if(class_exists('ACF')) {
 
 function kld_parse_block_data($datarray) {
 	$for_processing = array();
-	foreach($datarray as $in => $d) {
-		if(substr($in, 0, 1) != '_') {
-			$acfobj = get_field_object($datarray['_'.$in]);
-			$acfobj['value'] = $d;
-			$for_processing[$in] = $acfobj;
+
+	if(!(!is_array($datarray) || sizeof($datarray) < 1)) {
+		foreach($datarray as $in => $d) {
+			if(substr($in, 0, 1) != '_') {
+				$acfobj = get_field_object($datarray['_'.$in]);
+				$acfobj['value'] = $d;
+				$for_processing[$in] = $acfobj;
+			}
 		}
 	}
 
@@ -194,5 +197,13 @@ class blockHelper {
 	}
 }
 
+$acfBlockTemplates = array();
+
 include_once('models/sample.php'); // gutenberg sample
+
+function kld_gutenberg_block_templates() {
+	global $acfBlockTemplates;
+
+	return $acfBlockTemplates;
+}
 ?>

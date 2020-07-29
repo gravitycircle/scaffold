@@ -34,7 +34,7 @@ class sampleBlock extends blockHelper {
 		$this->blockData = $fetch['block'];
 	}
 
-	public function render_admin_block() {
+	public function __toString() {
 		ob_start();
 		$divid = $this->render_id(true, 'banner', $this->post, $this->blockData);
 		?>
@@ -46,13 +46,10 @@ class sampleBlock extends blockHelper {
 		<?php
 		return ob_get_clean();
 	}
-
-	public function __toString() {
-		ob_start();
-		?>
-		--- json
-		<?php
-		return ob_get_clean();
-	}
 }
+
+ob_start();
 ?>
+<div class="sample-block"></div>
+<?php
+$acfBlockTemplates['sample'] = ob_get_clean();
