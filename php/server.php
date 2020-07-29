@@ -85,8 +85,10 @@ if($request == 'config.js' || $request == 'config.debug.js'){
 
 	}
 
-	$filearr['blocks'] = kld_gutenberg_block_templates();
-	
+	if(function_exists('kld_gutenberg_block_templates')) {
+		$filearr['blocks'] = kld_gutenberg_block_templates();
+	}	
+
 	ob_start();
 	?>
 	(function() {
