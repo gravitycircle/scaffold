@@ -1,7 +1,7 @@
 
  ![---](http://richardbryanong.com/public/shortcut-icon.png) 
 
-# Angular: Site Scaffolding & Bootstrap v0.9 (WP-stable / Gutenberg Unstable)
+# Angular: Site Scaffolding & Bootstrap v0.91 (WP-stable / Gutenberg Unstable)
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
@@ -29,16 +29,6 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
 
 **Past Changes:**
 
- - Build modular page navigation system and sub-navigation for reusability.
- - Integrated new Gutenberg functions for WordPress 5.0++
- - Added initalize function for preloading assets for a loading screen.
- - Refactored `analyze.php` to prevent memory leaks when going through repeatable `post_objects`.
- - Created new blank plugin for per-site customization.
- - Added "pre-built fields" for hard-coded objects like registration forms.
- - Automated form submission - still unstable.
- - Fixed various issues on array management, image preloading and by-request data pull algorithms.
-
-**Framework Changes:**
  - Gutenberg functions now in-sync with the front end data parser.
  - Updated In-Admin Javascript integration with option to upload files.
  - Created new default template for Gutenberg integration and other template options for non-Gutenberg pages.
@@ -47,11 +37,17 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
  - Integrated Google ReCaptcha into framework. V2 is currently supported, V3 -- with some edits.
  - Various QoL updates.
 
+**Framework Changes:**
+ - Made HTML easy to convert from back to front end for easy template coding.
+ - Build CSS Component for WordPress integration as well as customised ".css" files.
+ - SASS integration, grid size changes between front and back end to accommodate font size and layout consistency between Gutenberg and FE.
+ - Removed style bleeding from content styles into WP Admin styles.
+ - Updated setup instructions.
 
 **Future Update Notes:**
- - Update file inclusion subroutines to enable decoupled setups for the front and back end.
+ - Create a way to output HTML in Angular Template format instead of PHP via WP Plugin and inclusions.
  - Streamline setup, currently very clunky. Utilize Grunt / Composer or other automation applications to do this.
- - Build CSS Component for WordPress integration as well as customised ".css" files.
+ - Create boilerplate animation template for page navigation and URL management on the front end.
 
 
 #### ~Happy coding!
@@ -68,13 +64,13 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
 - Delete all extra themes / plugins. We're departing from those.
 
 ## Alright Sparky!
-- The correct Google Cloud Platform API must be placed in the database. To do this, log into Wordpress by going into `_bin/wp-admin` on your browser.
-- On the left hand panel, look for *Settings > General*
-- Scroll down to the bottom and add an API Key named `Google Cloud Platform` and a matching API key to the right. Save.
-- Documentation is still in the works.
-- **Note:** Make sure to set your home page displays with the correct info under *General Settings > Reading*
-   - Create a new blank page, so you can get this setting saved.
-   - Set the *Your Homepage Displays* option to *A Static Page*
-   - Define pages on the 2 options presented. Use the blank page for either the home page or the posts page.
+- To finish up your initial WordPress setup, you will want to assign all global values before proceeding to prevent error messages from appearing. To do this, log into Wordpress by going into `_bin/wp-admin` on your browser
+- Make sure to set your home page, posts page and 404 page display the correct info:
+   - Go to Pages and create a Page for a 404 template, and another one for the page to handle posts. We can use the Sample page as your home page for now.
+   - Go to *Settings > Reading* and set the *Your Homepage Displays* option to *A Static Page*
+   - Define pages on the 2 options presented. Use the Sample page as your home page for now and the posts page created two steps before this. Scoll down and hit *Save Changes*.
+   - Go to under *Settings > General* and scoll to the bottom, through the menu box under "Page Displayed when Lost", select your intended page that would contain your 404 template. Before you hit save...
+- The correct Google Cloud Platform API must be placed in the database. Add an API Key named `Google Cloud Platform` and a matching API key to the right, then hit *Save Changes*.
+- You're all set up!
 
 #### ~Stay Tuned!

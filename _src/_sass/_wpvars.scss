@@ -5,8 +5,12 @@ $font_base: 62.5%;
 /* --- */
 
 /* BREAKPOINTS */
-$bpmax : 399px, 767px, 1024px, 1199px, 1599px, 1999px, false;
-$bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
+$bpmax : 399px, 767px, 1465px, 1640px, 2040px, 2440px, false;
+$bpmin : false, 400px, 1209px, 1466px, 1641px, 2041px, 2441px;
+
+$bex2: 783px, 1208px;
+$bex3: 768px, 782px;
+
 /* --- */
 @mixin min($number, $orientation: false) {
 	@if $number == 1{
@@ -30,6 +34,20 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 		@else {
 			@media only screen and (min-width: nth($bpmin, $number)){
 				@content;
+			}
+		}
+
+		//exception == min 3
+		@if $number == 3 {
+			@if $orientation == 'landscape' or $orientation == 'portrait' {
+				@media only screen and (min-width: nth($bex3, 1)) and (max-width: nth($bex3, 2)) and (orientation: $orientation) {
+					@content;
+				}
+			}
+			@else {
+				@media only screen and (min-width: nth($bex3, 1)) and (max-width: nth($bex3, 2)){
+					@content;
+				}
 			}
 		}
 	}
@@ -68,6 +86,19 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 			}
 		}
 		
+		//exception == max 2
+		@if $number == 2 {
+			@if $orientation == 'landscape' or $orientation == 'portrait' {
+				@media only screen and (min-width: nth($bex2, 1)) and (max-width: nth($bex2, 2)) and (orientation: $orientation) {
+					@content;
+				}
+			}
+			@else {
+				@media only screen and (min-width: nth($bex2, 1)) and (max-width: nth($bex2, 2)){
+					@content;
+				}
+			}
+		}
 	}
 	@else {
 		@if $orientation == 'landscape' or $orientation == 'portrait' {
@@ -117,7 +148,36 @@ $bpmin : false, 400px, 768px, 1025px, 1200px, 1600px, 2000px;
 				@content;
 			}
 		}
+
+
+		@if $number == 3 {
+			@if $orientation == 'landscape' or $orientation == 'portrait' {
+				@media only screen and (min-width: nth($bex3, 1)) and (max-width: nth($bex3, 2)) and (orientation: $orientation) {
+					@content;
+				}
+			}
+			@else {
+				@media only screen and (min-width: nth($bex3, 1)) and (max-width: nth($bex3, 2)){
+					@content;
+				}
+			}
+		}
+
+		@if $number == 2 {
+			@if $orientation == 'landscape' or $orientation == 'portrait' {
+				@media only screen and (min-width: nth($bex2, 1)) and (max-width: nth($bex2, 2)) and (orientation: $orientation) {
+					@content;
+				}
+			}
+			@else {
+				@media only screen and (min-width: nth($bex2, 1)) and (max-width: nth($bex2, 2)){
+					@content;
+				}
+			}
+		}
 	}
+
+	
 	@else{
 		@if $orientation == 'landscape' or $orientation == 'portrait' {
 			@media only screen and (orientation: $orientation) { 
