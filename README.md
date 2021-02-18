@@ -1,7 +1,7 @@
 
  ![---](http://richardbryanong.com/public/shortcut-icon.png) 
 
-# Angular: Site Scaffolding & Bootstrap v0.91 (WP-stable / Gutenberg Unstable)
+# Angular: Site Scaffolding & Bootstrap v0.92 (WP-stable / Gutenberg Stable)
 
 This is the starting point of every new site I create using a combination of the following frameworks:
 
@@ -29,15 +29,6 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
 
 **Past Changes:**
 
- - Gutenberg functions now in-sync with the front end data parser.
- - Updated In-Admin Javascript integration with option to upload files.
- - Created new default template for Gutenberg integration and other template options for non-Gutenberg pages.
- - Gutenberg blocks now included in "ACF" sub-field.
- - Form submission automation has been streamlined.
- - Integrated Google ReCaptcha into framework. V2 is currently supported, V3 -- with some edits.
- - Various QoL updates.
-
-**Framework Changes:**
  - Made HTML easy to convert from back to front end for easy template coding.
  - Build CSS Component for WordPress integration as well as customised ".css" files.
  - SASS integration, grid size changes between front and back end to accommodate font size and layout consistency between Gutenberg and FE.
@@ -46,8 +37,13 @@ Also note that BASE refers to the base URL of the site itself. CANONICAL refers 
  - Shortcut Icon now works in Admin!
  - Updated setup instructions.
 
-**Future Update Notes:**
+**Framework Changes:**
  - Create a way to output HTML in Angular Template format instead of PHP via WP Plugin and inclusions.
+ - Added Teaser Mode functionality to turn navigation on and off. Loading sequences as well.
+ - get_config function cleaned up with internal / external configs.
+
+**Future Update Notes:**
+
  - Streamline setup, currently very clunky. Utilize Grunt / Composer or other automation applications to do this.
  - Create boilerplate animation template for page navigation and URL management on the front end.
 

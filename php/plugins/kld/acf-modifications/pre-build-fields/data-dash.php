@@ -209,6 +209,397 @@ acf_add_local_field_group(array(
 					'placeholder' => '',
 				),
 				array(
+					'key' => 'field_5c4fa82ee7d85',
+					'label' => 'Send an autoreply?',
+					'name' => 'has-autoreply',
+					'type' => 'true_false',
+					'instructions' => 'Send an autoreply to the email listed on this field when the form is submitted.',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5c4fa3f3b2a94',
+								'operator' => '!=',
+								'value' => 'par',
+							),
+							array(
+								'field' => 'field_5c4fa5e3b2a99',
+								'operator' => '==',
+								'value' => 'email',
+							),
+							array(
+								'field' => 'field_5f9357958e082',
+								'operator' => '!=',
+								'value' => ''
+							)
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => '',
+					'default_value' => 0,
+					'ui' => 1,
+					'ui_on_text' => 'Yes',
+					'ui_off_text' => 'No',
+				),
+				array(
+					'key' => 'field_5c4fa122b9aae',
+					'label' => 'Autoreply Addressee',
+					'name' => 'autoreply-name',
+					'type' => 'text',
+					'instructions' => 'The name used to addressed the receipient of this autoreply email. To use a value on this form as part of the message, use the shortcode <span style="font-family: \'courier new\';">[formvalue]</span>. For example: <span style="font-family: \'courier new\';">[formvalue name="first-name"]</span>.',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5c4fa5e3b2a99',
+								'operator' => '==',
+								'value' => 'email',
+							),
+							array(
+								'field' => 'field_5c4fa82ee7d85',
+								'operator' => '==',
+								'value' => 1,
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => 'Registrant',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5c4fa322b9aae',
+					'label' => 'Autoreply Subject',
+					'name' => 'autoreply-subject',
+					'type' => 'text',
+					'instructions' => 'The text that appears as the subject of the email being sent to the address.',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5c4fa5e3b2a99',
+								'operator' => '==',
+								'value' => 'email',
+							),
+							array(
+								'field' => 'field_5c4fa82ee7d85',
+								'operator' => '==',
+								'value' => 1,
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5c06ebde220b7',
+					'label' => 'Autoreply Thumbnail',
+					'name' => 'autoreply-thumbnail',
+					'type' => 'image',
+					'instructions' => 'The image that appears in the autoresponse email.',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5c4fa5e3b2a99',
+								'operator' => '==',
+								'value' => 'email',
+							),
+							array(
+								'field' => 'field_5c4fa82ee7d85',
+								'operator' => '==',
+								'value' => 1,
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'return_format' => 'id',
+					'preview_size' => 'full',
+					'library' => 'all',
+					'min_width' => 650,
+					'min_height' => '',
+					'min_size' => '',
+					'max_width' => '',
+					'max_height' => '',
+					'max_size' => '',
+					'mime_types' => '',
+				),
+				array(
+					'key' => 'field_5c1fa7e0e7c82',
+					'label' => 'Autoreply Message',
+					'name' => 'autoreply-copy',
+					'type' => 'repeater',
+					'instructions' => 'The text that appear on the autoreply message after this form has been submitted. To use a value on this form as part of the message, use the shortcode <span style="font-family: \'courier new\';">[formvalue]</span>. For example: <span style="font-family: \'courier new\';">[formvalue name="first-name"]</span>.',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5c4fa5e3b2a99',
+								'operator' => '==',
+								'value' => 'email',
+							),
+							array(
+								'field' => 'field_5c4fa82ee7d85',
+								'operator' => '==',
+								'value' => 1,
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'collapsed' => 'field_5c4fa5e3b1a99',
+					'min' => 1,
+					'max' => 0,
+					'layout' => 'block',
+					'button_label' => 'Add Section',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_5c4fa5e3b1a99',
+							'label' => 'Format',
+							'name' => 'email-format',
+							'type' => 'select',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'choices' => array(
+								'paragraph' => 'Body Text',
+								'h1' => 'Large Heading',
+								'h2' => 'Sub Heading',
+								'image' => 'Image',
+								'html' => 'HTML Content',
+								'table' => 'Table'
+							),
+							'default_value' => array(
+							),
+							'allow_null' => 0,
+							'multiple' => 0,
+							'ui' => 0,
+							'return_format' => 'value',
+							'ajax' => 0,
+							'placeholder' => '',
+						),
+						array(
+							'key' => 'field_5c4faa1be6038',
+							'label' => 'Text',
+							'name' => 'email-copy',
+							'type' => 'textarea',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field' => 'field_5c4fa5e3b1a99',
+										'operator' => '!=',
+										'value' => 'table',
+									),
+									array(
+										'field' => 'field_5c4fa5e3b1a99',
+										'operator' => '!=',
+										'value' => 'image',
+									),
+									array(
+										'field' => '',
+										'operator' => '!=',
+										'value' => 'html'
+									)
+								)
+							),
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'maxlength' => '',
+							'rows' => '3',
+							'new_lines' => '',
+						),
+						array(
+							'key' => 'field_5c06ebde220b1',
+							'label' => 'Image',
+							'name' => 'email-body-image',
+							'type' => 'image',
+							'instructions' => '',
+							'required' => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field' => 'field_5c4fa5e3b1a99',
+										'operator' => '==',
+										'value' => 'image',
+									)
+								)
+							),
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'return_format' => 'id',
+							'preview_size' => 'full',
+							'library' => 'all',
+							'min_width' => '',
+							'min_height' => '',
+							'min_size' => '',
+							'max_width' => '',
+							'max_height' => '',
+							'max_size' => '',
+							'mime_types' => '',
+						),
+						array(
+							'key' => 'field_5f99bffa34aa8',
+							'label' => 'HTML',
+							'name' => 'email-html',
+							'type' => 'acf_code_field',
+							'instructions' => '',
+							'required' => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field' => 'field_5c4fa5e3b1a99',
+										'operator' => '==',
+										'value' => 'html',
+									)
+								)
+							),
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'mode' => 'text/html',
+							'theme' => 'default',
+						),
+						array(
+							'key' => 'field_5c4fa322b9abe',
+							'label' => 'Heading',
+							'name' => 'email-table-heading',
+							'type' => 'text',
+							'instructions' => 0,
+							'required' => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field' => 'field_5c4fa5e3b1a99',
+										'operator' => '==',
+										'value' => 'table',
+									)
+								)
+							),
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+						array(
+							'key' => 'field_5c0fa7e0e7c82',
+							'label' => 'Table Content',
+							'name' => 'table-data',
+							'type' => 'repeater',
+							'instructions' => '',
+							'required' => 1,
+							'conditional_logic' => array(
+								array(
+									array(
+										'field' => 'field_5c4fa5e3b1a99',
+										'operator' => '==',
+										'value' => 'table',
+									)
+								)
+							),
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'collapsed' => 'field_5c4fa122b9abe',
+							'min' => 1,
+							'max' => 0,
+							'layout' => 'table',
+							'button_label' => 'Add Row',
+							'sub_fields' => array(
+								array(
+									'key' => 'field_5c4fa122b9abe',
+									'label' => 'Heading',
+									'name' => 'table-heading',
+									'type' => 'text',
+									'instructions' => 0,
+									'required' => 1,
+									'conditional_logic' => 0,
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
+									'default_value' => '',
+									'placeholder' => '',
+									'prepend' => '',
+									'append' => '',
+									'maxlength' => '',
+								),
+								array(
+									'key' => 'field_5c4fa122b9a1e',
+									'label' => 'Value',
+									'name' => 'table-value',
+									'type' => 'text',
+									'instructions' => 0,
+									'required' => 1,
+									'conditional_logic' => 0,
+									'wrapper' => array(
+										'width' => '',
+										'class' => '',
+										'id' => '',
+									),
+									'default_value' => '',
+									'placeholder' => '',
+									'prepend' => '',
+									'append' => '',
+									'maxlength' => '',
+								)
+							),
+						)
+					),
+				),
+				array(
 					'key' => 'field_5c4fa6f4b2a9b',
 					'label' => 'Number of Lines',
 					'name' => 'height',
@@ -365,7 +756,7 @@ acf_add_local_field_group(array(
 				),
 				array(
 					'key' => 'field_5c4faa06e6037',
-					'label' => 'Label Behaviour',
+					'label' => 'Tickbox Type',
 					'name' => 'hide-label',
 					'type' => 'true_false',
 					'instructions' => '',
@@ -379,8 +770,8 @@ acf_add_local_field_group(array(
 					'message' => '',
 					'default_value' => 0,
 					'ui' => 1,
-					'ui_on_text' => 'Hidden',
-					'ui_off_text' => 'Shown',
+					'ui_on_text' => 'Tick Box',
+					'ui_off_text' => 'Toggle',
 				),
 				array(
 					'key' => 'field_5c4faa3be6038',
@@ -389,7 +780,15 @@ acf_add_local_field_group(array(
 					'type' => 'textarea',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5c4faa06e6037',
+								'operator' => '==',
+								'value' => '1',
+							)
+						),
+					),
 					'wrapper' => array(
 						'width' => '',
 						'class' => '',
@@ -409,6 +808,33 @@ acf_add_local_field_group(array(
 					'instructions' => '',
 					'required' => 1,
 					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5c4faa5226039',
+					'label' => 'Unticked Value',
+					'name' => 'unvalue',
+					'type' => 'text',
+					'instructions' => 'Leave blank if you wish not to submit this value unticked.',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5c4faa06e6037',
+								'operator' => '!=',
+								'value' => '1',
+							)
+						),
+					),
 					'wrapper' => array(
 						'width' => '',
 						'class' => '',
@@ -442,6 +868,81 @@ acf_add_local_field_group(array(
 			'maxlength' => '',
 		),
 		array(
+			'key' => 'field_5fb42f5d5f481',
+			'label' => 'Hidden Fields',
+			'name' => '',
+			'type' => 'tab',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'placement' => 'top',
+			'endpoint' => 0,
+		),
+		array(
+			'key' => 'field_5fb42f6d5f482',
+			'label' => 'Field Data',
+			'name' => 'hidden',
+			'type' => 'repeater',
+			'instructions' => 'Sets hidden fields that will be submitted along with every submission of this form.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'collapsed' => 'field_5fb42fb75f483',
+			'min' => 0,
+			'max' => 0,
+			'layout' => 'table',
+			'button_label' => 'Add Field',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_5fb42fb75f483',
+					'label' => 'Name',
+					'name' => 'name',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5fb42fc55f484',
+					'label' => 'Value',
+					'name' => 'value',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+			),
+		),
+		array(
 			'key' => 'field_5c4faaabc5503',
 			'label' => 'Submission Details',
 			'name' => '',
@@ -459,10 +960,10 @@ acf_add_local_field_group(array(
 		),
 		array(
 			'key' => 'field_5c4faabcc5504',
-			'label' => 'Send to Email',
+			'label' => 'Receive Submissions through Email',
 			'name' => 'receiver',
 			'type' => 'email',
-			'instructions' => 'Leave blank if you just want to record submissions onto this page.',
+			'instructions' => 'Leave blank if you do not want to receive submissions via email.',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -471,9 +972,227 @@ acf_add_local_field_group(array(
 				'id' => '',
 			),
 			'default_value' => '',
-			'placeholder' => '',
+			'placeholder' => 'Email Address',
 			'prepend' => '',
 			'append' => '',
+		),
+		array(
+			'key' => 'field_5c5212ca1b2e3',
+			'label' => 'Sender Credentials',
+			'name' => 'smtp-details',
+			'type' => 'group',
+			'instructions' => 'Credentials needed to use proper email handling.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'layout' => 'block',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_5f9357958e082',
+					'label' => 'Sender Address',
+					'name' => 'smtp-email',
+					'type' => 'email',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+				),
+				array(
+					'key' => 'field_5e277eea9460c',
+					'label' => 'Email Protocol',
+					'name' => 'is-smtp',
+					'type' => 'true_false',
+					'instructions' => 'Choose a protocol to be used for sending emails.',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5f9357958e082',
+								'operator' => '!=empty'
+							)
+						)
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => '',
+					'default_value' => 0,
+					'ui' => 1,
+					'ui_on_text' => 'SMTP (Host)',
+					'ui_off_text' => 'Mailer (PHP)',
+				),
+				array(
+					'key' => 'field_5c9fa39ab2a93',
+					'label' => 'SMTP Login',
+					'name' => 'smtp-login',
+					'type' => 'text',
+					'instructions' => 'The SMTP login username for the sender. Leave blank if it’s the same as the sender’s email address.',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5f9357958e082',
+								'operator' => '!=empty'
+							),
+							array(
+								'field' => 'field_5e277eea9460c',
+								'operator' => '==',
+								'value' => 1
+							)
+						)
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => 'The same as the sender’s email address.',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5c9fa39ab2a96',
+					'label' => 'SMTP Password',
+					'name' => 'smtp-password',
+					'type' => 'password',
+					'instructions' => 'The password for sender’s email address.',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5f9357958e082',
+								'operator' => '!=empty'
+							),
+							array(
+								'field' => 'field_5e277eea9460c',
+								'operator' => '==',
+								'value' => 1
+							)
+						)
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5c7fa39ab2a93',
+					'label' => 'SMTP Host URL',
+					'name' => 'smtp-server',
+					'type' => 'text',
+					'instructions' => 'The SMTP server URL for the sender.',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5f9357958e082',
+								'operator' => '!=empty'
+							),
+							array(
+								'field' => 'field_5e277eea9460c',
+								'operator' => '==',
+								'value' => 1
+							)
+						)
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5c58feda928e3',
+					'label' => 'SMTP Port',
+					'name' => 'smtp-port',
+					'type' => 'number',
+					'instructions' => '',
+					'required' => 1,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5f9357958e082',
+								'operator' => '!=empty'
+							),
+							array(
+								'field' => 'field_5e277eea9460c',
+								'operator' => '==',
+								'value' => 1
+							)
+						)
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => 465,
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'min' => 0,
+					'max' => '',
+					'step' => '',
+				),
+				array(
+					'key' => 'field_5e271eea9460c',
+					'label' => 'Security',
+					'name' => 'is-ssl',
+					'type' => 'true_false',
+					'instructions' => 'Sets the security protocol for sending emails.',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_5f9357958e082',
+								'operator' => '!=empty'
+							),
+							array(
+								'field' => 'field_5e277eea9460c',
+								'operator' => '==',
+								'value' => 1
+							)
+						)
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => '',
+					'default_value' => 0,
+					'ui' => 1,
+					'ui_on_text' => 'SSL/TLS',
+					'ui_off_text' => 'Default',
+				),
+			)
 		),
 		array(
 			'key' => 'field_5c5210ca1b2e3',
@@ -568,6 +1287,60 @@ acf_add_local_field_group(array(
 				),
 			),
 		),
+		array(
+			'key' => 'field_5c4fa12bc5503',
+			'label' => 'CRM Details',
+			'name' => '',
+			'type' => 'tab',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'placement' => 'top',
+			'endpoint' => 0,
+		),
+		array(
+			'key' => 'field_5c56112875d45',
+			'label' => 'CRM Submission URL',
+			'name' => 'crm-url',
+			'type' => 'url',
+			'instructions' => 'The URL this form submits to. Leaving this blank will disable CRM submissions.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_5e177eea7460c',
+			'label' => 'GUID Submission',
+			'name' => 'include-guid',
+			'type' => 'true_false',
+			'instructions' => 'Set form behaviour on how to handle GUID strings. This is setup by Javascript functions on the front end of the website.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '',
+			'default_value' => 0,
+			'ui' => 1,
+			'ui_on_text' => 'Exclude',
+			'ui_off_text' => 'Include',
+		)
 	),
 	'location' => array(
 		array(
@@ -1115,6 +1888,13 @@ acf_add_local_field_group(array(
 				'param' => 'post_type',
 				'operator' => '!=',
 				'value' => 'page',
+			),
+		),
+		array(
+			array(
+				'param' => 'options_page',
+				'operator' => '==',
+				'value' => 'temp-page',
 			),
 		),
 	),
@@ -2473,6 +3253,66 @@ acf_add_local_field_group(array(
 	),
 	'menu_order' => 5,
 	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => true,
+	'description' => '',
+));
+
+acf_add_local_field_group(array(
+	'key' => 'group_602dbb16db8ac',
+	'title' => 'Temporary Page',
+	'fields' => array(
+		array(
+			'key' => 'field_602dbb22639b3',
+			'label' => 'Introduction',
+			'name' => '',
+			'type' => 'message',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => 'This is a temporary page. Enabling this will disable all other pages as well as the header navigation. These pages are stand alone and cannot coexist with the rest of the other pages on the website. Turning this on, however does not remove the capability to edit other pages hosted on this website.',
+			'new_lines' => 'wpautop',
+			'esc_html' => 0,
+		),
+		array(
+			'key' => 'field_602dbb62639b4',
+			'label' => 'State',
+			'name' => 'teaser-active',
+			'type' => 'true_false',
+			'instructions' => 'Activate temporary page mode?',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => '',
+			'default_value' => 0,
+			'ui' => 1,
+			'ui_on_text' => 'Active',
+			'ui_off_text' => 'Inactive',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'options_page',
+				'operator' => '==',
+				'value' => 'temp-page',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'side',
 	'style' => 'default',
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',

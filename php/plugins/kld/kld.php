@@ -27,6 +27,7 @@ include_once('acf-modifications/custom-types/post-type/acf-kld-post-type.php');
 include_once('acf-modifications/custom-types/dashicon/acf-kld-dashicon.php');
 include_once('acf-modifications/custom-types/vector-image/acf-vector-image.php');
 include_once('acf-modifications/pre-build-fields/data-dash.php');
+include_once('third-party/mail-template.php');
 include_once('third-party/storage.php');
 include_once('actions/cpt.php');
 include_once('actions/overrides.php');

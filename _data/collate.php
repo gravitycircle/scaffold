@@ -9,7 +9,7 @@ function main($json = true) {
 
 	$output = array();
 	
-// other-pages
+	$teasermode = get_field('teaser-active', 'option');
 
 	$nav = get_field('site_navigation', 'option');
 	
@@ -17,7 +17,7 @@ function main($json = true) {
 
 	$indices = array();
 
-	if($nav != false && sizeof($nav) > 0) {
+	if(!$teasermode && $nav != false && sizeof($nav) > 0) {
 		foreach($nav as $n) {
 			if(get_option('page_on_front') == $n['target']->ID) {
 				array_push($output['nav'], array(
@@ -39,6 +39,16 @@ function main($json = true) {
 			}
 		}
 	}
+	else{
+		if($teasermode) {
+			array_push($output['nav'], array(
+				'name' => 'Home',
+				'path' => '',
+				'visible' => $n['visible'],
+				'directive' => 'v-teaser'
+			));
+		}
+	}
 
 	if(sizeof($output['nav']) < 1) {
 		array_push($output['nav'], array(
@@ -58,7 +68,7 @@ function main($json = true) {
 	));
 	array_push($indices, get_option('page_for_lost'));
 
-	$contentinfo = build_content($indices);	
+	$contentinfo = build_content($indices);
 
 	$output['preload'] = $contentinfo['preload'];
 	$output['on_init'] = $contentinfo['init']; // pre-preloaded images

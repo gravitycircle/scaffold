@@ -69,7 +69,6 @@
 			reset : function(formid){
 				var d = this;
 				for(var i in d.data[formid]){
-
 					if(d.required[formid].indexOf(i) >= 0){
 						d.data[formid][i] = false;
 					}
@@ -165,9 +164,6 @@
 					else if($scope.field.type == 'dropdown'){
 						compose = '<dropdown-field page="'+idarr[1]+'" class="rendering"></dropdown-field>';
 					}
-					else if($scope.field.type == 'multiple'){
-						compose = '<multiple-field page="'+idarr[1]+'" class="rendering"></multiple-field>';
-					}
 					else if($scope.field.type == 'checkbox'){
 						compose = '<checkbox-field page="'+idarr[1]+'" class="rendering"></checkbox-field>';
 					}
@@ -177,6 +173,10 @@
 					else if($scope.field.type == 'submit'){
 						compose = '<submit-field page="'+idarr[1]+'" class="rendering"></submit-field>';
 					}
+
+					if($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+ 						$scope.$apply();
+ 					}
 
 					$($element).append(compose);
 
@@ -211,7 +211,7 @@
 				}
 
 				$scope.toggle = function(){
-					$($element).find('label').removeClass('input-error');
+					$($element).removeClass('input-error');
 					if(!$($element).hasClass('check')){
 						$($element).addClass('check');
 						submission.set($attrs.page, $scope.render.id, $scope.$parent.field.value, $scope.render.require, $scope.render.type);
@@ -227,7 +227,7 @@
 					}
 				};
 
-				$scope.sanitize = function(html) {
+				$scope.s = function(html) {
 					return $sce.trustAsHtml(html);
 				};
 			}
@@ -257,7 +257,7 @@
 				}
 
 				$scope.typing = function(){
-					$('.field-handler').removeClass('red');
+					$($element).removeClass('input-error');
 					submission.set($attrs.page, $scope.render.id, $($element).find('input').val(), $scope.render.require, $scope.render.type);
 					if($($element).find('.input-error').length > 0){
 						$($element).find('.input-error').removeClass('input-error');
@@ -268,7 +268,7 @@
 					}
 				};
 
-				$scope.sanitize = function(html) {
+				$scope.s = function(html) {
 					return $sce.trustAsHtml(html);
 				};
 			}
@@ -298,7 +298,7 @@
 				}
 
 				$scope.typing = function(){
-					$('.field-handler').removeClass('red');
+					$($element).removeClass('input-error');
 					submission.set($attrs.page, $scope.render.id, $($element).find('input').val(), $scope.render.require, $scope.render.type);
 					if($($element).find('.input-error').length > 0){
 						$($element).find('.input-error').removeClass('input-error');
@@ -309,7 +309,7 @@
 					}
 				};
 
-				$scope.sanitize = function(html) {
+				$scope.s = function(html) {
 					return $sce.trustAsHtml(html);
 				};
 			}
@@ -337,6 +337,7 @@
 				}
 
 				$scope.typing = function(){
+					$($element).removeClass('input-error');
 					submission.set($attrs.page, $scope.render.id, $($element).find('textarea').val(), $scope.render.require, $scope.render.type);
 
 					$($element).find('textarea').scrollTop(0);
@@ -363,7 +364,7 @@
 					}
 				};
 
-				$scope.sanitize = function(html) {
+				$scope.s = function(html) {
 					return $sce.trustAsHtml(html);
 				};
 			}
@@ -397,6 +398,9 @@
 					$scope.mrk = '';
 				}
 
+				$scope.displayed = $scope.render.label;
+
+
 				$scope.timer = setInterval(function(){
 					if(submission.dropdown_close($attrs.page, $scope.render.id)) {
 						$scope.toggle(true);
@@ -408,7 +412,7 @@
 						'height' : 0
 					});
 
-					$('.cell').removeClass('opened');
+					$('.choices').removeClass('opened');
 
 					if(typeof open != 'boolean') {
 						if($($element).find('.options-container').height() > 2){
@@ -435,12 +439,12 @@
 							};
 						}
 
-						$($element).find('.cell').addClass('opened');
+						$($element).find('.choices').addClass('opened');
 						$($element).find('.options-container').css(opts);
 						
 					}
 					else{
-						$($element).find('.cell').removeClass('opened');
+						$($element).find('.choices').removeClass('opened');
 						$($element).find('.options-container').css({
 							'height' : 0
 						});
@@ -448,7 +452,8 @@
 				};
 
 				$scope.choose = function(choice, html){
-					$('.field-handler').removeClass('red');
+					$($element).find('.selected').removeClass('pristine');
+					$($element).removeClass('input-error');
 					$($element).find('.selected').html(html);
 					submission.set($attrs.page, $scope.render.id, encodeURIComponent(choice), $scope.render.require, $scope.render.type);
 
@@ -461,179 +466,8 @@
 					}
 				};
 
-				$scope.sanitize = function(html) {
+				$scope.s = function(html) {
 					return $sce.trustAsHtml(html);
-				};
-			}
-		};
-	}]);
-
-	mode.directive('multipleField', ['$sce', 'submission', 'constants', function($sce, submission, constants){
-		return {
-			restrict: 'E',
-			template: constants.templates.fields.multiple,
-			scope:{
-
-			},
-			replace: true,
-			link: function(scope, element, attrs){
-
-			},
-			controller: function($scope, $element, $attrs){
-				var inc;
-				$scope.$on('destroy', function(){
-					clearInterval($scope.timer);
-				});
-				$scope.timer = null;
-				$scope.render = $scope.$parent.field;
-				$scope.render.idname = $scope.render.id.replace('[', '-').replace(']', '');
-
-				$scope.answers = {};
-
-				for(inc in $scope.render.values) {
-					$scope.answers[$scope.render.values[inc].value] = false;
-				}
-
-
-
-				if($scope.$parent.field.require){
-					$scope.mrk = '*';
-				}
-				else{
-					$scope.mrk = '';
-				}
-
-
-				$scope.timer = setInterval(function(){
-					if(submission.for_reset($attrs.page, $scope.render.id)) {
-						$scope.toggle(true);
-						for(inc in $scope.render.values) {
-							$scope.answers[$scope.render.values[inc].value] = false;
-						}
-
-						if($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
-	 						$scope.$apply();
-	 					}
-					}
-
-					if(submission.dropdown_close($attrs.page, $scope.render.id)) {
-						$scope.toggle(true);
-					}
-				}, 10);
-
-				var open;
-				$scope.toggle = function(open){
-					$('.options-container').css({
-						'height' : 0
-					});
-
-					$('.cell').removeClass('opened');
-
-					if(typeof open != 'boolean') {
-						if($($element).find('.options-container').height() > 2){
-							open = true;
-						}
-						else{
-							open = false;
-						}	
-					}
-
-
-					var multiplier = $($element).find('.options').height();
-					if(!open){
-						var newheight = 0;
-						var opts = {};
-
-						if($($element).find('.options').length > 5) {
-							opts = {
-								'height' : (5 * multiplier)+'px'
-							};
-						}
-						else{
-							opts = {
-								'height' : (($($element).find('.options').length * multiplier) + 2)+'px'
-							};
-						}
-
-						$($element).find('.cell').addClass('opened');
-						$($element).find('.options-container').css(opts);
-						
-					}
-					else{
-						$($element).find('.cell').removeClass('opened');
-						$($element).find('.options-container').css({
-							'height' : 0
-						});
-					}
-				};
-
-				$scope.choose = function(e, choice, html){
-					e.stopPropagation();
-					$('.field-handler').removeClass('red');
-					
-					//submission.set($attrs.page, $scope.render.id, encodeURIComponent(choice), $scope.render.require, $scope.render.type);
-
-					
-
-
-					// form-radio-unchecked
-					// form-radio-checked
-					// var test = $scope.answer.indexOf(choice);
-					// if(test < 0) {
-					// 	$('#'+choice).find('.selector').removeClass('form-radio-unchecked');
-					// 	$('#'+choice).find('.selector').addClass('form-radio-checked');	
-					// }
-
-					if(!$scope.answers[choice]) {
-						$('#'+choice).find('.selector').removeClass('form-radio-unchecked');
-						$('#'+choice).find('.selector').addClass('form-radio-checked');
-
-						$scope.answers[choice] = true;
-					}
-					else{
-						$('#'+choice).find('.selector').removeClass('form-radio-checked');
-						$('#'+choice).find('.selector').addClass('form-radio-unchecked');
-
-						$scope.answers[choice] = false;
-					}
-
-					var ready_for_submission = [];
-
-					for(var i in $scope.answers) {
-						if($scope.answers[i]) {
-							ready_for_submission.push(i);
-						}
-					}
-
-					if(ready_for_submission.length < 1) {
-						ready_for_submission = false;
-					}
-
-					submission.set($attrs.page, $scope.render.id, encodeURIComponent(JSON.stringify(ready_for_submission)), $scope.render.require, $scope.render.type);
-
-					if($($element).find('.input-error').length > 0){
-						$($element).find('.input-error').removeClass('input-error');
-					}
-
-					if($('body').find('.input-error').length < 1){
-						$('body').find('.error-msg').removeClass('shown');
-					}
-				};
-
-				$scope.sanitize = function(html) {
-					return $sce.trustAsHtml(html);
-				};
-
-				$scope.sanitize_number = function(chk) {
-					var arr = [];
-					
-					for(var d in chk) {
-						if(chk[d]) {
-							arr.push('1');
-						}
-					}
-
-					return $sce.trustAsHtml(arr.length + ' ' + (arr.length == 1 ? $scope.render.particle.singular : $scope.render.particle.plural));
 				};
 			}
 		};
@@ -652,98 +486,124 @@
 				$scope.render = $scope.$parent.field;
 				$scope.recaptcha = $scope.render.recaptcha;
 				$scope.sitekey = $scope.recaptcha.key;
+				$scope.pid = $scope.render.id;
+
+				//this value sets the success tolerance for the email sending responses. Min of 0 to 3. Lower number means stricter protocols and allows for lesser errors.
+				$scope.tolerance = 0;
+
+				var executed = false;
 
 				$scope.exec = function(){
-					submission.verify($attrs.page, $scope.recaptcha, submission.data[$attrs.page], function(r){
-
-						$($element).find('a').text('Please Wait');
-						$($element).find('a').css({
-							'pointer-events' : 'none'
-						});
-
-						// console.log(r);
-
+					if(!executed) {
+						executed = true;
 						
-						deliver.crm('main', submission.data[$attrs.page], function(response){
-							// console.log(response);
-							if(response.success) {
+						submission.verify($attrs.page, $scope.recaptcha, submission.data[$attrs.page], function(r){
+
+							$($element).find('a').text('Please Wait');
+							$($element).find('a').css({
+								'pointer-events' : 'none'
+							});
+
+							// console.log(submission.data, r);
+							
+							deliver.crm('main', submission.data[$attrs.page], function(response){
 								// console.log(response);
-								if(!r) {
+								if(parseFloat(response.tolerance) <= $scope.tolerance) {
+									
 									modal.dialogue($scope.render.prompts.success.title, $scope.render.prompts.success.message, false, function(){
-										submission.reset();
-										grecaptcha.reset();
-										$('input').val('');
-										$('textarea').val('');
-										$('.sing-selected').text('');
-										$('.check').removeClass('check');
-										$('.mult-selected').addClass('form-radio-unchecked');
-										$('.mult-selected').removeClass('form-radio-checked');
-										$($element).find('a').text($scope.render.label);
-										$($element).find('a').css({
-											'pointer-events' : ''
-										});
-									});
-								}
-								else{
-									window.location = r;
-								}
-							}
-							else{
-								modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
-									submission.reset();
+									executed = false;
+									submission.reset($scope.pid.split('-')[1]);
 									grecaptcha.reset();
 									$('input').val('');
 									$('textarea').val('');
-									$('.sing-selected').text('');
+									var ddforms = $('.sing-selected').toArray();
+									for(var iter in ddforms) {
+										$(ddforms[iter]).text($(ddforms[iter]).attr('label'));
+										$(ddforms[iter]).addClass('pristine');
+									}
 									$('.check').removeClass('check');
 									$('.mult-selected').addClass('form-radio-unchecked');
 									$('.mult-selected').removeClass('form-radio-checked');
-									//browser.debug.err(response.debug);
+									$('.mode-on').addClass('mode-off');
+									$('.mode-on').removeClass('mode-on');
 									$($element).find('a').text($scope.render.label);
 									$($element).find('a').css({
 										'pointer-events' : ''
 									});
 								});
-								
-							}
-						}, function(errors){
-							//fail
-							modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
-								submission.reset();
-								$('input').val('');
-								$('textarea').val('');
-								$('.sing-selected').text('');
-								$('.check').removeClass('check');
-								$('.mult-selected').addClass('form-radio-unchecked');
-								$('.mult-selected').removeClass('form-radio-checked');
-								//browser.debug.err('Connectivity: Cannot reach server.');
-								$($element).find('a').text($scope.render.label);
-								$($element).find('a').css({
-									'pointer-events' : ''
+								}
+								else{
+									modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
+										executed = false;
+										submission.reset($scope.pid.split('-')[1]);
+										grecaptcha.reset();
+										$('input').val('');
+										$('textarea').val('');
+										var ddforms = $('.sing-selected').toArray();
+										for(var iter in ddforms) {
+											$(ddforms[iter]).text($(ddforms[iter]).attr('label'));
+											$(ddforms[iter]).addClass('pristine');
+										}
+										$('.check').removeClass('check');
+										$('.mult-selected').addClass('form-radio-unchecked');
+										$('.mult-selected').removeClass('form-radio-checked');
+										$('.mode-on').addClass('mode-off');
+										$('.mode-on').removeClass('mode-on');
+										$($element).find('a').text($scope.render.label);
+										$($element).find('a').css({
+											'pointer-events' : ''
+										});
+									});
+									
+								}
+							}, function(errors){
+								//fail
+								modal.dialogue($scope.render.prompts.submit_error.title, $scope.render.prompts.submit_error.message, false, function(){
+									executed = false;
+									submission.reset($scope.pid.split('-')[1]);
+									$('input').val('');
+									$('textarea').val('');
+									var ddforms = $('.sing-selected').toArray();
+									for(var iter in ddforms) {
+										$(ddforms[iter]).text($(ddforms[iter]).attr('label'));
+										$(ddforms[iter]).addClass('pristine');
+									}
+									$('.check').removeClass('check');
+									$('.mult-selected').addClass('form-radio-unchecked');
+									$('.mult-selected').removeClass('form-radio-checked');
+									$('.mode-on').addClass('mode-off');
+									$('.mode-on').removeClass('mode-on');
+									$($element).find('a').text($scope.render.label);
+									$($element).find('a').css({
+										'pointer-events' : ''
+									});
+									grecaptcha.reset();
 								});
-							});
-						}, $attrs.page);
+							}, $attrs.page+'|0');
 
-					}, function(failed){
+						}, function(failed){
 
-						for(var i in failed) {
-							$('#'+failed[i].id).find('label').addClass('input-error');
-						}
-						grecaptcha.reset();
-						if(failed[0].id == 'captcha-error') {
-							modal.dialogue(failed[0].error, $scope.recaptcha['fail-message']);
-						}
-						else{
-							modal.dialogue($scope.render.prompts.verify_error.title, $scope.render.prompts.verify_error.message);	
-						}
-						
-					}, function(resp){
-
-					});
+							for(var i in failed) {
+								$('#'+failed[i].id).addClass('input-error');
+							}
+							grecaptcha.reset();
+							if(failed[0].id == 'captcha-error') {
+								modal.dialogue('Recaptcha Error', 'Please complete the ReCaptcha challenge to continue.');
+								executed = false;
+							}
+							else{
+								modal.dialogue($scope.render.prompts.verify_error.title, $scope.render.prompts.verify_error.message);	
+								executed = false;
+							}
+							
+						}, function(resp){
+							executed = false;
+						});
+					}
 				};
 
 				setTimeout(function(){
-					$scope.capfield = grecaptcha.render( 'g-recaptcha', {
+					$scope.capfield = grecaptcha.render( 'g-recaptcha-'+$scope.pid, {
 						'sitekey' : $scope.sitekey,  // required
 						'theme' : 'light',  // optional
 						'callback': function(gresponse){

@@ -9,6 +9,18 @@ acf_add_options_page(array(
 	'icon_url' => 'dashicons-welcome-widgets-menus'
 ));
 
+acf_add_options_page(array(
+	'page_title' => 'Temporary Page',
+	'menu_title' => 'Temporary Page',
+	'menu_slug' => 'temp-page',
+	'capability' => 'edit_posts',
+	'position' => 4,
+	'parent_slug' => 'edit.php?post_type=page',
+	'icon_url' => 'dashicons-admin-plugins',
+	'update_button' => 'Save Changes',
+	'update_message' => 'Changes to this page are successfully saved. Make sure to set the "State" to "Active" and save again if you wish to use this feature.'
+));
+
 function acf_js_includes() {
 	if(class_exists('cstm_acf_plugin_kld_post_type') && class_exists('dshicn_acf_plugin_kld_dashicon')) {
 		wp_enqueue_script( 'acf-js', fm_this_plugin().'js/acf.js', array(), '1.0.0', true );	
@@ -90,7 +102,7 @@ function create_post_type()
 					'supports' => array('title'),
 					'labels' => array(
 						'name' => $pt['label']['plural'], 
-						'singular_name' => 'Project',
+						'singular_name' => $pt['label']['singular'],
 						'menu_name' => $pt['label']['menu'] == '' ? $pt['label']['plural'] : $pt['label']['menu'],
 						'add_new' => 'Create '.$pt['label']['singular'],
 						'add_new_item' => 'Add New '.$pt['label']['singular'],

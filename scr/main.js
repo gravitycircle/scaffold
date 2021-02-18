@@ -104,6 +104,8 @@
 			},
 			controller: function($scope, $element, $attrs){
 				$scope.pagescope = $scope.$new();
+				$scope.resizeActions = [];
+				$scope.scrollActions = [];
 				$scope.initiate = function(content, continueEvent){
 					$scope.data = content.contents;
 					if($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
@@ -133,6 +135,104 @@
 					});
 				};
 
+				$scope.actions = {
+					'resize' : {
+						'queue' : function(id, action){
+							//check
+							if($scope.resizeActions.length) {
+								for(var i in $scope.resizeActions) {
+									if($scope.resizeActions[i].id == id) {
+										$scope.resizeActions[i] = {
+											'id' : id,
+											'action' : action
+										};
+										return true;
+									}
+								}
+								$scope.resizeActions.push({
+									'id' : id,
+									'action' : action
+								});
+								return false;
+							}
+							else{
+								$scope.resizeActions.push({
+									'id' : id,
+									'action' : action
+								});
+								return false;
+							}
+						},
+						'remove' : function(id){
+							if($scope.resizeActions.length) {
+								var sp = -1;
+								for(var i in $scope.resizeActions) {
+									if($scope.resizeActions[i].id == id) {
+										sp = i;
+										break;
+									}
+								}
+
+								if(sp == -1) {
+									return false;
+								}
+								else{
+									array.splice(sp, 1, $scope.resizeActions);
+									return true;
+								}
+							}
+							return false;
+						}
+					},
+					'scroll' : {
+						'queue' : function(id, action){
+							//check
+							if($scope.scrollActions.length) {
+								for(var i in $scope.scrollActions) {
+									if($scope.scrollActions[i].id == id) {
+										$scope.scrollActions[i] = {
+											'id' : id,
+											'action' : action
+										};
+										return true;
+									}
+								}
+								$scope.scrollActions.push({
+									'id' : id,
+									'action' : action
+								});
+								return false;
+							}
+							else{
+								$scope.scrollActions.push({
+									'id' : id,
+									'action' : action
+								});
+								return false;
+							}
+						},
+						'remove' : function(id){
+							if($scope.scrollActions.length) {
+								var sp = -1;
+								for(var i in $scope.scrollActions) {
+									if($scope.scrollActions[i].id == id) {
+										sp = i;
+										break;
+									}
+								}
+
+								if(sp == -1) {
+									return false;
+								}
+								else{
+									array.splice(sp, 1, $scope.scrollActions);
+									return true;
+								}
+							}
+							return false;
+						}
+					}
+				};
 
 				$scope.s = function(html) {
 					return $sce.trustAsHtml(html);

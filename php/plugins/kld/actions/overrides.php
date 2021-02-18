@@ -94,7 +94,7 @@ function kld_admin_sandbox() {
 	}
 	else{
 		?>
-		No sandbox file created.
+		No sandbox file created at <?=$sandbox?> 
 		<?php
 	}
 }
@@ -341,6 +341,85 @@ function kld_add_site_favicon() {
 		<link rel="shortcut icon" href="<?=wp_get_attachment_url(get_option('site_icon_ico'))?>" type="image/vnd.microsoft.icon" />
 		<?php
 	}
+}
+
+//process emails
+function kld_write_autoreply($formid, $formdata) {
+	$autoreplies = array();
+	$fields = get_field('fields', $formid);
+	$responses = get_field('responses', $formid);
+
+	$search = array();
+	$replace = array();
+
+	$hidden = get_field('hidden', $formid);
+
+	$exclusions = array(
+		'guid'
+	);
+
+	foreach($hidden as $h) {
+		array_push($exclusions, $h['name']);
+	}
+
+	//formsearch replace db
+	foreach($formdata as $i => $d) {
+		if(!in_array($i, $exclusions)) {
+			array_push($search, '['.$i.']');
+			array_push($replace, $d);
+		}
+	}
+
+	foreach($fields as $field) {
+		if($field['type'] == 'text' && $field['filter'] == 'email' && $field['has-autoreply'] == true) {
+			//create object
+			$mail = new emailTemplate($field['autoreply-subject'], $responses['disclaimer'], wp_get_attachment_url($field['autoreply-thumbnail']));
+
+			//write contents
+			foreach($field['autoreply-copy'] as $text) {
+				switch ($text['email-format']) {
+					case 'paragraph':
+						$mail->addText(htmlentities(str_replace($search, $replace, $text['email-copy']), ENT_HTML401));
+					break;
+					case 'h1':
+						$mail->addH1(htmlentities(str_replace($search, $replace, $text['email-copy']), ENT_HTML401));
+					break;
+					case 'h2':
+						$mail->addH2(htmlentities(str_replace($search, $replace, $text['email-copy']), ENT_HTML401));
+					break;
+					case 'image':	
+						$mail->addHTML('<img src="'.wp_get_attachment_url($text['email-body-image']).'" style="width: 100%; height: auto; display: block; margin-top: 0; margin-bottom: 0; margin-left: auto; margin-right: auto; padding: 0;">');
+					break;
+					case 'html':
+						$mail->addHTML(str_replace($search, $replace, $text['email-html']));
+					break;
+					case 'table':
+						$v = array();
+						foreach($text['table-data'] as $td) {
+							array_push($v, array(
+								'heading' => htmlentities($td['table-value'], ENT_HTML401),
+								'value' => htmlentities($td['table-value'], ENT_HTML401)
+							));
+						}
+						$mail->addTable(htmlentities($text['email-table-heading'], ENT_HTML401), $v);
+					break;
+				}
+			}
+			//record in autoreplies
+			array_push($autoreplies, array(
+				'subject' => $field['autoreply-subject'],
+				'addressee' => array(
+					'name' => $field['autoreply-name'] == '' ? 'Registrant' : str_replace($search, $replace, $field['autoreply-name']),
+					'email' => $formdata[$field['key']]
+				), 
+				'message' => $mail->render(true),
+				'plaintext' => $mail->render(false)
+			));
+			$mail = null;
+		}
+	}
+
+	return $autoreplies;
 }
    
 add_action('login_head', 'kld_add_site_favicon');

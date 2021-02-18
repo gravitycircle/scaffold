@@ -1,6 +1,5 @@
 <?php
 function script_queue($hook) {
-  // echo 'HOOK: '.$hook;
 	$deps = array();
 	$cdeps = array();
 	//REGISTRATION
@@ -38,6 +37,9 @@ function script_queue($hook) {
 		array_push($deps, 'sub-ops');
 	}
 	else if ($hook == 'toplevel_page_cpt') {
+		array_push($deps, 'fm-library');
+	}
+	else if($hook == 'post.php') {
 		array_push($deps, 'fm-library');
 	}
 
@@ -99,6 +101,7 @@ function script_queue($hook) {
 	wp_register_style( 'admin-styles', fm_this_plugin().'css/style.css', $cdeps, '1.0.0' );
 	
 	wp_enqueue_media();
+	wp_enqueue_script('fm-library');
 	wp_enqueue_script('manifest');
 	wp_enqueue_style('admin-styles');
 }
