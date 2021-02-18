@@ -4,6 +4,7 @@ function get_configs($internal = false) {
 		$x = get_post(get_option('page_on_front'));
 
 		return array(
+			'teasermode' => get_field('teaser-active', 'option'),
 			'browser' => $_SERVER['HTTP_USER_AGENT'],
 			'sitename' => get_bloginfo('name'),
 			'base' => BASE
