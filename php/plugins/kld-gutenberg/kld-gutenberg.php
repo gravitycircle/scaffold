@@ -125,6 +125,16 @@ function kld_gb_blocks($page) {
 	return $ret;
 }
 
+add_filter( 'block_editor_settings' , 'remove_guten_wrapper_styles' );
+function remove_guten_wrapper_styles( $settings ) {
+	
+    $settings['styles'][0]['css'] = '';
+    $settings['styles'][1]['css'] = '';
+    $settings['styles'][2]['css'] = '';
+    // print_r($settings);
+    return $settings;
+}
+
 class blockHelper {
 	protected function fetchblockdata($post, $block_id, $preview = false) {
 		if(!is_object($post) && is_numeric($post)) {
