@@ -10,5 +10,7 @@ define('WP_PLUGIN_URL', (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off
 define('WP_HOME', (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https://' : 'http://').str_replace($docroot, $servername, dirname(__FILE__)).'/_bin');
 define('WP_SITEURL', (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https://' : 'http://').str_replace($docroot, $servername, dirname(__FILE__)).'/_bin');
 
+define('KLD_DOCROOT', dirname(__FILE__));
+
 define('ALLOW_UNFILTERED_UPLOADS', true);
 ?>

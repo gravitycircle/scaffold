@@ -102,9 +102,9 @@ function kld_admin_sandbox() {
 function title_changer( $title ){
 	$screen = get_current_screen();
   
-	// if  ( 'product' == $screen->post_type ) {
-	// 	$title = 'Enter item name';
-	// }
+	if  ( 'projects' == $screen->post_type ) {
+		$title = 'Enter project name';
+	}
   
 	return $title;
 }
